@@ -1,0 +1,13 @@
+#! /bin/bash
+#SBATCH -A TG-PHY120016
+#SBATCH -p skx-normal
+#SBATCH -t 24:00:00
+#SBATCH -N 22 -n 264
+#SBATCH 
+#SBATCH -J D11_q5_a1_-0.36
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user=ryan.nowicki@utexas.edu
+#SBATCH -o /scratch/06913/ryan_n16/simulations/D11_q5_a1_-0.362_-0.0548_-0.64_a2_-0.0013_0.001_-0.0838_m533.33/output-0000/D11_q5_a1_-0.362_-0.0548_-0.64_a2_-0.0013_0.001_-0.0838_m533.33.out
+#SBATCH -e /scratch/06913/ryan_n16/simulations/D11_q5_a1_-0.362_-0.0548_-0.64_a2_-0.0013_0.001_-0.0838_m533.33/output-0000/D11_q5_a1_-0.362_-0.0548_-0.64_a2_-0.0013_0.001_-0.0838_m533.33.err
+cd /work2/06913/ryan_n16/stampede2/Cactus
+/work2/06913/ryan_n16/stampede2/Cactus/repos/simfactory2/bin/sim run D11_q5_a1_-0.362_-0.0548_-0.64_a2_-0.0013_0.001_-0.0838_m533.33 --machine=stampede2-skx --restart-id=0 

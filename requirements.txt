@@ -1,0 +1,9 @@
+numpy
+scipy
+pandas
+romspline
+wget
+matplotlib
+mock
+numba
+scri

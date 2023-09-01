@@ -1,0 +1,13 @@
+#! /bin/bash
+#SBATCH -A PHY20039
+#SBATCH -p normal
+#SBATCH -t 4:00:00
+#SBATCH -N 1 -n 56
+#SBATCH 
+#SBATCH -J D2.33_q1_a1_0_0
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user=deborah.ferguson@austin.utexas.edu
+#SBATCH -o /scratch1/05765/dferg/simulations/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/output-0001/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.out
+#SBATCH -e /scratch1/05765/dferg/simulations/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/output-0001/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.err
+cd /work/05765/dferg/frontera/Cactus
+/work/05765/dferg/frontera/Cactus/repos/simfactory2/bin/sim run D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67 --basedir=/scratch1/05765/dferg/simulations --machine=frontera-clx --restart-id=1 

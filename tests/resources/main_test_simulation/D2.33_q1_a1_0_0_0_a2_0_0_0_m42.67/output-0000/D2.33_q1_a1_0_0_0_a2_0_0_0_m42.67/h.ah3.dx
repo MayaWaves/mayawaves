@@ -1,0 +1,17 @@
+# list the size of each patch (N_rho x N_sigma)
+object "+z patch" class array type int rank 1 shape 2 items 1 data follows 19 19
+object "+x patch" class array type int rank 1 shape 2 items 1 data follows 19 19
+object "+y patch" class array type int rank 1 shape 2 items 1 data follows 19 19
+object "-x patch" class array type int rank 1 shape 2 items 1 data follows 19 19
+object "-y patch" class array type int rank 1 shape 2 items 1 data follows 19 19
+object "-z patch" class array type int rank 1 shape 2 items 1 data follows 19 19
+
+# collect all patch sizes into a single OpenDX group
+# for the ImportAHFinderDirectGnuplot macro to read
+object "patchsizes" class group
+member 0 value "+z patch"
+member 1 value "+x patch"
+member 2 value "+y patch"
+member 3 value "-x patch"
+member 4 value "-y patch"
+member 5 value "-z patch"

@@ -1,0 +1,534 @@
+#!/usr/bin/perl -W
+
+$q  = 32;   # Cells on finest grid (radius)
+$rf = 0.75; # Radius of finest box
+$estimated_speed = 20;
+$checkpoint_time = 8; # Checkpoint every this many hours, based on estimated speed
+
+$R0 = $rf*2**9;
+$r1 = $rf*2**8;
+$r2 = $rf*2**7;
+$r3 = $rf*2**6;
+$r4 = $rf*2**4;
+$r5 = $rf*2**3;
+$r6 = $rf*2**2;
+$r7 = $rf*2**1;
+$r8 = $rf;
+
+#########################################
+
+$xp     = 1.168642873;
+$xm     = -$xp;
+$m_bare = 0.453;
+$py     = 0.3331917498;
+$mpx     = 0;
+
+#########################################
+
+$h = $rf/$q;
+$h0 = sprintf "%.19f", $h * 2**8;
+
+$every_coarse = 64;
+$fine_dtfac = 0.5;
+$base_dtfac = $fine_dtfac / 2**4;
+$k = $h * $fine_dtfac;
+$checkpoint_every = int($checkpoint_time * $estimated_speed / $k);
+$max_runtime = 23*60;
+$final_time = 300;
+
+$n = int($r8 / $h);
+$m = int($n / 4);
+
+# 1 for symmetry, 0 for physical boundary
+$xmin_shiftout = 1;
+$zmin_shiftout = 1;
+
+# 0 for symmetry, -$R0 for no symmetry
+$xmin = 0;
+$zmin = 0;
+
+$out_1d_every = 0;
+$out_2d_every = 0;
+
+$regrid_every = $m * 32;
+$track_every = $m * 4;
+
+$ghost_zones = 4;
+
+$ntheta = 10 * $m;
+$nphi = 2 * $ntheta;
+
+$chiEps = 1e-4;
+
+$lines = <<EOF;
+
+ActiveThorns = "Kranc2BSSNChi TwoPunctures GenericFD CoordBase SymBase Boundary NanChecker CartGrid3d Time MoL CarpetIOBasic CarpetIOScalar IOUtil Carpet CarpetLib Vectors CarpetReduce CarpetInterp CarpetSlab  CarpetIOASCII ADMBase  StaticConformal  SphericalSurface  AEILocalInterp SpaceMask  Slab CarpetIOHDF5 CarpetRegrid2 CarpetTracker Ylm_Decomp WeylScal4 ShiftTracker MinTracker TimerReport RunStats Dissipation InitBase RotatingSymmetry180 ReflectionSymmetry IHSpin SphereRad SphereIntegrate LoopControl GSL Formaline SystemTopology hwloc AHFinderDirect"
+
+#############################################################
+# Grid
+#############################################################
+
+CartGrid3D::type                        = "coordbase"
+CartGrid3D::domain                      = "full"
+CartGrid3D::avoid_origin                = "no"
+
+CoordBase::domainsize                   = minmax
+CoordBase::xmin                         = $xmin
+CoordBase::ymin                         = -$R0
+CoordBase::zmin                         = $zmin
+CoordBase::xmax                         = $R0
+CoordBase::ymax                         = $R0
+CoordBase::zmax                         = $R0
+CoordBase::dx                           = $h0
+CoordBase::dy                           = $h0
+CoordBase::dz                           = $h0
+CoordBase::boundary_size_x_lower        = $ghost_zones
+CoordBase::boundary_size_y_lower        = $ghost_zones
+CoordBase::boundary_size_z_lower        = $ghost_zones
+CoordBase::boundary_shiftout_x_lower    = $xmin_shiftout
+CoordBase::boundary_shiftout_y_lower    = 0
+CoordBase::boundary_shiftout_z_lower    = $zmin_shiftout
+CoordBase::boundary_size_x_upper        = $ghost_zones
+CoordBase::boundary_size_y_upper        = $ghost_zones
+CoordBase::boundary_size_z_upper        = $ghost_zones
+CoordBase::boundary_shiftout_x_upper    = 0
+CoordBase::boundary_shiftout_y_upper    = 0
+CoordBase::boundary_shiftout_z_upper    = 0
+
+#############################################################
+# Symmetries
+#############################################################
+
+ReflectionSymmetry::reflection_x        = "no"
+ReflectionSymmetry::reflection_y        = "no"
+ReflectionSymmetry::reflection_z        = "yes"
+ReflectionSymmetry::avoid_origin_x      = "no"
+ReflectionSymmetry::avoid_origin_y      = "no"
+ReflectionSymmetry::avoid_origin_z      = "no"
+
+RotatingSymmetry180::poison_boundaries  = "yes"
+
+#############################################################
+# Run statistics
+#############################################################
+
+RunStats::calc_every         = $every_coarse
+RunStats::output_mem_every   = $every_coarse
+TimerReport::out_every       = $every_coarse
+TimerReport::out_filename    = "TimerReport"
+
+#############################################################
+# CarpetRegrid
+#############################################################
+
+
+#############################################################
+# CarpetRegrid2/CarpetTracker
+#############################################################
+
+CarpetRegrid2::num_centres     = 3
+CarpetRegrid2::regrid_every          = $regrid_every
+CarpetRegrid2::freeze_unaligned_levels = "yes" 
+CarpetRegrid2::freeze_unaligned_parent_levels = "yes" 
+Carpet::grid_coordinates_filename = "grid.asc" 
+CarpetRegrid2::min_distance = 0
+CarpetRegrid2::min_fraction = 0.4
+CarpetRegrid2::verbose               = 0
+CarpetRegrid2::symmetry_rotating180   = "yes"
+
+CarpetRegrid2::num_levels_1  =  9
+CarpetTracker::surface     [0] = 0
+CarpetRegrid2::position_x_1  =  $xp
+CarpetRegrid2::position_y_1  =  0
+CarpetRegrid2::position_z_1  =  0
+
+CarpetRegrid2::radius_1[1]  =  $r1
+CarpetRegrid2::radius_1[2]  =  $r2
+CarpetRegrid2::radius_1[3]  =  $r3
+CarpetRegrid2::radius_1[4]  =  $r4
+CarpetRegrid2::radius_1[5]  =  $r5
+CarpetRegrid2::radius_1[6]  =  $r6
+CarpetRegrid2::radius_1[7]  =  $r7
+CarpetRegrid2::radius_1[8]  =  $r8
+
+CarpetRegrid2::num_levels_2  =  9
+CarpetTracker::surface     [1] = 1
+CarpetRegrid2::position_x_2  =  $xm
+CarpetRegrid2::position_y_2  =  0
+CarpetRegrid2::position_z_2  =  0
+CarpetRegrid2::radius_2[1]  =  $r1
+CarpetRegrid2::radius_2[2]  =  $r2
+CarpetRegrid2::radius_2[3]  =  $r3
+CarpetRegrid2::radius_2[4]  =  $r4
+CarpetRegrid2::radius_2[5]  =  $r5
+CarpetRegrid2::radius_2[6]  =  $r6
+CarpetRegrid2::radius_2[7]  =  $r7
+CarpetRegrid2::radius_2[8]  =  $r8
+
+CarpetRegrid2::num_levels_3  =  4
+CarpetRegrid2::position_x_3  =  0
+CarpetRegrid2::position_y_3  =  0
+CarpetRegrid2::position_z_3  =  0
+CarpetRegrid2::radius_3[1]  =  $r1
+CarpetRegrid2::radius_3[2]  =  $r2
+CarpetRegrid2::radius_3[3]  =  $r3
+
+#############################################################
+# SphericalSurface
+#############################################################
+
+SphericalSurface::nsurfaces  = 6
+SphericalSurface::maxntheta  = 120
+SphericalSurface::maxnphi    = 40
+
+#############################################################
+# Minimum Tracker
+#############################################################
+
+MinTracker::x0[0] = $xp
+MinTracker::y0[0] = 0
+MinTracker::z0[0] = 0
+MinTracker::surface_index[0] = 0
+
+MinTracker::x0[1] = $xm
+MinTracker::y0[1] = 0
+MinTracker::z0[1] = 0
+MinTracker::surface_index[1] = 1
+
+MinTracker::nminima = 2
+MinTracker::var     = "Kranc2BSSNChi::chi"
+MinTracker::verbose = 1
+MinTracker::newton_gamma = 1
+MinTracker::newton_tolerance = 1e-13
+MinTracker::interpolator_name = "Lagrange polynomial interpolation"
+MinTracker::interpolator_pars = "order=4"
+MinTracker::find_every        = $track_every
+
+#############################################################
+# Shift tracker
+#############################################################
+
+ShiftTracker::x0[0]              = $xp
+ShiftTracker::y0[0]              = 0.0
+ShiftTracker::z0[0]              = 0.0
+#ShiftTracker::surface_index[0]   = 0
+
+ShiftTracker::x0[1]              = $xm
+ShiftTracker::y0[1]              = 0.0
+ShiftTracker::z0[1]              = 0.0
+#ShiftTracker::surface_index[1]   = 1
+
+ShiftTracker::num_trackers       = 2
+ShiftTracker::verbose            = 0
+ShiftTracker::output_every       = 1
+ShiftTracker::interpolator_name  = "Lagrange polynomial interpolation"
+ShiftTracker::interpolator_pars  = "order=4"
+ShiftTracker::beta1_var          = "Kranc2BSSNChi::beta1"
+ShiftTracker::beta2_var          = "Kranc2BSSNChi::beta2"
+ShiftTracker::beta3_var          = "Kranc2BSSNChi::beta3"
+
+#############################################################
+# Carpet
+#############################################################
+
+Carpet::ghost_size                      = $ghost_zones
+Carpet::domain_from_coordbase           = "yes"
+Carpet::max_refinement_levels           = 9
+Carpet::refinement_factor               = 2
+Carpet::prolongation_order_space        = 5
+Carpet::prolongation_order_time         = 2
+Carpet::use_buffer_zones                = "yes"
+Carpet::verbose                         = "no"
+Carpet::time_refinement_factors         = "[1,1,1,1,1,2,4,8,16]"
+Carpet::output_timers_every             = $every_coarse
+Carpet::poison_new_timelevels           = "yes"
+Carpet::check_for_poison                = "no"
+Carpet::poison_value                    = 113
+Carpet::print_timestats_every           = 0
+Carpet::init_fill_timelevels            = "yes"
+Carpet::use_tapered_grids               = "no"
+
+#############################################################
+# CarpetLib
+#############################################################
+
+CarpetLib::poison_new_memory            = "yes"
+CarpetLib::poison_value                 = 114
+
+#############################################################
+# Time integration
+#############################################################
+
+Cactus::terminate                     = "any"
+Cactus::max_runtime                   = $max_runtime
+Cactus::cctk_final_time               = $final_time
+Cactus::cctk_itlast                   = 100000000
+Cactus::cctk_timer_output             = "full"
+Cactus::highlight_warning_messages    = "no"
+
+Time::dtfac                           = $base_dtfac
+
+MethodOfLines::ode_method             = "RK4"
+MethodOfLines::MoL_NaN_Check          = "no"
+MethodOfLines::MoL_Intermediate_Steps = 4
+MethodOfLines::MoL_Num_Scratch_Levels = 1
+
+#############################################################
+# Initial data
+#############################################################
+
+ADMBase::initial_data = "twopunctures"
+ADMBase::initial_lapse = "utb"
+ADMBase::initial_shift = "zero"
+
+ADMBase::evolution_method = "Kranc2BSSNChi"
+ADMBase::lapse_evolution_method = "Kranc2BSSNChi"
+ADMBase::shift_evolution_method = "Kranc2BSSNChi"
+ADMBase::dtlapse_evolution_method = "Kranc2BSSNChi"
+ADMBase::dtshift_evolution_method = "Kranc2BSSNChi"
+
+ADMBase::lapse_timelevels = 3
+ADMBase::shift_timelevels = 3
+ADMBase::metric_timelevels = 3
+
+# Uncomment these for fast but very inaccurate initial data
+#       TwoPunctures::npoints_A = 6
+#       TwoPunctures::npoints_B = 6
+#       TwoPunctures::npoints_phi = 6
+
+TwoPunctures::par_b          =  $xp
+TwoPunctures::par_m_plus     =  $m_bare
+TwoPunctures::par_m_minus    =  $m_bare
+TwoPunctures::par_P_plus[1]  =  $py
+TwoPunctures::par_P_minus[1] = -$py
+TwoPunctures::par_P_plus[0]  = -$mpx
+TwoPunctures::par_P_minus[0] =  $mpx
+# TwoPunctures::grid_setup_method = "evaluation"
+TwoPunctures::epsilon = 0
+
+#############################################################
+# Evolution system
+#############################################################
+
+Kranc2BSSNChi::m                        = 1
+Kranc2BSSNChi::lapseAdvection           = 1
+Kranc2BSSNChi::gammaDriverLambda        = 0
+Kranc2BSSNChi::betaDotAlphaFactor       = 0.75
+Kranc2BSSNChi::etaBeta                  = 2
+Kranc2BSSNChi::chiBeta                  = 1
+Kranc2BSSNChi::gammaDriverLapsePower    = 0
+Kranc2BSSNChi::nasaAdvection            = 1
+Kranc2BSSNChi::newNASAAdvection         = 1
+Kranc2BSSNChi::betatAdvection           = 1
+Kranc2BSSNChi::chiEps                   = $chiEps
+Kranc2BSSNChi::verbose                  = 0
+Kranc2BSSNChi::fd_order                 = "6th"
+Kranc2BSSNChi::lapse_condition          = "1 + log 6th"
+Kranc2BSSNChi::shift_condition          = "NASA6th"
+Kranc2BSSNChi::boundary_condition       = "radiative"
+
+# These specify that no built-in CactusBase/Boundary boundary
+# condition is to be applied. These parameters must be present or the
+# Cactus symmetry boundary condition will not be applied. 
+Kranc2BSSNChi::A_group_bound      = "none"
+Kranc2BSSNChi::alpha_group_bound  = "none"
+Kranc2BSSNChi::beta_group_bound   = "none"
+Kranc2BSSNChi::betat_group_bound  = "none"
+Kranc2BSSNChi::Gam_group_bound    = "none"
+Kranc2BSSNChi::h_group_bound      = "none"
+Kranc2BSSNChi::K_group_bound      = "none"
+Kranc2BSSNChi::chi_group_bound    = "none"
+
+#############################################################
+# Dissipation
+#############################################################
+
+Dissipation::order                 = 5
+Dissipation::epsdis                = 0.0
+Dissipation::epsdis_for_level[0]         = 0.5
+Dissipation::epsdis_for_level[1]         = 0.5
+Dissipation::epsdis_for_level[2]         = 0.5
+Dissipation::epsdis_for_level[3]         = 0.5
+Dissipation::epsdis_for_level[4]         = 0.1
+Dissipation::epsdis_for_level[5]         = 0.1
+Dissipation::epsdis_for_level[6]         = 0.1
+Dissipation::epsdis_for_level[7]         = 0.1
+Dissipation::epsdis_for_level[8]         = 0.1
+Dissipation::vars                  = "Kranc2BSSNChi::A_group Kranc2BSSNChi::alpha_group Kranc2BSSNChi::beta_group Kranc2BSSNChi::betat_group Kranc2BSSNChi::Gam_group Kranc2BSSNChi::h_group Kranc2BSSNChi::K_group Kranc2BSSNChi::chi_group"
+
+#############################################################
+# Wave extraction
+#############################################################
+
+Ylm_Decomp::number_of_detectors      = 13
+Ylm_Decomp::detector_radius[0]       = 30
+Ylm_Decomp::detector_radius[1]       = 40
+Ylm_Decomp::detector_radius[2]       = 50
+Ylm_Decomp::detector_radius[3]       = 60
+Ylm_Decomp::detector_radius[4]       = 70
+Ylm_Decomp::detector_radius[5]       = 80
+Ylm_Decomp::detector_radius[6]       = 90
+Ylm_Decomp::detector_radius[7]       = 100
+Ylm_Decomp::detector_radius[8]       = 110
+Ylm_Decomp::detector_radius[9]       = 120
+Ylm_Decomp::detector_radius[10]      = 130
+Ylm_Decomp::detector_radius[11]      = 140
+Ylm_Decomp::detector_radius[12]      = 150
+Ylm_Decomp::out_every_det[0]         = 32
+Ylm_Decomp::out_every_det[1]         = 32
+Ylm_Decomp::out_every_det[2]         = 64
+Ylm_Decomp::out_every_det[3]         = 64
+Ylm_Decomp::out_every_det[4]         = 64
+Ylm_Decomp::out_every_det[5]         = 64
+Ylm_Decomp::out_every_det[6]         = 128
+Ylm_Decomp::out_every_det[7]         = 128
+Ylm_Decomp::out_every_det[8]         = 128
+Ylm_Decomp::out_every_det[9]         = 128
+Ylm_Decomp::out_every_det[10]        = 128
+Ylm_Decomp::out_every_det[11]        = 128
+Ylm_Decomp::out_every_det[12]        = 128
+Ylm_Decomp::gridfunctions            = "WeylScal4::Psi4r{sw=-2 cmplx='WeylScal4::Psi4i'}"
+Ylm_Decomp::verbose                  = 0
+Ylm_Decomp::l_mode                   = 4
+Ylm_Decomp::m_mode                   = 4
+Ylm_Decomp::interpolation_operator   = "Lagrange polynomial interpolation"
+Ylm_Decomp::interpolation_order      = 4
+Ylm_Decomp::ntheta                   = $ntheta
+Ylm_Decomp::nphi                     = $nphi
+
+WeylScal4::offset                    = 1e-8
+WeylScal4::fd_order                  = "4th"
+WeylScal4::verbose                   = 0
+
+#############################################################
+# IHSpin
+#############################################################
+
+IHSpin::compute_every          = 32
+IHSpin::num_horizons           = 3
+IHSpin::surface_index[0]       = 2
+IHSpin::surface_index[1]       = 3
+IHSpin::surface_index[2]       = 4
+IHSpin::interpolator_name      = "Lagrange polynomial interpolation"
+IHSpin::interpolator_pars      = "order=4"
+IHSpin::verbose = 0
+
+SphericalSurface::ntheta[2]    = 120
+SphericalSurface::nphi[2]      = 40
+SphericalSurface::ntheta[3]    = 120
+SphericalSurface::nphi[3]      = 40
+SphericalSurface::ntheta[4]    = 120
+SphericalSurface::nphi[4]      = 40
+
+#############################################################                                                                                                                                   
+# AHFinderDirect                                                                                                                                                                              
+############################################################# 
+
+AHFinderDirect::verbose_level                            = "physics highlights"
+AHFinderDirect::find_every                               = 1
+AHFinderDirect::N_horizons                               = 3
+AHFinderDirect::move_origins                             = "yes"
+AHFinderDirect::output_h_every                           = $every_coarse
+
+AHFinderDirect::origin_x                             [1] = $xp
+AHFinderDirect::origin_y                             [1] = 0.0
+AHFinderDirect::origin_z                             [1] = 0.0
+AHFinderDirect::initial_guess_method                 [1] = "coordinate sphere"
+AHFinderDirect::initial_guess__coord_sphere__x_center[1] = $xp
+AHFinderDirect::initial_guess__coord_sphere__y_center[1] = 0.0
+AHFinderDirect::initial_guess__coord_sphere__z_center[1] = 0.0
+AHFinderDirect::initial_guess__coord_sphere__radius  [1] = 0.25
+#AHFinderDirect::dont_find_after_individual_time      [1] = 200
+AHFinderDirect::which_surface_to_store_info          [1] = 2
+AHFinderDirect::reset_horizon_after_not_finding      [1] = "no"
+
+AHFinderDirect::origin_x                             [2] = $xm
+AHFinderDirect::initial_guess_method                 [2] = "coordinate sphere"
+AHFinderDirect::initial_guess__coord_sphere__x_center[2] = $xm
+AHFinderDirect::initial_guess__coord_sphere__y_center[2] = 0.0
+AHFinderDirect::initial_guess__coord_sphere__z_center[2] = 0.0
+AHFinderDirect::initial_guess__coord_sphere__radius  [2] = 0.25
+#AHFinderDirect::dont_find_after_individual_time      [2] = 200
+AHFinderDirect::which_surface_to_store_info          [2] = 3
+AHFinderDirect::reset_horizon_after_not_finding      [2] = "no"
+
+AHFinderDirect::origin_x                             [3] = 0.0
+AHFinderDirect::origin_y                             [3] = 0.0
+AHFinderDirect::origin_z                             [3] = 0.0
+AHFinderDirect::initial_guess_method                 [3] = "coordinate sphere"
+AHFinderDirect::initial_guess__coord_sphere__x_center[3] = 0.0
+AHFinderDirect::initial_guess__coord_sphere__y_center[3] = 0.0
+AHFinderDirect::initial_guess__coord_sphere__z_center[3] = 0.0
+AHFinderDirect::initial_guess__coord_sphere__radius  [3] = 0.5
+#AHFinderDirect::find_after_individual_time           [3] = $ahf_fai3
+AHFinderDirect::which_surface_to_store_info          [3] = 4
+
+#############################################################
+# SphereRad
+#############################################################
+
+# SphereRad::max_nsurface           = 3
+# SphereRad::surface_index[0]       = 2
+# SphereRad::surface_index[1]       = 3
+# SphereRad::surface_index[2]       = 4
+# SphereRad::shifttracker_index[0]  = 0
+# SphereRad::shifttracker_index[1]  = 1
+# SphereRad::force_position[2]      = "yes"
+# SphereRad::radius_surface[0]      = 0.4
+# SphereRad::radius_surface[1]      = 0.4
+# SphereRad::radius_surface[2]      = 1
+# SphereRad::verbose                = 0
+
+#############################################################
+# Output
+#############################################################
+
+IO::out_dir                          = \$parfile
+IO::out_fileinfo                     = "all"
+
+CarpetIOBasic::outInfo_every         = 1
+CarpetIOBasic::outInfo_vars          = "Kranc2BSSNChi::alpha RunStats::speed RunStats::maxrss_mb RunStats::fordblks_kb"
+CarpetIOBasic::real_max              = 1e6
+CarpetIOBasic::int_width             = 12
+
+CarpetIOScalar::outScalar_every      = $out_1d_every
+CarpetIOScalar::outScalar_reductions = "norm2 minimum"
+CarpetIOScalar::outScalar_vars       = "Kranc2BSSNChi::scalarconstraints Kranc2BSSNChi::alpha  Kranc2BSSNChi::chi"
+
+CarpetIOASCII::out1D_every           = $out_1d_every
+CarpetIOASCII::out1D_x               = "yes"
+CarpetIOASCII::out1D_y               = "no"
+CarpetIOASCII::out1D_z               = "no"
+CarpetIOASCII::out1D_vars            = "Kranc2BSSNChi::h11 ADMBase::gxx Kranc2BSSNChi::alpha Kranc2BSSNChi::beta1 ADMBase::betax Kranc2BSSNChi::bssnham Kranc2BSSNChi::A11 Kranc2BSSNChi::K Kranc2BSSNChi::chi Kranc2BSSNChi::Gam1 Kranc2BSSNChi::chirhs WeylScal4::Psi4r"
+CarpetIOASCII::out_precision         = 19
+
+CarpetIOHDF5::out2D_every           = $out_2d_every
+CarpetIOHDF5::out2D_vars            = "Kranc2BSSNChi::alpha kranc2bssnchi::chi kranc2bssnchi::K WeylScal4::Psi4r"
+CarpetIOHDF5::out2D_xz              = "no"
+CarpetIOHDF5::out2D_yz              = "no"
+
+CarpetIOHDF5::out_every              = 0
+CarpetIOHDF5::out_vars               = "Kranc2BSSNChi::alpha WeylScal4::Psi4r Kranc2BSSNChi::K"
+
+#############################################################
+# Checkpoint and recovery
+#############################################################
+
+CarpetIOHDF5::checkpoint       = "yes"
+IO::checkpoint_every           = $checkpoint_every
+IO::checkpoint_keep            = 3
+IO::checkpoint_dir             = \$parfile
+IO::checkpoint_on_terminate    = "yes"
+
+IO::recover                    = "autoprobe"
+IO::recover_dir                = \$parfile
+IO::recover_and_remove         = "no"
+
+EOF
+
+$filename = "$0";
+$filename =~ s/\.rpar/.par/g; 
+
+open(OUT,">$filename");
+print OUT "$lines";
+close(OUT);

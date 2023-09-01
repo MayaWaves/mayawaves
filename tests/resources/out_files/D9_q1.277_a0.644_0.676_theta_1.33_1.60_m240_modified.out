@@ -1,0 +1,53 @@
+---------------------------------------
+Begin PBS Prologue Fri May  1 23:19:59 EDT 2020
+Job ID:     267564.sched-hive.pace.gatech.edu
+User ID:    dferguson41
+Job name:   D9_q1.277_a0.64
+Queue:      hive
+End PBS Prologue Fri May  1 23:19:59 EDT 2020
+---------------------------------------
+Simulation name: D9_q1.277_a0.644_0.676_theta_1.33_1.60_m240_modified
+Running simulation D9_q1.277_a0.644_0.676_theta_1.33_1.60_m240_modified
+
+Currently Loaded Modules:
+  1) intel/19.0.3               6) hdf5/1.10.5-mva2
+  2) mvapich2/2.3.1             7) numactl/2.0.12
+  3) intel-mkl/2019.3.199 (H)   8) libtool/2.4.6       (H)
+  4) fftw/3.3.8-mva2            9) libjpeg-turbo/2.0.2 (H)
+  5) gsl/2.5                   10) gnuplot/5.2.5
+
+  Where:
+   H:  Hidden Module
+No modules loaded
+
+Currently Loaded Modules:
+  1) intel/19.0.3               6) hdf5/1.10.5-mva2
+  2) mvapich2/2.3.1             7) numactl/2.0.12
+  3) intel-mkl/2019.3.199 (H)   8) libtool/2.4.6       (H)
+  4) fftw/3.3.8-mva2            9) libjpeg-turbo/2.0.2 (H)
+  5) gsl/2.5
+
+  Where:
+   H:  Hidden Module
+Preparing:
+Checking:
+/storage/home/hhive1/dferguson41/scratch/simulations/D9_q1.277_a0.644_0.676_theta_1.33_1.60_m240_modified/output-0000-active
+atl1-1-01-013-5-r.pace.gatech.edu
+Fri May  1 23:20:02 EDT 2020
+Starting:
+Sat May  2 09:58:58 EDT 2020
+Simfactory Done at date: 0
+---------------------------------------
+Begin PBS Epilogue Sat May  2 09:58:58 EDT 2020
+Job ID:     267564.sched-hive.pace.gatech.edu
+User ID:    dferguson41
+Job name:   D9_q1.277_a0.64
+Resources:  walltime=24:00:00,nodes=5:ppn=24:core24,pmem=5gb,neednodes=5:ppn=24:core24
+Rsrc Used:  cput=245:13:48,vmem=43268272kb,walltime=10:38:59,mem=36409328kb,energy_used=0
+Queue:      hive
+Nodes:     
+atl1-1-01-011-34-l.pace.gatech.edu atl1-1-01-011-35-r.pace.gatech.edu 
+atl1-1-01-012-18-l.pace.gatech.edu atl1-1-01-012-18-r.pace.gatech.edu 
+atl1-1-01-013-5-r.pace.gatech.edu
+End PBS Epilogue Sat May  2 09:58:58 EDT 2020
+---------------------------------------

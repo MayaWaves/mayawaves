@@ -1,0 +1,104 @@
+# Whenever this version string changes, the application is configured
+# and rebuilt from scratch
+VERSION = frontera-clx-2020-10-27
+
+CPP = cpp
+FPP = cpp
+CC  = icc
+CXX = icpc
+F77 = ifort
+F90 = ifort
+
+CPPFLAGS = -g -D_XOPEN_SOURCE -D_XOPEN_SOURCE_EXTENDED
+FPPFLAGS = -g -traditional
+CFLAGS   = -g -traceback -debug all -xCORE-AVX512 -align -std=gnu99
+CXXFLAGS = -g -traceback -debug all -xCORE-AVX512 -align -std=gnu++11
+F77FLAGS = -g -traceback -debug all -xCORE-AVX512 -align -pad -safe-cray-ptr
+F90FLAGS = -g -traceback -debug all -xCORE-AVX512 -align -pad -safe-cray-ptr
+
+LDFLAGS = -rdynamic -xCORE-AVX512
+
+C_LINE_DIRECTIVES = yes
+F_LINE_DIRECTIVES = yes
+
+VECTORISE                = yes
+VECTORISE_ALIGNED_ARRAYS = no
+VECTORISE_INLINE         = no
+
+DEBUG = no
+CPP_DEBUG_FLAGS = -DCARPET_DEBUG
+FPP_DEBUG_FLAGS = -DCARPET_DEBUG
+C_DEBUG_FLAGS   = -O0
+CXX_DEBUG_FLAGS = -O0
+F77_DEBUG_FLAGS = -O0 -check bounds -check format
+F90_DEBUG_FLAGS = -O0 -check bounds -check format
+
+OPTIMISE = yes
+CPP_OPTIMISE_FLAGS = # -DCARPET_OPTIMISE -DNDEBUG
+FPP_OPTIMISE_FLAGS = # -DCARPET_OPTIMISE -DNDEBUG
+C_OPTIMISE_FLAGS   = -Ofast
+CXX_OPTIMISE_FLAGS = -Ofast
+F77_OPTIMISE_FLAGS = -Ofast
+F90_OPTIMISE_FLAGS = -Ofast
+
+CPP_NO_OPTIMISE_FLAGS  =
+FPP_NO_OPTIMISE_FLAGS  =
+C_NO_OPTIMISE_FLAGS    = -O0
+CXX_NO_OPTIMISE_FLAGS  = -O0
+CUCC_NO_OPTIMISE_FLAGS =
+F77_NO_OPTIMISE_FLAGS  = -O0
+F90_NO_OPTIMISE_FLAGS  = -O0
+
+PROFILE = no
+CPP_PROFILE_FLAGS =
+FPP_PROFILE_FLAGS =
+C_PROFILE_FLAGS   = -pg
+CXX_PROFILE_FLAGS = -pg
+F77_PROFILE_FLAGS = -pg
+F90_PROFILE_FLAGS = -pg
+
+OPENMP           = yes
+CPP_OPENMP_FLAGS = -fopenmp
+FPP_OPENMP_FLAGS = -fopenmp
+C_OPENMP_FLAGS   = -fopenmp
+CXX_OPENMP_FLAGS = -fopenmp
+F77_OPENMP_FLAGS = -fopenmp
+F90_OPENMP_FLAGS = -fopenmp
+
+WARN           = yes
+CPP_WARN_FLAGS =
+FPP_WARN_FLAGS =
+C_WARN_FLAGS   =
+CXX_WARN_FLAGS =
+F77_WARN_FLAGS =
+F90_WARN_FLAGS =
+
+
+BLAS_DIR  = NO_BUILD
+BLAS_LIBS = -mkl
+
+HWLOC_DIR        = NO_BUILD
+HWLOC_EXTRA_LIBS = numa
+
+LAPACK_DIR  = NO_BUILD
+LAPACK_LIBS = -mkl
+
+OPENBLAS_DIR  = NO_BUILD
+OPENBLAS_LIBS = -mkl
+
+HDF5_DIR = /opt/apps/intel18/hdf5/1.10.4/x86_64
+
+BOOST_DIR = /opt/apps/intel18/boost/1.69
+
+GSL_DIR = /opt/apps/intel19/gsl/2.5
+
+FFTW3_DIR = NO_BUILD
+FFTW3_INC_DIRS = /opt/intel/compilers_and_libraries_2020.1.217/linux/mkl/include/fftw
+FFTW3_LIBS = -mkl
+
+PAPI_DIR = /opt/apps/papi/5.7.0
+
+PETSC_DIR = /home1/apps/intel18/impi18_0/petsc/3.11/clx
+PETSC_LAPACK_EXTRA_LIBS = -mkl
+
+PTHREADS_DIR = NO_BUILD

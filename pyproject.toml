@@ -1,0 +1,44 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mayawaves"
+version = "2023.8"
+authors = [
+    { name="Deborah Ferguson", email="deborah.l.ferguson@gmail.com" },
+    { name="Surendra Anne" },
+    { name="Miguel Gracia-Linares" },
+    { name="Hector Iglesias" },
+    { name="Aasim Jan" },
+    { name="Erick Martinez" },
+    { name="Lu Lu" },
+    { name="Filippo Meoni" },
+    { name="Ryan Nowicki" },
+    { name="Max L. Trostel" },
+    { name="Bing-Jyun Tsao" },
+    { name="Finny Valorz" }
+]
+description = "A python package for interacting with Einstein Toolkit simulations and the MAYA Catalog of NR Waveforms"
+readme = "README.md"
+license = { file="LICENSE" }
+requires-python = ">=3.8,<3.11"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+]
+dependencies = ["numpy",
+    "scipy",
+    "pandas",
+    "romspline",
+    "wget",
+    "matplotlib",
+    "mock",
+    "numba",
+    "scri"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/MayaWaves/mayawaves"
+"Bug Tracker" = "https://github.com/MayaWaves/mayawaves/issues"

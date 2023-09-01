@@ -1,0 +1,517 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>mayawaves.compactobject module &mdash; Mayawaves  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "tex2jax_ignore|mathjax_ignore|document", "processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="mayawaves.radiation module" href="mayawaves.radiation.html" />
+    <link rel="prev" title="mayawaves.coalescence module" href="mayawaves.coalescence.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Mayawaves
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Documentation:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="mayawaves.coalescence.html">mayawaves.coalescence module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">mayawaves.compactobject module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mayawaves.radiation.html">mayawaves.radiation module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mayawaves.utils.html">mayawaves.utils package</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/creating_h5.html">Creating a Mayawaves h5 File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/gravitational_waves.html">Gravitational Waves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/compact_objects.html">Compact Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/exporting_lvk.html">Exporting to LVK Catalog Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/reading_raw_files.html">Reading raw simulation files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/catalog_utils.html">Catalog Utils</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Mayawaves</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>mayawaves.compactobject module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/source/mayawaves.compactobject.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="module-mayawaves.compactobject">
+<span id="mayawaves-compactobject-module"></span><h1>mayawaves.compactobject module<a class="headerlink" href="#module-mayawaves.compactobject" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="mayawaves.compactobject.CompactObject">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mayawaves.compactobject.</span></code><code class="sig-name descname"><span class="pre">CompactObject</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_array</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">h5py._hl.dataset.Dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header_list</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">identifier</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object_type</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_irreducible_mass</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_horizon_mass</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_dimensionless_spin</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_dimensional_spin</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mayawaves.compactobject.CompactObject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class containing all information pertaining to a compact object that is part of a coalescence.</p>
+<dl class="py class">
+<dt id="mayawaves.compactobject.CompactObject.Column">
+<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">Column</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mayawaves.compactobject.CompactObject.Column" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enum for easily referencing columns of desired data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mayawaves.compactobject.CompactObject.apparent_horizon_area">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">apparent_horizon_area</span></code><a class="headerlink" href="#mayawaves.compactobject.CompactObject.apparent_horizon_area" title="Permalink to this definition">¶</a></dt>
+<dd><p>The time and the area of the apparent horizon over time.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mayawaves.compactobject.CompactObject.apparent_horizon_areal_radius">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">apparent_horizon_areal_radius</span></code><a class="headerlink" href="#mayawaves.compactobject.CompactObject.apparent_horizon_areal_radius" title="Permalink to this definition">¶</a></dt>
+<dd><p>The time and areal radius of the apparent horizon over time.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mayawaves.compactobject.CompactObject.apparent_horizon_circumferences">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">apparent_horizon_circumferences</span></code><a class="headerlink" href="#mayawaves.compactobject.CompactObject.apparent_horizon_circumferences" title="Permalink to this definition">¶</a></dt>
+<dd><p>The time and apparent horizon circumferences in the XY, XZ, and YZ planes respectively over time.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mayawaves.compactobject.CompactObject.apparent_horizon_expansion_theta_l">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">apparent_horizon_expansion_theta_l</span></code><a class="headerlink" href="#mayawaves.compactobject.CompactObject.apparent_horizon_expansion_theta_l" title="Permalink to this definition">¶</a></dt>
+<dd><p>The time and the expansion Theta_(l) over time.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mayawaves.compactobject.CompactObject.apparent_horizon_inner_expansion_theta_n">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">apparent_horizon_inner_expansion_theta_n</span></code><a class="headerlink" href="#mayawaves.compactobject.CompactObject.apparent_horizon_inner_expansion_theta_n" title="Permalink to this definition">¶</a></dt>
+<dd><p>The time and the inner expansion Theta_(n) over time.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mayawaves.compactobject.CompactObject.apparent_horizon_maximum_radius">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">apparent_horizon_maximum_radius</span></code><a class="headerlink" href="#mayawaves.compactobject.CompactObject.apparent_horizon_maximum_radius" title="Permalink to this definition">¶</a></dt>
+<dd><p>The time and maximum horizon radius over time.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mayawaves.compactobject.CompactObject.apparent_horizon_mean_curvature">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">apparent_horizon_mean_curvature</span></code><a class="headerlink" href="#mayawaves.compactobject.CompactObject.apparent_horizon_mean_curvature" title="Permalink to this definition">¶</a></dt>
+<dd><p>The time and mean curvature over time.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mayawaves.compactobject.CompactObject.apparent_horizon_mean_radius">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">apparent_horizon_mean_radius</span></code><a class="headerlink" href="#mayawaves.compactobject.CompactObject.apparent_horizon_mean_radius" title="Permalink to this definition">¶</a></dt>
+<dd><p>The time and mean horizon radius overtime.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mayawaves.compactobject.CompactObject.apparent_horizon_minimum_radius">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">apparent_horizon_minimum_radius</span></code><a class="headerlink" href="#mayawaves.compactobject.CompactObject.apparent_horizon_minimum_radius" title="Permalink to this definition">¶</a></dt>
+<dd><p>The time and apparent horizon minimum radius over time.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mayawaves.compactobject.CompactObject.apparent_horizon_quadrupoles">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">apparent_horizon_quadrupoles</span></code><a class="headerlink" href="#mayawaves.compactobject.CompactObject.apparent_horizon_quadrupoles" title="Permalink to this definition">¶</a></dt>
+<dd><p>The time and apparent horizon quadrupoles over time.</p>
+<p>Returns a tuple including the time, xx quadrupole, xy quadrupole, xz quadrupole, yy quadrupole,
+yz quadrupole, zz quadrupole.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mayawaves.compactobject.CompactObject.available_data_columns">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">available_data_columns</span></code><a class="headerlink" href="#mayawaves.compactobject.CompactObject.available_data_columns" title="Permalink to this definition">¶</a></dt>
+<dd><p>All the Columns included for this compact object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mayawaves.compactobject.CompactObject.data_array">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">data_array</span></code><a class="headerlink" href="#mayawaves.compactobject.CompactObject.data_array" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to be used internally to return the full data array for this compact object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mayawaves.compactobject.CompactObject.dimensional_spin_at_time">
+<code class="sig-name descname"><span class="pre">dimensional_spin_at_time</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">desired_time</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">numpy.ndarray</span><a class="headerlink" href="#mayawaves.compactobject.CompactObject.dimensional_spin_at_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dimensional spin vector (<span class="math notranslate nohighlight">\(\pmb{S}\)</span> or <span class="math notranslate nohighlight">\(\pmb{J}\)</span>) at a given time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>desired_time</strong> (<em>float</em>) – the time at which to return the spin</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the dimensional spin vector at the desired time</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mayawaves.compactobject.CompactObject.dimensional_spin_vector">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">dimensional_spin_vector</span></code><a class="headerlink" href="#mayawaves.compactobject.CompactObject.dimensional_spin_vector" title="Permalink to this definition">¶</a></dt>
+<dd><p>The time and dimensional spin vector (<span class="math notranslate nohighlight">\(\pmb{S}\)</span> or <span class="math notranslate nohighlight">\(\pmb{J}\)</span>) over time.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mayawaves.compactobject.CompactObject.dimensionless_spin_at_time">
+<code class="sig-name descname"><span class="pre">dimensionless_spin_at_time</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">desired_time</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">numpy.ndarray</span><a class="headerlink" href="#mayawaves.compactobject.CompactObject.dimensionless_spin_at_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dimensionless spin vector (<span class="math notranslate nohighlight">\(\pmb{a}\)</span> or <span class="math notranslate nohighlight">\(\pmb{\chi} = \pmb{J}/M^2\)</span>) at a giventime.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>desired_time</strong> (<em>float</em>) – the time at which to return the spin</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the dimensionless spin vector at the desired time</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mayawaves.compactobject.CompactObject.dimensionless_spin_vector">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">dimensionless_spin_vector</span></code><a class="headerlink" href="#mayawaves.compactobject.CompactObject.dimensionless_spin_vector" title="Permalink to this definition">¶</a></dt>
+<dd><p>The time and dimensionless spin vector (<span class="math notranslate nohighlight">\(\pmb{a}\)</span> or <span class="math notranslate nohighlight">\(\pmb{\chi} = \pmb{J}/M^2\)</span>) over time.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mayawaves.compactobject.CompactObject.final_dimensional_spin">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">final_dimensional_spin</span></code><a class="headerlink" href="#mayawaves.compactobject.CompactObject.final_dimensional_spin" title="Permalink to this definition">¶</a></dt>
+<dd><p>The last available dimensional spin (<span class="math notranslate nohighlight">\(\pmb{S}\)</span> or <span class="math notranslate nohighlight">\(\pmb{J}\)</span>) data</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mayawaves.compactobject.CompactObject.final_dimensionless_spin">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">final_dimensionless_spin</span></code><a class="headerlink" href="#mayawaves.compactobject.CompactObject.final_dimensionless_spin" title="Permalink to this definition">¶</a></dt>
+<dd><p>The last available dimensionless spin (<span class="math notranslate nohighlight">\(\pmb{a}\)</span> or <span class="math notranslate nohighlight">\(\pmb{\chi} = \pmb{J}/M^2\)</span>) data</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mayawaves.compactobject.CompactObject.final_horizon_mass">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">final_horizon_mass</span></code><a class="headerlink" href="#mayawaves.compactobject.CompactObject.final_horizon_mass" title="Permalink to this definition">¶</a></dt>
+<dd><p>The last available horizon mass data</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mayawaves.compactobject.CompactObject.final_irreducible_mass">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">final_irreducible_mass</span></code><a class="headerlink" href="#mayawaves.compactobject.CompactObject.final_irreducible_mass" title="Permalink to this definition">¶</a></dt>
+<dd><p>The last available irreducible mass data</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mayawaves.compactobject.CompactObject.get_data_from_columns">
+<code class="sig-name descname"><span class="pre">get_data_from_columns</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column_names</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">numpy.ndarray</span><a class="headerlink" href="#mayawaves.compactobject.CompactObject.get_data_from_columns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the data in the requested columns (properties).</p>
+<p>Given a list of columns, returns the data at iterations where all columns have values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>column_names</strong> (<em>list</em>) – list of desired columns, in the form of enums</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the data at the requested columns</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mayawaves.compactobject.CompactObject.horizon_mass">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">horizon_mass</span></code><a class="headerlink" href="#mayawaves.compactobject.CompactObject.horizon_mass" title="Permalink to this definition">¶</a></dt>
+<dd><p>The time and horizon mass over time.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mayawaves.compactobject.CompactObject.horizon_mass_at_time">
+<code class="sig-name descname"><span class="pre">horizon_mass_at_time</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">desired_time</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">float</span><a class="headerlink" href="#mayawaves.compactobject.CompactObject.horizon_mass_at_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Horizon mass at a given time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>desired_time</strong> – the time at which to return the mass</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the horizon mass at the desired time</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mayawaves.compactobject.CompactObject.initial_dimensional_spin">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">initial_dimensional_spin</span></code><a class="headerlink" href="#mayawaves.compactobject.CompactObject.initial_dimensional_spin" title="Permalink to this definition">¶</a></dt>
+<dd><p>The dimensional spin (<span class="math notranslate nohighlight">\(\pmb{S}\)</span> or <span class="math notranslate nohighlight">\(\pmb{J}\)</span>) at the beginning of the simulation.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mayawaves.compactobject.CompactObject.initial_dimensionless_spin">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">initial_dimensionless_spin</span></code><a class="headerlink" href="#mayawaves.compactobject.CompactObject.initial_dimensionless_spin" title="Permalink to this definition">¶</a></dt>
+<dd><p>The dimensionless spin (<span class="math notranslate nohighlight">\(\pmb{a}\)</span> or <span class="math notranslate nohighlight">\(\pmb{\chi} = \pmb{J}/M^2\)</span>) at the beginning of the
+simulation.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mayawaves.compactobject.CompactObject.initial_horizon_mass">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">initial_horizon_mass</span></code><a class="headerlink" href="#mayawaves.compactobject.CompactObject.initial_horizon_mass" title="Permalink to this definition">¶</a></dt>
+<dd><p>The horizon mass at the beginning of the simulation.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mayawaves.compactobject.CompactObject.initial_irreducible_mass">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">initial_irreducible_mass</span></code><a class="headerlink" href="#mayawaves.compactobject.CompactObject.initial_irreducible_mass" title="Permalink to this definition">¶</a></dt>
+<dd><p>The irreducible mass at the beginning of the simulation.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mayawaves.compactobject.CompactObject.irreducible_mass">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">irreducible_mass</span></code><a class="headerlink" href="#mayawaves.compactobject.CompactObject.irreducible_mass" title="Permalink to this definition">¶</a></dt>
+<dd><p>The time and irreducible mass over time.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mayawaves.compactobject.CompactObject.irreducible_mass_at_time">
+<code class="sig-name descname"><span class="pre">irreducible_mass_at_time</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">desired_time</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">float</span><a class="headerlink" href="#mayawaves.compactobject.CompactObject.irreducible_mass_at_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Irreducible mass at a given time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>desired_time</strong> – the time at which to return the mass</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the irreducible mass at the desired time</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mayawaves.compactobject.CompactObject.last_available_spin_data_time">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">last_available_spin_data_time</span></code><a class="headerlink" href="#mayawaves.compactobject.CompactObject.last_available_spin_data_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>The last time at which spin data is available.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mayawaves.compactobject.CompactObject.momentum_vector">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">momentum_vector</span></code><a class="headerlink" href="#mayawaves.compactobject.CompactObject.momentum_vector" title="Permalink to this definition">¶</a></dt>
+<dd><p>The time and momentum vector over time.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mayawaves.compactobject.CompactObject.position_vector">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">position_vector</span></code><a class="headerlink" href="#mayawaves.compactobject.CompactObject.position_vector" title="Permalink to this definition">¶</a></dt>
+<dd><p>The time and position vector over time.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mayawaves.compactobject.CompactObject.velocity_vector">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">velocity_vector</span></code><a class="headerlink" href="#mayawaves.compactobject.CompactObject.velocity_vector" title="Permalink to this definition">¶</a></dt>
+<dd><p>The time and velocity vector over time.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="mayawaves.radiation.html" class="btn btn-neutral float-right" title="mayawaves.radiation module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="mayawaves.coalescence.html" class="btn btn-neutral float-left" title="mayawaves.coalescence module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2023, MAYA Collaboration.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

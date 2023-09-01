@@ -1,0 +1,100 @@
+[LOG:2021-04-29 16:33:27] restart.create(simulationName, parfile)::Creating simulation D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name
+[LOG:2021-04-29 16:33:27] restart.create(simulationName, parfile)::Simulation directory: /scratch1/05765/dferg/simulations/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name
+[LOG:2021-04-29 16:33:27] restart.create(simulationName, parfile)::Simulation Properties:
+[LOG:2021-04-29 16:33:27] restart.create(simulationName, parfile)::
+[LOG:2021-04-29 16:33:27] restart.create(simulationName, parfile)::[properties]
+[LOG:2021-04-29 16:33:27] restart.create(simulationName, parfile)::machine         = frontera-clx
+[LOG:2021-04-29 16:33:27] restart.create(simulationName, parfile)::simulationid    = simulation-D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name-frontera-clx-frontera.tacc.utexas.edu-dferg-2021.04.29-16.33.27-24535
+[LOG:2021-04-29 16:33:27] restart.create(simulationName, parfile)::sourcedir       = /work/05765/dferg/frontera/Cactus
+[LOG:2021-04-29 16:33:27] restart.create(simulationName, parfile)::configuration   = bbh-maya
+[LOG:2021-04-29 16:33:27] restart.create(simulationName, parfile)::configid        = config-bbh-maya-login1.frontera.tacc.utexas.edu-work-05765-dferg-frontera-Cactus
+[LOG:2021-04-29 16:33:27] restart.create(simulationName, parfile)::buildid         = build-bbh-maya-login1.frontera.tacc.utexas.edu-dferg-2020.11.18-22.06.18-145326
+[LOG:2021-04-29 16:33:27] restart.create(simulationName, parfile)::testsuite       = False
+[LOG:2021-04-29 16:33:27] restart.create(simulationName, parfile)::executable      = /scratch1/05765/dferg/simulations/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name/SIMFACTORY/exe/cactus_bbh-maya
+[LOG:2021-04-29 16:33:27] restart.create(simulationName, parfile)::optionlist      = /scratch1/05765/dferg/simulations/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name/SIMFACTORY/cfg/OptionList
+[LOG:2021-04-29 16:33:27] restart.create(simulationName, parfile)::submitscript    = /scratch1/05765/dferg/simulations/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name/SIMFACTORY/run/SubmitScript
+[LOG:2021-04-29 16:33:27] restart.create(simulationName, parfile)::runscript       = /scratch1/05765/dferg/simulations/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name/SIMFACTORY/run/RunScript
+[LOG:2021-04-29 16:33:27] restart.create(simulationName, parfile)::parfile         = /scratch1/05765/dferg/simulations/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name/SIMFACTORY/par/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.rpar
+[LOG:2021-04-29 16:33:27] restart.create(simulationName, parfile)::
+[LOG:2021-04-29 16:33:27] restart.create(simulationName, parfile)::Simulation D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name created
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::Restart for simulation D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name created with restart id 0, long restart id 0000
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::Prepping for submission
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::No previous walltime available to be used, using walltime 2:00:00
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::Defined substituion properties for submission
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::{'SIMULATION_ID': 'simulation-D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name-frontera-clx-frontera.tacc.utexas.edu-dferg-2021.04.29-16.33.27-24535', 'NODE_PROCS': 56, 'PPN_USED': 56, 'PPN': 56, 'ALLOCATION': 'PHY20039', 'WALLTIME_HH': '02', 'CPUFREQ': '2.7', 'USER': 'dferg', 'RUNDIR': '/scratch1/05765/dferg/simulations/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name/output-0000', 'NODES': 1, 'SIMULATION_NAME': 'D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name', 'WALLTIME': '2:00:00', 'NUM_THREADS': 1, 'EXECUTABLE': '/scratch1/05765/dferg/simulations/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name/SIMFACTORY/exe/cactus_bbh-maya', 'PROCS_REQUESTED': 56, 'EMAIL': 'deborah.ferguson@austin.utexas.edu', 'RESTART_ID': 0, 'CHAINED_JOB_ID': '', 'FROM_RESTART_COMMAND': '', 'NUM_SMT': 1, 'WALLTIME_SECONDS': 7200, 'SIMFACTORY': '/work/05765/dferg/frontera/Cactus/repos/simfactory2/bin/sim', 'PROCS': 56, 'SUBMITSCRIPT': '/scratch1/05765/dferg/simulations/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name/output-0000/SIMFACTORY/SubmitScript', 'WALLTIME_HOURS': 2.0, 'WALLTIME_MM': '00', 'PARFILE': '/scratch1/05765/dferg/simulations/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name/output-0000/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.rpar', 'WALLTIME_SS': '00', 'QUEUE': 'development', 'CONFIGURATION': 'bbh-maya', 'SOURCEDIR': '/work/05765/dferg/frontera/Cactus', 'HOSTNAME': 'frontera.tacc.utexas.edu', 'NUM_PROCS': 56, 'SCRIPTFILE': '/scratch1/05765/dferg/simulations/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name/output-0000/SIMFACTORY/SubmitScript', 'MEMORY': '196608', 'WALLTIME_MINUTES': 120, 'SHORT_SIMULATION_NAME': 'D2.33_q1_a1_0_0'}
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::self.Properties: /scratch1/05765/dferg/simulations/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name/output-0000/SIMFACTORY/properties.ini
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::[properties]
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::machine         = frontera-clx
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::simulationid    = simulation-D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name-frontera-clx-frontera.tacc.utexas.edu-dferg-2021.04.29-16.33.27-24535
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::sourcedir       = /work/05765/dferg/frontera/Cactus
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::configuration   = bbh-maya
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::configid        = config-bbh-maya-login1.frontera.tacc.utexas.edu-work-05765-dferg-frontera-Cactus
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::buildid         = build-bbh-maya-login1.frontera.tacc.utexas.edu-dferg-2020.11.18-22.06.18-145326
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::testsuite       = False
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::executable      = /scratch1/05765/dferg/simulations/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name/SIMFACTORY/exe/cactus_bbh-maya
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::optionlist      = /scratch1/05765/dferg/simulations/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name/SIMFACTORY/cfg/OptionList
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::submitscript    = /scratch1/05765/dferg/simulations/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name/SIMFACTORY/run/SubmitScript
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::runscript       = /scratch1/05765/dferg/simulations/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name/SIMFACTORY/run/RunScript
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::parfile         = /scratch1/05765/dferg/simulations/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name/SIMFACTORY/par/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.rpar
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::chainedjobid    = -1
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::ppn             = 56
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::procsrequested  = 56
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::allocation      = PHY20039
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::user            = dferg
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::numsmt          = 1
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::walltime        = 2:00:00
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::numprocs        = 56
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::nodeprocs       = 56
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::numthreads      = 1
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::hostname        = frontera.tacc.utexas.edu
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::ppnused         = 56
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::queue           = development
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::cpufreq         = 2.7
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::procs           = 56
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::memory          = 196608
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::nodes           = 1
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::pbsSimulationName= D2.33_q1_a1_0_0
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::saving substituted submitscript contents to: /scratch1/05765/dferg/simulations/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name/output-0000/SIMFACTORY/SubmitScript
+[LOG:2021-04-29 16:33:27] self.submit(submitScript)::Executing submission command: sbatch /scratch1/05765/dferg/simulations/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name/output-0000/SIMFACTORY/SubmitScript; sleep 5
+[LOG:2021-04-29 16:33:27] self.makeActive()::Simulation D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name with restart-id 0 has been made active
+[LOG:2021-04-29 16:33:34] job_id = self.extractJobId(output)::received raw output: 
+[LOG:2021-04-29 16:33:34] job_id = self.extractJobId(output)::Due to MODULEPATH changes, the following have been reloaded:
+[LOG:2021-04-29 16:33:34] job_id = self.extractJobId(output)::  1) python3/3.7.0
+[LOG:2021-04-29 16:33:34] job_id = self.extractJobId(output)::
+[LOG:2021-04-29 16:33:34] job_id = self.extractJobId(output)::
+[LOG:2021-04-29 16:33:34] job_id = self.extractJobId(output)::Inactive Modules:
+[LOG:2021-04-29 16:33:34] job_id = self.extractJobId(output)::  1) python3
+[LOG:2021-04-29 16:33:34] job_id = self.extractJobId(output)::
+[LOG:2021-04-29 16:33:34] job_id = self.extractJobId(output)::
+[LOG:2021-04-29 16:33:34] job_id = self.extractJobId(output)::Activating Modules:
+[LOG:2021-04-29 16:33:34] job_id = self.extractJobId(output)::  1) python3/3.7.0
+[LOG:2021-04-29 16:33:34] job_id = self.extractJobId(output)::
+[LOG:2021-04-29 16:33:34] job_id = self.extractJobId(output)::
+[LOG:2021-04-29 16:33:34] job_id = self.extractJobId(output)::Lmod is automatically replacing "python3/3.7.0" with "python2/2.7.16".
+[LOG:2021-04-29 16:33:34] job_id = self.extractJobId(output)::
+[LOG:2021-04-29 16:33:34] job_id = self.extractJobId(output)::
+[LOG:2021-04-29 16:33:34] job_id = self.extractJobId(output)::-----------------------------------------------------------------
+[LOG:2021-04-29 16:33:34] job_id = self.extractJobId(output)::           Welcome to the Frontera Supercomputer                 
+[LOG:2021-04-29 16:33:34] job_id = self.extractJobId(output)::-----------------------------------------------------------------
+[LOG:2021-04-29 16:33:34] job_id = self.extractJobId(output)::
+[LOG:2021-04-29 16:33:34] job_id = self.extractJobId(output)::No reservation for this job
+[LOG:2021-04-29 16:33:34] job_id = self.extractJobId(output)::--> Verifying valid submit host (login2)...OK
+[LOG:2021-04-29 16:33:34] job_id = self.extractJobId(output)::--> Verifying valid jobname...OK
+[LOG:2021-04-29 16:33:34] job_id = self.extractJobId(output)::--> Verifying valid ssh keys...OK
+[LOG:2021-04-29 16:33:34] job_id = self.extractJobId(output)::--> Verifying access to desired queue (development)...OK
+[LOG:2021-04-29 16:33:34] job_id = self.extractJobId(output)::--> Checking available allocation (PHY20039)...OK
+[LOG:2021-04-29 16:33:34] job_id = self.extractJobId(output)::--> Verifying that quota for filesystem /home1/05765/dferg is at  0.16% allocated...OK
+[LOG:2021-04-29 16:33:34] job_id = self.extractJobId(output)::--> Verifying that quota for filesystem /work/05765/dferg/frontera is at  1.89% allocated...OK
+[LOG:2021-04-29 16:33:34] job_id = self.extractJobId(output)::Submitted batch job 2884289
+[LOG:2021-04-29 16:33:34] job_id = self.extractJobId(output)::
+[LOG:2021-04-29 16:33:34] job_id = self.extractJobId(output)::using submitRegex: Submitted batch job ([0-9]+)
+[LOG:2021-04-29 16:33:34] self.submit(submitScript)::After searching raw output, it was determined that the job_id is: 2884289
+[LOG:2021-04-29 16:33:34] self.submit(submitScript)::Simulation D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name, with restart id 0, and job id 2884289 has been submitted
+[LOG:2021-04-29 16:33:35] self.load(simulationName, restartId)::For simulation D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name, loaded restart id 0, long restart id 0000
+[LOG:2021-04-29 16:33:35] self.run()::Prepping for execution/run
+[LOG:2021-04-29 16:33:35] checkpointing = self.PrepareCheckpointing(recover_id)::PrepareCheckpointing: max_restart_id: -1
+[LOG:2021-04-29 16:33:35] self.run()::Defined substitution properties for execution/run
+[LOG:2021-04-29 16:33:35] self.run()::{'SIMULATION_ID': 'simulation-D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name-frontera-clx-frontera.tacc.utexas.edu-dferg-2021.04.29-16.33.27-24535', 'NODE_PROCS': '56', 'PPN_USED': '56', 'PPN': '56', 'WALLTIME_HH': '02', 'CPUFREQ': '2.7', 'USER': 'dferg', 'RUNDIR': '/scratch1/05765/dferg/simulations/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name/output-0000', 'NODES': '1', 'SIMULATION_NAME': 'D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name', 'WALLTIME': '2:00:00', 'NUM_THREADS': '1', 'EXECUTABLE': '/scratch1/05765/dferg/simulations/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name/SIMFACTORY/exe/cactus_bbh-maya', 'PROCS_REQUESTED': '56', 'RESTART_ID': 0, 'NUM_SMT': '1', 'WALLTIME_SECONDS': 7200, 'CONFIGURATION': 'bbh-maya', 'PROCS': '56', 'SUBMITSCRIPT': '/scratch1/05765/dferg/simulations/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name/SIMFACTORY/run/SubmitScript', 'WALLTIME_MM': '00', 'MACHINE': 'frontera-clx', 'PARFILE': '/scratch1/05765/dferg/simulations/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name/output-0000/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.par', 'WALLTIME_SS': '00', 'WALLTIME_HOURS': 2.0, 'SOURCEDIR': '/work/05765/dferg/frontera/Cactus', 'HOSTNAME': 'frontera.tacc.utexas.edu', 'RUNDEBUG': 0, 'NUM_PROCS': '56', 'SCRIPTFILE': '/scratch1/05765/dferg/simulations/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name/SIMFACTORY/run/SubmitScript', 'MEMORY': '196608', 'WALLTIME_MINUTES': 120, 'SHORT_SIMULATION_NAME': 'D2.33_q1_a1_0_0'}
+[LOG:2021-04-29 16:33:35] self.run()::Executing run command: /scratch1/05765/dferg/simulations/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name/output-0000/SIMFACTORY/RunScript

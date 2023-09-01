@@ -1,0 +1,59 @@
+#! /bin/bash
+
+echo "Preparing:"
+set -x                          # Output commands
+set -e                          # Abort on errors
+
+cd /scratch/06913/ryan_n16/simulations/D11_q5_a1_-0.362_-0.0548_-0.64_a2_-0.0013_0.001_-0.0838_m533.33/output-0004-active
+
+module unload mvapich2
+module load impi/18.0.2
+module list
+
+echo "Checking:"
+pwd
+hostname
+date
+
+echo "Environment:"
+#export I_MPI_FABRICS=shm:ofa
+#export I_MPI_MIC=1
+#export I_MPI_OFA_ADAPTER_NAME=mlx4_0
+export CACTUS_NUM_PROCS=264
+export CACTUS_NUM_THREADS=2
+export CACTUS_SET_THREAD_BINDINGS=1
+export CXX_MAX_TASKS=500
+export GMON_OUT_PREFIX=gmon.out
+export OMP_MAX_TASKS=500
+export OMP_NUM_THREADS=2
+export OMP_STACKSIZE=8192       # kByte
+export PTHREAD_MAX_TASKS=500
+# see http://pages.tacc.utexas.edu/~eijkhout/pcse/html/omp-affinity.html
+# stampede2 enables hyperthreading so in principle there are 96 logical cores
+export OMP_PLACES=cores
+export OMP_PROC_BIND=close
+env | sort > SIMFACTORY/ENVIRONMENT
+echo ${SLURM_NODELIST} > NODES
+
+echo "Starting:"
+export CACTUS_STARTTIME=$(date +%s)
+time ibrun /scratch/06913/ryan_n16/simulations/D11_q5_a1_-0.362_-0.0548_-0.64_a2_-0.0013_0.001_-0.0838_m533.33/SIMFACTORY/exe/cactus_bbh-maya-automated -L 3 /scratch/06913/ryan_n16/simulations/D11_q5_a1_-0.362_-0.0548_-0.64_a2_-0.0013_0.001_-0.0838_m533.33/output-0004/D11_q5_a1_-0.362_-0.0548_-0.64_a2_-0.0013_0.001_-0.0838_m533.33.par
+
+echo "Stopping:"
+date
+
+echo "Done."
+
+should_continue=`/work2/06913/ryan_n16/stampede2/Cactus/utils/should_continue_run.py /scratch/06913/ryan_n16/simulations/D11_q5_a1_-0.362_-0.0548_-0.64_a2_-0.0013_0.001_-0.0838_m533.33/output-0004`
+
+SIMFACTORY=@SIMFACTORY@
+# old version of simfactory (ET_2020_05 and older) do not provide                                                                                                                                     
+# SIMFACTORY in RunScript, so try to work around                                                                                                                                                      
+if echo "$SIMFACTORY" | grep -qF '@' ; then
+    SIMFACTORY=/work2/06913/ryan_n16/stampede2/Cactus/simfactory/bin/sim
+fi
+
+if [ "$should_continue" == "true" ] ; then
+    cd /work2/06913/ryan_n16/stampede2/Cactus
+    ssh login1 $SIMFACTORY submit --basedir=/scratch/06913/ryan_n16/simulations --machine=stampede2-skx D11_q5_a1_-0.362_-0.0548_-0.64_a2_-0.0013_0.001_-0.0838_m533.33
+fi

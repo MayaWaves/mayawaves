@@ -1,0 +1,833 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Exporting to LVK Catalog Format &mdash; Mayawaves  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "tex2jax_ignore|mathjax_ignore|document", "processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Reading raw simulation files" href="reading_raw_files.html" />
+    <link rel="prev" title="Compact Objects" href="compact_objects.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Mayawaves
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Documentation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../mayawaves.coalescence.html">mayawaves.coalescence module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mayawaves.compactobject.html">mayawaves.compactobject module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mayawaves.radiation.html">mayawaves.radiation module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mayawaves.utils.html">mayawaves.utils package</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorials:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="creating_h5.html">Creating a Mayawaves h5 File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gravitational_waves.html">Gravitational Waves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compact_objects.html">Compact Objects</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Exporting to LVK Catalog Format</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Create-a-Coalescence-object-using-the-simulation-h5-file">Create a Coalescence object using the simulation h5 file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Export-to-the-LVC-NR-catalog-format">Export to the LVC NR catalog format</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Exporting-to-this-format-requires-extrapolating-the-waveforms-to-infinite-radius.">Exporting to this format requires extrapolating the waveforms to infinite radius.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#The-exported-file-will-have-the-same-name-as-the-initial-simulation-h5-file.">The exported file will have the same name as the initial simulation h5 file.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#An-optional-name-can-be-provided-which-will-be-used-as-the-name-of-the-exported-file">An optional name can be provided which will be used as the name of the exported file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#You-can-optionally-correct-for-the-center-of-mass-drift-before-exporting">You can optionally correct for the center of mass drift before exporting</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Export-to-LAL-Compatible-format">Export to LAL Compatible format</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#This-format-lets-you-use-the-waveform-with-LALSimulation-and-PyCBC.-It-is-of-the-same-format-as-the-LVC-NR-catalog-but-allows-you-to-specify-a-finite-extraction-radius-if-so-desired.">This format lets you use the waveform with LALSimulation and PyCBC. It is of the same format as the LVC NR catalog but allows you to specify a finite extraction radius if so desired.</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Close-the-Coalescence-object-to-close-the-associated-h5-file">Close the Coalescence object to close the associated h5 file</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reading_raw_files.html">Reading raw simulation files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="catalog_utils.html">Catalog Utils</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Mayawaves</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Exporting to LVK Catalog Format</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/source/notebooks/exporting_lvk.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt .copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+.jp-RenderedHTMLCommon table,
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+.jp-RenderedHTMLCommon thead,
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+.jp-RenderedHTMLCommon tr,
+.jp-RenderedHTMLCommon th,
+.jp-RenderedHTMLCommon td,
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+.jp-RenderedHTMLCommon th,
+div.rendered_html th {
+  font-weight: bold;
+}
+.jp-RenderedHTMLCommon tbody tr:nth-child(odd),
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.jp-RenderedHTMLCommon tbody tr:hover,
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="Exporting-to-LVK-Catalog-Format">
+<h1>Exporting to LVK Catalog Format<a class="headerlink" href="#Exporting-to-LVK-Catalog-Format" title="Permalink to this headline">¶</a></h1>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mayawaves.coalescence</span> <span class="kn">import</span> <span class="n">Coalescence</span>
+<span class="kn">from</span> <span class="nn">mayawaves.utils.postprocessingutils</span> <span class="kn">import</span> <span class="n">export_to_lvcnr_catalog</span><span class="p">,</span> <span class="n">export_to_lal_compatible_format</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="Create-a-Coalescence-object-using-the-simulation-h5-file">
+<h2>Create a Coalescence object using the simulation h5 file<a class="headerlink" href="#Create-a-Coalescence-object-using-the-simulation-h5-file" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">example_h5_filepath</span> <span class="o">=</span> <span class="s2">&quot;../../../example_simulation/D11_q5_a1_-0.362_-0.0548_-0.64_a2_-0.0013_0.001_-0.0838_m533.33.h5&quot;</span>
+<span class="n">output_direcory</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coalescence</span> <span class="o">=</span> <span class="n">Coalescence</span><span class="p">(</span><span class="n">example_h5_filepath</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Export-to-the-LVC-NR-catalog-format">
+<h2>Export to the LVC NR catalog format<a class="headerlink" href="#Export-to-the-LVC-NR-catalog-format" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="Exporting-to-this-format-requires-extrapolating-the-waveforms-to-infinite-radius.">
+<h3>Exporting to this format requires extrapolating the waveforms to infinite radius.<a class="headerlink" href="#Exporting-to-this-format-requires-extrapolating-the-waveforms-to-infinite-radius." title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="The-exported-file-will-have-the-same-name-as-the-initial-simulation-h5-file.">
+<h3>The exported file will have the same name as the initial simulation h5 file.<a class="headerlink" href="#The-exported-file-will-have-the-same-name-as-the-initial-simulation-h5-file." title="Permalink to this headline">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">export_to_lvcnr_catalog</span><span class="p">(</span><span class="n">coalescence</span><span class="p">,</span> <span class="n">output_direcory</span><span class="p">,</span> <span class="n">NR_group</span><span class="o">=</span><span class="s1">&#39;UT Austin&#39;</span><span class="p">,</span> <span class="n">NR_code</span><span class="o">=</span><span class="s1">&#39;MAYA&#39;</span><span class="p">,</span> <span class="n">bibtex_keys</span><span class="o">=</span><span class="s1">&#39;Jani:2016wkt&#39;</span><span class="p">,</span> <span class="n">contact_email</span><span class="o">=</span><span class="s1">&#39;email@email.com&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+This simulation is not part of a catalog and does not have a catalog id.
+Storing (l, m)=(2, -2)
+Storing (l, m)=(2, -1)
+Storing (l, m)=(2, 0)
+Storing (l, m)=(2, 1)
+Storing (l, m)=(2, 2)
+Storing (l, m)=(3, -3)
+Storing (l, m)=(3, -2)
+Storing (l, m)=(3, -1)
+Storing (l, m)=(3, 0)
+Storing (l, m)=(3, 1)
+Storing (l, m)=(3, 2)
+Storing (l, m)=(3, 3)
+Storing (l, m)=(4, -4)
+Storing (l, m)=(4, -3)
+Storing (l, m)=(4, -2)
+Storing (l, m)=(4, -1)
+Storing (l, m)=(4, 0)
+Storing (l, m)=(4, 1)
+Storing (l, m)=(4, 2)
+Storing (l, m)=(4, 3)
+Storing (l, m)=(4, 4)
+Storing mass1-vs-time
+Storing spin1x-vs-time
+Storing spin1y-vs-time
+Storing spin1z-vs-time
+Storing position1x-vs-time
+Storing position1y-vs-time
+Storing position1z-vs-time
+Storing mass2-vs-time
+Storing spin2x-vs-time
+Storing spin2y-vs-time
+Storing spin2z-vs-time
+Storing position2x-vs-time
+Storing position2y-vs-time
+Storing position2z-vs-time
+Storing LNhatx-vs-time
+Storing LNhaty-vs-time
+Storing LNhatz-vs-time
+Storing Omega-vs-time
+Storing remnant-mass-vs-time
+Storing remnant-spinx-vs-time
+Storing remnant-spiny-vs-time
+Storing remnant-spinz-vs-time
+Storing remnant-positionx-vs-time
+Storing remnant-positiony-vs-time
+Storing remnant-positionz-vs-time
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="An-optional-name-can-be-provided-which-will-be-used-as-the-name-of-the-exported-file">
+<h3>An optional name can be provided which will be used as the name of the exported file<a class="headerlink" href="#An-optional-name-can-be-provided-which-will-be-used-as-the-name-of-the-exported-file" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">export_to_lvcnr_catalog</span><span class="p">(</span><span class="n">coalescence</span><span class="p">,</span> <span class="n">output_direcory</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;SIM0001&#39;</span><span class="p">,</span> <span class="n">NR_group</span><span class="o">=</span><span class="s1">&#39;UT Austin&#39;</span><span class="p">,</span> <span class="n">NR_code</span><span class="o">=</span><span class="s1">&#39;MAYA&#39;</span><span class="p">,</span> <span class="n">bibtex_keys</span><span class="o">=</span><span class="s1">&#39;Jani:2016wkt&#39;</span><span class="p">,</span> <span class="n">contact_email</span><span class="o">=</span><span class="s1">&#39;email@email.com&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+This simulation is not part of a catalog and does not have a catalog id.
+Storing (l, m)=(2, -2)
+Storing (l, m)=(2, -1)
+Storing (l, m)=(2, 0)
+Storing (l, m)=(2, 1)
+Storing (l, m)=(2, 2)
+Storing (l, m)=(3, -3)
+Storing (l, m)=(3, -2)
+Storing (l, m)=(3, -1)
+Storing (l, m)=(3, 0)
+Storing (l, m)=(3, 1)
+Storing (l, m)=(3, 2)
+Storing (l, m)=(3, 3)
+Storing (l, m)=(4, -4)
+Storing (l, m)=(4, -3)
+Storing (l, m)=(4, -2)
+Storing (l, m)=(4, -1)
+Storing (l, m)=(4, 0)
+Storing (l, m)=(4, 1)
+Storing (l, m)=(4, 2)
+Storing (l, m)=(4, 3)
+Storing (l, m)=(4, 4)
+Storing mass1-vs-time
+Storing spin1x-vs-time
+Storing spin1y-vs-time
+Storing spin1z-vs-time
+Storing position1x-vs-time
+Storing position1y-vs-time
+Storing position1z-vs-time
+Storing mass2-vs-time
+Storing spin2x-vs-time
+Storing spin2y-vs-time
+Storing spin2z-vs-time
+Storing position2x-vs-time
+Storing position2y-vs-time
+Storing position2z-vs-time
+Storing LNhatx-vs-time
+Storing LNhaty-vs-time
+Storing LNhatz-vs-time
+Storing Omega-vs-time
+Storing remnant-mass-vs-time
+Storing remnant-spinx-vs-time
+Storing remnant-spiny-vs-time
+Storing remnant-spinz-vs-time
+Storing remnant-positionx-vs-time
+Storing remnant-positiony-vs-time
+Storing remnant-positionz-vs-time
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="You-can-optionally-correct-for-the-center-of-mass-drift-before-exporting">
+<h3>You can optionally correct for the center of mass drift before exporting<a class="headerlink" href="#You-can-optionally-correct-for-the-center-of-mass-drift-before-exporting" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">export_to_lvcnr_catalog</span><span class="p">(</span><span class="n">coalescence</span><span class="p">,</span> <span class="n">output_direcory</span><span class="p">,</span> <span class="n">center_of_mass_correction</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">NR_group</span><span class="o">=</span><span class="s1">&#39;UT Austin&#39;</span><span class="p">,</span> <span class="n">NR_code</span><span class="o">=</span><span class="s1">&#39;MAYA&#39;</span><span class="p">,</span> <span class="n">bibtex_keys</span><span class="o">=</span><span class="s1">&#39;Jani:2016wkt&#39;</span><span class="p">,</span> <span class="n">contact_email</span><span class="o">=</span><span class="s1">&#39;email@email.com&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+This simulation is not part of a catalog and does not have a catalog id.
+Storing (l, m)=(2, -2)
+Storing (l, m)=(2, -1)
+Storing (l, m)=(2, 0)
+Storing (l, m)=(2, 1)
+Storing (l, m)=(2, 2)
+Storing (l, m)=(3, -3)
+Storing (l, m)=(3, -2)
+Storing (l, m)=(3, -1)
+Storing (l, m)=(3, 0)
+Storing (l, m)=(3, 1)
+Storing (l, m)=(3, 2)
+Storing (l, m)=(3, 3)
+Storing (l, m)=(4, -4)
+Storing (l, m)=(4, -3)
+Storing (l, m)=(4, -2)
+Storing (l, m)=(4, -1)
+Storing (l, m)=(4, 0)
+Storing (l, m)=(4, 1)
+Storing (l, m)=(4, 2)
+Storing (l, m)=(4, 3)
+Storing (l, m)=(4, 4)
+Storing mass1-vs-time
+Storing spin1x-vs-time
+Storing spin1y-vs-time
+Storing spin1z-vs-time
+Storing position1x-vs-time
+Storing position1y-vs-time
+Storing position1z-vs-time
+Storing mass2-vs-time
+Storing spin2x-vs-time
+Storing spin2y-vs-time
+Storing spin2z-vs-time
+Storing position2x-vs-time
+Storing position2y-vs-time
+Storing position2z-vs-time
+Storing LNhatx-vs-time
+Storing LNhaty-vs-time
+Storing LNhatz-vs-time
+Storing Omega-vs-time
+Storing remnant-mass-vs-time
+Storing remnant-spinx-vs-time
+Storing remnant-spiny-vs-time
+Storing remnant-spinz-vs-time
+Storing remnant-positionx-vs-time
+Storing remnant-positiony-vs-time
+Storing remnant-positionz-vs-time
+</pre></div></div>
+</div>
+</div>
+</div>
+<div class="section" id="Export-to-LAL-Compatible-format">
+<h2>Export to LAL Compatible format<a class="headerlink" href="#Export-to-LAL-Compatible-format" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="This-format-lets-you-use-the-waveform-with-LALSimulation-and-PyCBC.-It-is-of-the-same-format-as-the-LVC-NR-catalog-but-allows-you-to-specify-a-finite-extraction-radius-if-so-desired.">
+<h3>This format lets you use the waveform with LALSimulation and PyCBC. It is of the same format as the LVC NR catalog but allows you to specify a finite extraction radius if so desired.<a class="headerlink" href="#This-format-lets-you-use-the-waveform-with-LALSimulation-and-PyCBC.-It-is-of-the-same-format-as-the-LVC-NR-catalog-but-allows-you-to-specify-a-finite-extraction-radius-if-so-desired." title="Permalink to this headline">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">export_to_lal_compatible_format</span><span class="p">(</span><span class="n">coalescence</span><span class="p">,</span> <span class="n">output_direcory</span><span class="p">,</span> <span class="n">extraction_radius</span><span class="o">=</span><span class="mi">75</span><span class="p">,</span> <span class="n">NR_group</span><span class="o">=</span><span class="s1">&#39;UT Austin&#39;</span><span class="p">,</span> <span class="n">NR_code</span><span class="o">=</span><span class="s1">&#39;MAYA&#39;</span><span class="p">,</span> <span class="n">bibtex_keys</span><span class="o">=</span><span class="s1">&#39;Jani:2016wkt&#39;</span><span class="p">,</span> <span class="n">contact_email</span><span class="o">=</span><span class="s1">&#39;email@email.com&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Storing (l, m)=(2, -2)
+Storing (l, m)=(2, -1)
+Storing (l, m)=(2, 0)
+Storing (l, m)=(2, 1)
+Storing (l, m)=(2, 2)
+Storing (l, m)=(3, -3)
+Storing (l, m)=(3, -2)
+Storing (l, m)=(3, -1)
+Storing (l, m)=(3, 0)
+Storing (l, m)=(3, 1)
+Storing (l, m)=(3, 2)
+Storing (l, m)=(3, 3)
+Storing (l, m)=(4, -4)
+Storing (l, m)=(4, -3)
+Storing (l, m)=(4, -2)
+Storing (l, m)=(4, -1)
+Storing (l, m)=(4, 0)
+Storing (l, m)=(4, 1)
+Storing (l, m)=(4, 2)
+Storing (l, m)=(4, 3)
+Storing (l, m)=(4, 4)
+Storing mass1-vs-time
+Storing spin1x-vs-time
+Storing spin1y-vs-time
+Storing spin1z-vs-time
+Storing position1x-vs-time
+Storing position1y-vs-time
+Storing position1z-vs-time
+Storing mass2-vs-time
+Storing spin2x-vs-time
+Storing spin2y-vs-time
+Storing spin2z-vs-time
+Storing position2x-vs-time
+Storing position2y-vs-time
+Storing position2z-vs-time
+Storing LNhatx-vs-time
+Storing LNhaty-vs-time
+Storing LNhatz-vs-time
+Storing Omega-vs-time
+Storing remnant-mass-vs-time
+Storing remnant-spinx-vs-time
+Storing remnant-spiny-vs-time
+Storing remnant-spinz-vs-time
+Storing remnant-positionx-vs-time
+Storing remnant-positiony-vs-time
+Storing remnant-positionz-vs-time
+</pre></div></div>
+</div>
+</div>
+</div>
+<div class="section" id="Close-the-Coalescence-object-to-close-the-associated-h5-file">
+<h2>Close the Coalescence object to close the associated h5 file<a class="headerlink" href="#Close-the-Coalescence-object-to-close-the-associated-h5-file" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coalescence</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="reading_raw_files.html" class="btn btn-neutral float-right" title="Reading raw simulation files" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="compact_objects.html" class="btn btn-neutral float-left" title="Compact Objects" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2023, MAYA Collaboration.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
