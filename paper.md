@@ -29,7 +29,7 @@ authors:
     affiliation: 1
   - name: Max L. Trostel
     affiliation: 1
-    orcid: 0000-0003-4614-0378
+    orcid: 0000-0001-9743-0303
   - name: Bing-Jyun Tsao
     affiliation: 1
     orcid: 0000-0003-4614-0378
