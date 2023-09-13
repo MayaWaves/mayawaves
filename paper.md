@@ -94,5 +94,6 @@ This module includes functions for accessing and plotting the metadata for the e
 
 The authors thank Deirdre Shoemaker and Pablo Laguna for their support throughout the duration of this code development.
 The work presented in this paper was possible due to grants NASA 80NSSC21K0900, NSF 2207780 and NSF 2114582.
+This work was done by members of the Weinberg Institute and has an identifier of UTW1-33-2023.
 
 # References
