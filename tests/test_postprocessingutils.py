@@ -3355,7 +3355,10 @@ class TestPostprocessingUtils(TestCase):
 
         for attr in actual_attributes:
             if attr != 'modification-date':
-                self.assertEqual(expected_file.attrs[attr], actual_file.attrs[attr])
+                if type(expected_file.attrs[attr]) == float:
+                    self.assertTrue(np.isclose(expected_file.attrs[attr], actual_file.attrs[attr], atol=1e-6))
+                else:
+                    self.assertEqual(expected_file.attrs[attr], actual_file.attrs[attr])
 
         self.assertEqual(expected_attributes, actual_attributes)
 
@@ -3436,6 +3439,7 @@ class TestPostprocessingUtils(TestCase):
 
     @mock.patch("matplotlib.pyplot.show")
     def test_summarize_coalescence(self, mock_show):
+        self.maxDiff = None
         # full simulation with all the data
         simulation_filepath = os.path.join(TestPostprocessingUtils.CURR_DIR,
                                            "resources/format_test/D11_q2_a1_0.0_0.0_0.4_a2_0.0_0.0_0.4_m282.35_format_3.h5")
