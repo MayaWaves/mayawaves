@@ -25,3 +25,4 @@ the MAYA catalog and to download simulations from the MAYA catalog.
 
 `Mayawaves` is intended to be a library that will grow and expand with additional analysis tools. We welcome the 
 input of the community to both request new features and help in implementing them.
+
