@@ -3355,10 +3355,10 @@ class TestPostprocessingUtils(TestCase):
 
         for attr in actual_attributes:
             if attr != 'modification-date':
-                if type(expected_file.attrs[attr]) == float:
-                    self.assertTrue(np.isclose(expected_file.attrs[attr], actual_file.attrs[attr], atol=1e-6))
-                else:
+                if type(expected_file.attrs[attr]) == str:
                     self.assertEqual(expected_file.attrs[attr], actual_file.attrs[attr])
+                else:
+                    self.assertTrue(np.isclose(expected_file.attrs[attr], actual_file.attrs[attr], atol=1e-6))
 
         self.assertEqual(expected_attributes, actual_attributes)
 
