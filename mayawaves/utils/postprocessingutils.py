@@ -3047,15 +3047,21 @@ def summarize_coalescence(coalescence: Coalescence, output_directory: str = None
 
     # Format information to be printed to summary.txt:
     # beginning includes information regarding initial data.
+    mass_ratio_string = 'NaN' if initial_mass_ratio is None else f'{initial_mass_ratio:.4f}'
+    primary_horizon_mass_string = 'NaN' if initial_primary_horizon_mass is None else f'{initial_primary_horizon_mass:.4f}'
+    secondary_horizon_mass_string = 'NaN' if initial_secondary_horizon_mass is None else f'{initial_secondary_horizon_mass:.4f}'
+    primary_spin_string = 'NaN' if initial_primary_dimensionless_spin is None else f'[{initial_primary_dimensionless_spin[0]:.4f}, {initial_primary_dimensionless_spin[1]:.4f}, {initial_primary_dimensionless_spin[2]:.4f}]'
+    secondary_spin_string = 'NaN' if initial_secondary_dimensionless_spin is None else f'[{initial_secondary_dimensionless_spin[0]:.4f}, {initial_secondary_dimensionless_spin[1]:.4f}, {initial_secondary_dimensionless_spin[2]:.4f}]'
+    separation_string = 'NaN' if initial_separation is None else f'{initial_separation:.4f}'
     beginning = f"Summary for {coalescence_name}\n" \
                 f"\nInitial Values (t=0 M):\n" \
                 f"{'-' * 70}\n" \
-                f"mass ratio:\t\t\t\t{str(initial_mass_ratio)[0:6]}\n" \
-                f"primary horizon mass:\t\t\t{str(initial_primary_horizon_mass)[0:6]}\n" \
-                f"secondary horizon mass:\t\t\t{str(initial_secondary_horizon_mass)[0:6]}\n" \
-                f"primary dimensionless spin:\t\t{[round(i, 4) for i in initial_primary_dimensionless_spin]}\n" \
-                f"secondary dimensionless spin:\t\t{[round(i, 4) for i in initial_secondary_dimensionless_spin]}\n" \
-                f"separation:\t\t\t\t{str(initial_separation)[0:6]} M\n"
+                f"mass ratio:\t\t\t\t{mass_ratio_string}\n" \
+                f"primary horizon mass:\t\t\t{primary_horizon_mass_string}\n" \
+                f"secondary horizon mass:\t\t\t{secondary_horizon_mass_string}\n" \
+                f"primary dimensionless spin:\t\t{primary_spin_string}\n" \
+                f"secondary dimensionless spin:\t\t{secondary_spin_string}\n" \
+                f"separation:\t\t\t\t{separation_string} M\n"
 
     # middle includes information regarding data at t=75 M.
     if current_time < 75:
@@ -3068,40 +3074,53 @@ def summarize_coalescence(coalescence: Coalescence, output_directory: str = None
                      f"{'-' * 70}\n" \
                      f"Simulation completed before reaching t=75 M.\n"
     else:
-        pds_message = f"None" if primary_dimensionless_spin is None else f"{[round(i, 4) for i in primary_dimensionless_spin]}"
-        sds_message = f"None" if secondary_dimensionless_spin is None else f"{[round(i, 4) for i in secondary_dimensionless_spin]}"
+        primary_horizon_mass_string = 'NaN' if primary_horizon_mass is None else f'{primary_horizon_mass:.4f}'
+        secondary_horizon_mass_string = 'NaN' if secondary_horizon_mass is None else f'{secondary_horizon_mass:.4f}'
+        primary_spin_string = 'NaN' if primary_dimensionless_spin is None else f'[{primary_dimensionless_spin[0]:.4f}, {primary_dimensionless_spin[1]:.4f}, {primary_dimensionless_spin[2]:.4f}]'
+        secondary_spin_string = 'NaN' if secondary_dimensionless_spin is None else f'[{secondary_dimensionless_spin[0]:.4f}, {secondary_dimensionless_spin[1]:.4f}, {secondary_dimensionless_spin[2]:.4f}]'
+        separation_string = 'NaN' if separation is None else f'{separation:.4f}'
+        separation_unit_vector_string = 'NaN' if separation_unit_vector is None else f'[{separation_unit_vector[0]:.4f}, {separation_unit_vector[1]:.4f}, {separation_unit_vector[2]:.4f}]'
+        orbital_frequency_string = 'NaN' if orbital_frequency is None else f'{orbital_frequency:.4f}'
+        orbital_angular_momentum_unit_vector_string = 'NaN' if orbital_angular_momentum_unit_vector is None else f'[{orbital_angular_momentum_unit_vector[0]:.4f}, {orbital_angular_momentum_unit_vector[1]:.4f}, {orbital_angular_momentum_unit_vector[2]:.4f}]'
+        eccentricity_string = 'NaN' if eccentricity is None else f'{eccentricity:.4f}'
         middle = f"\nAfter Junk Radiation (t=75 M):\n" \
                  f"{'-' * 70}\n" \
-                 f"primary horizon mass:\t\t\t{str(primary_horizon_mass)[0:6]}\n" \
-                 f"secondary horizon mass:\t\t\t{str(secondary_horizon_mass)[0:6]}\n" \
-                 f"primary dimensionless spin:\t\t{pds_message}\n" \
-                 f"secondary dimensionless spin:\t\t{sds_message}\n" \
-                 f"separation:\t\t\t\t{str(separation)[0:6]} M\n" \
-                 f"separation unit vector:\t\t\t{[round(i, 4) for i in separation_unit_vector]}\n" \
-                 f"orbital frequency:\t\t\t{str(orbital_frequency)[0:6]}\n" \
-                 f"orbital angular momentum unit vector:\t{[round(i, 4) for i in orbital_angular_momentum_unit_vector]}\n" \
-                 f"eccentricity:\t\t\t\t{str(eccentricity)[0:6]}\n"
+                 f"primary horizon mass:\t\t\t{primary_horizon_mass_string}\n" \
+                 f"secondary horizon mass:\t\t\t{secondary_horizon_mass_string}\n" \
+                 f"primary dimensionless spin:\t\t{primary_spin_string}\n" \
+                 f"secondary dimensionless spin:\t\t{secondary_spin_string}\n" \
+                 f"separation:\t\t\t\t{separation_string} M\n" \
+                 f"separation unit vector:\t\t\t{separation_unit_vector_string}\n" \
+                 f"orbital frequency:\t\t\t{orbital_frequency_string}\n" \
+                 f"orbital angular momentum unit vector:\t{orbital_angular_momentum_unit_vector_string}\n" \
+                 f"eccentricity:\t\t\t\t{eccentricity_string}\n"
         if primary_horizon_mass is None or secondary_horizon_mass is None or \
                 primary_dimensionless_spin is None or secondary_dimensionless_spin is None:
-            middle += r"**A 'None' value represents data that was not being tracked at t=75 M.**" + "\n"
+            middle += r"**A 'NaN' value represents data that was not being tracked at t=75 M.**" + "\n"
 
     # ending includes information regarding most recent data.
     if coalescence.final_compact_object is None:
+        time_string = 'NaN' if current_time is None else f'{current_time:.4f}'
+        separation_string = 'NaN' if current_separation is None else f'{current_separation:.4f}'
+        separation_unit_vector_string = 'NaN' if current_separation_unit_vector is None else f'[{current_separation_unit_vector[0]:.4f}, {current_separation_unit_vector[1]:.4f}, {current_separation_unit_vector[2]:.4f}]'
+        orbital_frequency_string = 'NaN' if current_orbital_frequency is None else f'{current_orbital_frequency:.4f}'
+        orbital_angular_momentum_unit_vector_string = 'NaN' if current_orbital_angular_momentum_unit_vector is None else f'[{current_orbital_angular_momentum_unit_vector[0]:.4f}, {current_orbital_angular_momentum_unit_vector[1]:.4f}, {current_orbital_angular_momentum_unit_vector[2]:.4f}]'
         ending = f"\nCurrent Values (Last available data):\n" \
                  f"{'-' * 70}\n" \
-                 f"current time:\t\t\t\t{str(current_time)[0:6]}\n" \
-                 f"separation:\t\t\t\t{str(current_separation)[0:6]}\n" \
-                 f"separation unit vector:\t\t\t{[round(i, 4) for i in current_separation_unit_vector]}\n" \
-                 f"orbital frequency:\t\t\t{str(current_orbital_frequency)[0:6]}\n" \
-                 f"orbital angular momentum unit vector:\t{[round(i, 4) for i in current_orbital_angular_momentum_unit_vector]}"
+                 f"current time:\t\t\t\t{time_string}\n" \
+                 f"separation:\t\t\t\t{separation_string}\n" \
+                 f"separation unit vector:\t\t\t{separation_unit_vector_string}\n" \
+                 f"orbital frequency:\t\t\t{orbital_frequency_string}\n" \
+                 f"orbital angular momentum unit vector:\t{orbital_angular_momentum_unit_vector_string}"
     else:
-        ds_message = f"None" if final_dimensionless_spin is None else f"{[round(i, 4) for i in final_dimensionless_spin]}"
+        final_horizon_mass_string = 'NaN' if final_horizon_mass is None else f'{final_horizon_mass:.4f}'
+        final_spin_string = 'NaN' if final_dimensionless_spin is None else f'[{final_dimensionless_spin[0]:.4f}, {final_dimensionless_spin[1]:.4f}, {final_dimensionless_spin[2]:.4f}]'
         ending = f"\nRemnant Values (Last available data):\n" \
                  f"{'-' * 70}\n" \
-                 f"horizon mass:\t\t\t\t{str(final_horizon_mass)[0:6]}\n" \
-                 f"dimensionless spin:\t\t\t{ds_message}"
+                 f"horizon mass:\t\t\t\t{final_horizon_mass_string}\n" \
+                 f"dimensionless spin:\t\t\t{final_spin_string}"
         if final_horizon_mass is None or final_dimensionless_spin is None:
-            ending += "\n" + r"** A 'None' value represents data that has not yet been calculated.**"
+            ending += "\n" + r"** A 'NaN' value represents data that has not yet been calculated.**"
 
     summary = f"{beginning}{middle}{ending}"
 
