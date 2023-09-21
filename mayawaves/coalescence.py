@@ -522,11 +522,11 @@ class Coalescence:
         nhat = separation_vector / np.linalg.norm(separation_vector, axis=1).reshape(separation_vector.shape[0], 1)
         return nhat[cut_index]
 
-    def _crop_to_four_orbits(self, start_time: float, time: np.ndarray, orbital_phase: np.ndarray,
-                             separation_magnitude: np.ndarray, data: np.ndarray) -> tuple:
+    def _crop_to_three_or_four_orbits(self, start_time: float, time: np.ndarray, orbital_phase: np.ndarray,
+                                      separation_magnitude: np.ndarray, data: np.ndarray) -> tuple:
         """Crop a given timeseries to four orbits
 
-        Compute and return four orbits worth of a given timeseries, beginning at the specified start time
+        Compute and return four orbits worth of a given timeseries, beginning at the specified start time. If there are not four orbits, it crops to three orbits. If there aren't three orbits, it returns None.
 
         Args:
             start_time (float): time at which to begin crop
@@ -546,16 +546,17 @@ class Coalescence:
 
         start_index = np.argmax(time > start_time)
 
+        three_orbits_time = time[np.argmax(orbital_phase > (6 * np.pi + orbital_phase[start_index]))]
         four_orbits_time = time[np.argmax(orbital_phase > (8 * np.pi + orbital_phase[start_index]))]
-        if four_orbits_time <= 0:
-            four_orbits_time = time[-1]
 
-        end_time = min(four_orbits_time, merge_time - 100 if merge_time > 500 else merge_time - 25)
-        end_index = np.argmax(time >= end_time)
-
-        if end_time - start_time < 50:
+        end_time = four_orbits_time
+        if end_time <= 0 or end_time > merge_time - 50:
+            end_time = three_orbits_time
+        if end_time <= 0 or end_time > merge_time - 50:
             print("There is not enough data to crop to four orbits")
             return None, None
+
+        end_index = np.argmax(time >= end_time)
 
         time = time[start_index: end_index]
         data = data[start_index: end_index]
@@ -677,7 +678,7 @@ class Coalescence:
             warnings.warn("Estimated eccentricity is higher than 0.2 so the orbital frequncy fit won't be valid. Returning the eccentricity estimated from the initial momentum.")
             return estimated_eccentricity, -1
 
-        time_inspiral, orbital_frequency_inspiral = self._crop_to_four_orbits(start_time=start_time, time=time,
+        time_inspiral, orbital_frequency_inspiral = self._crop_to_three_or_four_orbits(start_time=start_time, time=time,
                                                                               orbital_phase=orbital_phase,
                                                                               separation_magnitude=separation_magnitude,
                                                                               data=orbital_frequency)

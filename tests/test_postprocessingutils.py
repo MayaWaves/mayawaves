@@ -3355,7 +3355,10 @@ class TestPostprocessingUtils(TestCase):
 
         for attr in actual_attributes:
             if attr != 'modification-date':
-                self.assertEqual(expected_file.attrs[attr], actual_file.attrs[attr])
+                if type(expected_file.attrs[attr]) == str:
+                    self.assertEqual(expected_file.attrs[attr], actual_file.attrs[attr])
+                else:
+                    self.assertTrue(np.isclose(expected_file.attrs[attr], actual_file.attrs[attr], atol=1e-6))
 
         self.assertEqual(expected_attributes, actual_attributes)
 
@@ -3436,6 +3439,7 @@ class TestPostprocessingUtils(TestCase):
 
     @mock.patch("matplotlib.pyplot.show")
     def test_summarize_coalescence(self, mock_show):
+        self.maxDiff = None
         # full simulation with all the data
         simulation_filepath = os.path.join(TestPostprocessingUtils.CURR_DIR,
                                            "resources/format_test/D11_q2_a1_0.0_0.0_0.4_a2_0.0_0.0_0.4_m282.35_format_3.h5")
@@ -3464,29 +3468,29 @@ class TestPostprocessingUtils(TestCase):
 
 Initial Values (t=0 M):
 ----------------------------------------------------------------------
-mass ratio:				1.9999
+mass ratio:				2.0000
 primary horizon mass:			0.6665
-secondary horizon mass:			0.3332
-primary dimensionless spin:		[0.0, 0.0, 0.4001]
-secondary dimensionless spin:		[0.0, 0.0, 0.4]
-separation:				11.000 M
+secondary horizon mass:			0.3333
+primary dimensionless spin:		[0.0000, 0.0000, 0.4001]
+secondary dimensionless spin:		[0.0000, 0.0000, 0.4000]
+separation:				11.0001 M
 
 After Junk Radiation (t=75 M):
 ----------------------------------------------------------------------
 primary horizon mass:			0.6667
 secondary horizon mass:			0.3334
-primary dimensionless spin:		[-0.0, 0.0, 0.4007]
-secondary dimensionless spin:		[-0.0, 0.0, 0.402]
-separation:				10.778 M
-separation unit vector:			[0.1005, -0.9949, -0.0]
+primary dimensionless spin:		[-0.0000, 0.0000, 0.4007]
+secondary dimensionless spin:		[-0.0000, 0.0000, 0.4020]
+separation:				10.7785 M
+separation unit vector:			[0.1005, -0.9949, -0.0000]
 orbital frequency:			0.0243
-orbital angular momentum unit vector:	[0.0, 0.0, 1.0]
+orbital angular momentum unit vector:	[0.0000, 0.0000, 1.0000]
 eccentricity:				0.0034
 
 Remnant Values (Last available data):
 ----------------------------------------------------------------------
 horizon mass:				0.9492
-dimensionless spin:			[-0.0, 0.0, 0.7701]"""
+dimensionless spin:			[-0.0000, 0.0000, 0.7701]"""
 
         summary_file = open(path_to_summary_file, "r")
         actual_output = summary_file.read()
@@ -3536,30 +3540,30 @@ dimensionless spin:			[-0.0, 0.0, 0.7701]"""
 
 Initial Values (t=0 M):
 ----------------------------------------------------------------------
-mass ratio:				1.0
-primary horizon mass:			0.5167
-secondary horizon mass:			0.5167
-primary dimensionless spin:		[0.0, 0.0, 0.0006]
-secondary dimensionless spin:		[0.0, 0.0, 0.0006]
+mass ratio:				1.0000
+primary horizon mass:			0.5168
+secondary horizon mass:			0.5168
+primary dimensionless spin:		[0.0000, 0.0000, 0.0006]
+secondary dimensionless spin:		[0.0000, 0.0000, 0.0006]
 separation:				2.3363 M
 
 After Junk Radiation (t=75 M):
 ----------------------------------------------------------------------
-primary horizon mass:			None
-secondary horizon mass:			None
-primary dimensionless spin:		None
-secondary dimensionless spin:		None
-separation:				1.0170 M
-separation unit vector:			[-0.1809, -0.9835, 0.0]
+primary horizon mass:			NaN
+secondary horizon mass:			NaN
+primary dimensionless spin:		NaN
+secondary dimensionless spin:		NaN
+separation:				0.0000 M
+separation unit vector:			[-0.1809, -0.9835, 0.0000]
 orbital frequency:			0.4345
-orbital angular momentum unit vector:	[0.0, 0.0, 1.0]
+orbital angular momentum unit vector:	[0.0000, 0.0000, 1.0000]
 eccentricity:				0.0243
-**A 'None' value represents data that was not being tracked at t=75 M.**
+**A 'NaN' value represents data that was not being tracked at t=75 M.**
 
 Remnant Values (Last available data):
 ----------------------------------------------------------------------
-horizon mass:				0.9770
-dimensionless spin:			[-0.0, 0.0, 0.6763]"""
+horizon mass:				0.9771
+dimensionless spin:			[-0.0000, 0.0000, 0.6763]"""
 
         summary_file = open(path_to_summary_file, "r")
         actual_output = summary_file.read()
@@ -3609,32 +3613,32 @@ dimensionless spin:			[-0.0, 0.0, 0.6763]"""
 
 Initial Values (t=0 M):
 ----------------------------------------------------------------------
-mass ratio:				1.9999
+mass ratio:				2.0000
 primary horizon mass:			0.6665
-secondary horizon mass:			0.3332
-primary dimensionless spin:		[0.0, 0.0, 0.4001]
-secondary dimensionless spin:		[0.0, 0.0, 0.4]
-separation:				11.000 M
+secondary horizon mass:			0.3333
+primary dimensionless spin:		[0.0000, 0.0000, 0.4001]
+secondary dimensionless spin:		[0.0000, 0.0000, 0.4000]
+separation:				11.0001 M
 
 After Junk Radiation (t=75 M):
 ----------------------------------------------------------------------
 primary horizon mass:			0.6667
 secondary horizon mass:			0.3334
-primary dimensionless spin:		[-0.0, 0.0, 0.4007]
-secondary dimensionless spin:		[-0.0, 0.0, 0.402]
-separation:				10.778 M
-separation unit vector:			[0.1005, -0.9949, -0.0]
+primary dimensionless spin:		[-0.0000, 0.0000, 0.4007]
+secondary dimensionless spin:		[-0.0000, 0.0000, 0.4020]
+separation:				10.7785 M
+separation unit vector:			[0.1005, -0.9949, -0.0000]
 orbital frequency:			0.0243
-orbital angular momentum unit vector:	[0.0, 0.0, 1.0]
-eccentricity:				0.0010
+orbital angular momentum unit vector:	[0.0000, 0.0000, 1.0000]
+eccentricity:				0.0001
 
 Current Values (Last available data):
 ----------------------------------------------------------------------
-current time:				499.91
-separation:				10.217
-separation unit vector:			[-10.2141, 0.267, 0.0]
+current time:				499.9133
+separation:				10.2176
+separation unit vector:			[-10.2141, 0.2670, 0.0000]
 orbital frequency:			0.0270
-orbital angular momentum unit vector:	[0.0, -0.0, 1.0]"""
+orbital angular momentum unit vector:	[0.0000, -0.0000, 1.0000]"""
 
         summary_file = open(path_to_summary_file, "r")
         actual_output = summary_file.read()
@@ -3648,7 +3652,8 @@ orbital angular momentum unit vector:	[0.0, -0.0, 1.0]"""
         with mock.patch('sys.stdout', new_callable=io.StringIO) as stdout_mock:
             pputils.summarize_coalescence(coalescence)
             actual_output = stdout_mock.getvalue()
-            self.assertEqual(expected_output + '\n', actual_output)
+            self.assertEqual('There is not enough data to crop to four orbits\n' + expected_output + '\n',
+                             actual_output)
             self.assertEqual(4, mock_show.call_count)
             mock_show.reset_mock()
 

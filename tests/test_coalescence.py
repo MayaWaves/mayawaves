@@ -296,14 +296,14 @@ class TestCoalescence(TestCase):
         self.assertTrue(np.all(
             np.isclose(generated_separation_unit_vector_at_20M, expected_separation_unit_vector_at_20M, atol=0.001)))
 
-    def test__crop_to_four_orbits(self):
+    def test__crop_to_three_or_four_orbits(self):
         time = np.linspace(0, 10000, 1000)
         orbital_phase = 0.01 * time
         start_time = 150
         data = 0.5 * time + np.power(time, 2)
         separation_magnitude = np.linspace(10, 0, 1000)
-        cropped_time, cropped_data = self.coalescence._crop_to_four_orbits(start_time, time, orbital_phase,
-                                                                           separation_magnitude, data)
+        cropped_time, cropped_data = self.coalescence._crop_to_three_or_four_orbits(start_time, time, orbital_phase,
+                                                                                    separation_magnitude, data)
         initial_index = np.argmax(time > start_time)
         end_index = np.argmax(orbital_phase > (orbital_phase[initial_index] + 8 * np.pi))
         expected_cropped_time = time[initial_index: end_index]
@@ -318,14 +318,10 @@ class TestCoalescence(TestCase):
         start_time = 150
         data = 0.5 * time + np.power(time, 2)
         separation_magnitude = np.linspace(10, 0, 1000)
-        cropped_time, cropped_data = self.coalescence._crop_to_four_orbits(start_time, time, orbital_phase,
-                                                                           separation_magnitude, data)
-        initial_index = np.argmax(time > start_time)
-        end_index = np.argmax(time > time[np.argmax(separation_magnitude < 0.1)] - 100)
-        expected_cropped_time = time[initial_index: end_index]
-        expected_cropped_data = data[initial_index: end_index]
-        self.assertTrue(np.all(expected_cropped_data == cropped_data))
-        self.assertTrue(np.all(expected_cropped_time == cropped_time))
+        cropped_time, cropped_data = self.coalescence._crop_to_three_or_four_orbits(start_time, time, orbital_phase,
+                                                                                    separation_magnitude, data)
+        self.assertIsNone(cropped_time)
+        self.assertIsNone(cropped_data)
 
         # merge time < 500
         time = np.linspace(0, 1000, 1000)
@@ -333,14 +329,11 @@ class TestCoalescence(TestCase):
         start_time = 150
         data = 0.5 * time + np.power(time, 2)
         separation_magnitude = np.linspace(0.11, 0, 1000)
-        cropped_time, cropped_data = self.coalescence._crop_to_four_orbits(start_time, time, orbital_phase,
-                                                                           separation_magnitude, data)
+        cropped_time, cropped_data = self.coalescence._crop_to_three_or_four_orbits(start_time, time, orbital_phase,
+                                                                                    separation_magnitude, data)
         initial_index = np.argmax(time > start_time)
-        end_index = np.argmax(time > time[np.argmax(separation_magnitude < 0.1)] - 25)
-        expected_cropped_time = time[initial_index: end_index]
-        expected_cropped_data = data[initial_index: end_index]
-        self.assertTrue(np.all(expected_cropped_data == cropped_data))
-        self.assertTrue(np.all(expected_cropped_time == cropped_time))
+        self.assertIsNone(cropped_time)
+        self.assertIsNone(cropped_data)
 
         # there aren't 4 orbits
         time = np.linspace(0, 10000, 1000)
@@ -348,14 +341,11 @@ class TestCoalescence(TestCase):
         start_time = 150
         data = 0.5 * time + np.power(time, 2)
         separation_magnitude = np.linspace(10, 0, 1000)
-        cropped_time, cropped_data = self.coalescence._crop_to_four_orbits(start_time, time, orbital_phase,
-                                                                           separation_magnitude, data)
+        cropped_time, cropped_data = self.coalescence._crop_to_three_or_four_orbits(start_time, time, orbital_phase,
+                                                                                    separation_magnitude, data)
         initial_index = np.argmax(time > start_time)
-        end_index = np.argmax(time > time[np.argmax(separation_magnitude < 0.1)] - 100)
-        expected_cropped_time = time[initial_index:end_index]
-        expected_cropped_data = data[initial_index:end_index]
-        self.assertTrue(np.all(expected_cropped_data == cropped_data))
-        self.assertTrue(np.all(expected_cropped_time == cropped_time))
+        self.assertIsNone(cropped_time)
+        self.assertIsNone(cropped_data)
 
         # doesn't merge
         time = np.linspace(0, 10000, 1000)
@@ -364,13 +354,10 @@ class TestCoalescence(TestCase):
         data = 0.5 * time + np.power(time, 2)
         separation_magnitude = np.linspace(10, 1, 1000)
         end_index = np.argmax(time > (10000 - 100))
-        cropped_time, cropped_data = self.coalescence._crop_to_four_orbits(start_time, time, orbital_phase,
-                                                                           separation_magnitude, data)
-        initial_index = np.argmax(time > start_time)
-        expected_cropped_time = time[initial_index:end_index]
-        expected_cropped_data = data[initial_index:end_index]
-        self.assertTrue(np.all(expected_cropped_data == cropped_data))
-        self.assertTrue(np.all(expected_cropped_time == cropped_time))
+        cropped_time, cropped_data = self.coalescence._crop_to_three_or_four_orbits(start_time, time, orbital_phase,
+                                                                                    separation_magnitude, data)
+        self.assertIsNone(cropped_time)
+        self.assertIsNone(cropped_data)
 
         # end time is less than 50 from start time
         time = np.linspace(0, 1000, 1000)
@@ -378,8 +365,8 @@ class TestCoalescence(TestCase):
         start_time = 150
         data = 0.5 * time + np.power(time, 2)
         separation_magnitude = np.linspace(0.11, 0, 1000)
-        cropped_time, cropped_data = self.coalescence._crop_to_four_orbits(start_time, time, orbital_phase,
-                                                                           separation_magnitude, data)
+        cropped_time, cropped_data = self.coalescence._crop_to_three_or_four_orbits(start_time, time, orbital_phase,
+                                                                                    separation_magnitude, data)
         self.assertIsNone(cropped_time)
         self.assertIsNone(cropped_data)
 
@@ -388,8 +375,8 @@ class TestCoalescence(TestCase):
         start_time = 150
         data = 0.5 * time + np.power(time, 2)
         separation_magnitude = np.linspace(0.115, 0, 1000)
-        cropped_time, cropped_data = self.coalescence._crop_to_four_orbits(start_time, time, orbital_phase,
-                                                                           separation_magnitude, data)
+        cropped_time, cropped_data = self.coalescence._crop_to_three_or_four_orbits(start_time, time, orbital_phase,
+                                                                                    separation_magnitude, data)
         self.assertIsNone(cropped_time)
         self.assertIsNone(cropped_data)
 

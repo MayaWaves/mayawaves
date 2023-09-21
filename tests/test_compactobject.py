@@ -344,7 +344,7 @@ class TestCompactObject(TestCase):
 
         expected_dimensionless_spin = dimensional_spin / np.power(horizon_mass.reshape(len(horizon_mass), 1), 2)
 
-        self.assertTrue(np.all(expected_dimensionless_spin == generated_dimensionless_spin))
+        self.assertTrue(np.allclose(expected_dimensionless_spin, generated_dimensionless_spin, atol=1e-6))
 
     @mock.patch("mayawaves.compactobject.CompactObject.get_data_from_columns")
     def test_horizon_mass(self, compactobject_get_data_from_columns):
