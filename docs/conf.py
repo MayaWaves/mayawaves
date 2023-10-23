@@ -28,7 +28,7 @@ author = 'MAYA Collaboration'
 # ones.
 extensions = [
     'nbsphinx',
-    'sphinxcontrib.napoleon'
+    'sphinx.ext.napoleon'
 ]
 
 # Add any paths that contain templates here, relative to this directory.

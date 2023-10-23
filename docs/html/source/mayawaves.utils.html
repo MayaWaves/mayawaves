@@ -1,105 +1,96 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>mayawaves.utils package &mdash; Mayawaves  documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/doctools.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "tex2jax_ignore|mathjax_ignore|document", "processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
-    
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-
-    
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Creating a Mayawaves h5 File" href="notebooks/creating_h5.html" />
     <link rel="prev" title="mayawaves.radiation module" href="mayawaves.radiation.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
 
           
-            <a href="../index.html" class="icon icon-home"> Mayawaves
           
-
-          
+          <a href="../index.html" class="icon icon-home">
+            Mayawaves
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <p class="caption"><span class="caption-text">Documentation:</span></p>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="mayawaves.coalescence.html">mayawaves.coalescence module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mayawaves.compactobject.html">mayawaves.compactobject module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mayawaves.radiation.html">mayawaves.radiation module</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">mayawaves.utils package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#module-mayawaves.utils.postprocessingutils">mayawaves.utils.postprocessingutils module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-mayawaves.utils.catalogutils">mayawaves.utils.catalogutils module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-mayawaves.utils.postnewtonianutils">mayawaves.utils.postnewtonianutils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-mayawaves.utils.postprocessingutils">mayawaves.utils.postprocessingutils module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#mayawaves.utils.postprocessingutils.create_h5_from_simulation"><code class="docutils literal notranslate"><span class="pre">create_h5_from_simulation()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mayawaves.utils.postprocessingutils.determine_lvc_format"><code class="docutils literal notranslate"><span class="pre">determine_lvc_format()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mayawaves.utils.postprocessingutils.export_to_ascii"><code class="docutils literal notranslate"><span class="pre">export_to_ascii()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mayawaves.utils.postprocessingutils.export_to_lal_compatible_format"><code class="docutils literal notranslate"><span class="pre">export_to_lal_compatible_format()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mayawaves.utils.postprocessingutils.export_to_lvcnr_catalog"><code class="docutils literal notranslate"><span class="pre">export_to_lvcnr_catalog()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mayawaves.utils.postprocessingutils.get_stitched_data"><code class="docutils literal notranslate"><span class="pre">get_stitched_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mayawaves.utils.postprocessingutils.low_pass_filter"><code class="docutils literal notranslate"><span class="pre">low_pass_filter()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mayawaves.utils.postprocessingutils.summarize_coalescence"><code class="docutils literal notranslate"><span class="pre">summarize_coalescence()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-mayawaves.utils.catalogutils">mayawaves.utils.catalogutils module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#mayawaves.utils.catalogutils.Catalog"><code class="docutils literal notranslate"><span class="pre">Catalog</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mayawaves.utils.catalogutils.Catalog.aligned_spin_simulations"><code class="docutils literal notranslate"><span class="pre">Catalog.aligned_spin_simulations</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mayawaves.utils.catalogutils.Catalog.download_waveforms"><code class="docutils literal notranslate"><span class="pre">Catalog.download_waveforms()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mayawaves.utils.catalogutils.Catalog.get_parameters_for_simulation"><code class="docutils literal notranslate"><span class="pre">Catalog.get_parameters_for_simulation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mayawaves.utils.catalogutils.Catalog.get_simulations_with_mass_ratio"><code class="docutils literal notranslate"><span class="pre">Catalog.get_simulations_with_mass_ratio()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mayawaves.utils.catalogutils.Catalog.get_simulations_with_parameters"><code class="docutils literal notranslate"><span class="pre">Catalog.get_simulations_with_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mayawaves.utils.catalogutils.Catalog.get_simulations_with_symmetric_mass_ratio"><code class="docutils literal notranslate"><span class="pre">Catalog.get_simulations_with_symmetric_mass_ratio()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mayawaves.utils.catalogutils.Catalog.nonspinning_simulations"><code class="docutils literal notranslate"><span class="pre">Catalog.nonspinning_simulations</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mayawaves.utils.catalogutils.Catalog.plot_catalog_parameters"><code class="docutils literal notranslate"><span class="pre">Catalog.plot_catalog_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mayawaves.utils.catalogutils.Catalog.precessing_simulations"><code class="docutils literal notranslate"><span class="pre">Catalog.precessing_simulations</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mayawaves.utils.catalogutils.Catalog.spin_magnitudes_for_simulation"><code class="docutils literal notranslate"><span class="pre">Catalog.spin_magnitudes_for_simulation()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#mayawaves.utils.catalogutils.Parameter"><code class="docutils literal notranslate"><span class="pre">Parameter</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-mayawaves.utils.postnewtonianutils">mayawaves.utils.postnewtonianutils module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#mayawaves.utils.postnewtonianutils.dH_dr_from_separation"><code class="docutils literal notranslate"><span class="pre">dH_dr_from_separation()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mayawaves.utils.postnewtonianutils.orbital_frequency_from_separation"><code class="docutils literal notranslate"><span class="pre">orbital_frequency_from_separation()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mayawaves.utils.postnewtonianutils.radial_momentum_from_separation"><code class="docutils literal notranslate"><span class="pre">radial_momentum_from_separation()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mayawaves.utils.postnewtonianutils.separation_from_orbital_frequency"><code class="docutils literal notranslate"><span class="pre">separation_from_orbital_frequency()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mayawaves.utils.postnewtonianutils.tangential_momentum_from_separation"><code class="docutils literal notranslate"><span class="pre">tangential_momentum_from_separation()</span></code></a></li>
 </ul>
 </li>
 </ul>
-<p class="caption"><span class="caption-text">Tutorials:</span></p>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/creating_h5.html">Creating a Mayawaves h5 File</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/gravitational_waves.html">Gravitational Waves</a></li>
@@ -109,150 +100,85 @@
 <li class="toctree-l1"><a class="reference internal" href="notebooks/catalog_utils.html">Catalog Utils</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">Mayawaves</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-        
-      <li>mayawaves.utils package</li>
-    
-    
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">mayawaves.utils package</li>
       <li class="wy-breadcrumbs-aside">
-        
-          
             <a href="../_sources/source/mayawaves.utils.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  
-<style>
-/* CSS overrides for sphinx_rtd_theme */
-
-/* 24px margin */
-.nbinput.nblast.container,
-.nboutput.nblast.container {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
-
-/* ... except between code cells! */
-.nblast.container + .nbinput.container {
-    margin-top: -19px;
-}
-
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-
-/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
-.math {
-    text-align: unset;
-}
-</style>
-<div class="section" id="mayawaves-utils-package">
-<h1>mayawaves.utils package<a class="headerlink" href="#mayawaves-utils-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="module-mayawaves.utils.postprocessingutils">
-<span id="mayawaves-utils-postprocessingutils-module"></span><h2>mayawaves.utils.postprocessingutils module<a class="headerlink" href="#module-mayawaves.utils.postprocessingutils" title="Permalink to this headline">¶</a></h2>
+             
+  <section id="mayawaves-utils-package">
+<h1>mayawaves.utils package<a class="headerlink" href="#mayawaves-utils-package" title="Link to this heading"></a></h1>
+<section id="module-mayawaves.utils.postprocessingutils">
+<span id="mayawaves-utils-postprocessingutils-module"></span><h2>mayawaves.utils.postprocessingutils module<a class="headerlink" href="#module-mayawaves.utils.postprocessingutils" title="Link to this heading"></a></h2>
 <dl class="py function">
-<dt id="mayawaves.utils.postprocessingutils.create_h5_from_simulation">
-<code class="sig-prename descclassname"><span class="pre">mayawaves.utils.postprocessingutils.</span></code><code class="sig-name descname"><span class="pre">create_h5_from_simulation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_directory</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_directory</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">catalog_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="headerlink" href="#mayawaves.utils.postprocessingutils.create_h5_from_simulation" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="mayawaves.utils.postprocessingutils.create_h5_from_simulation">
+<span class="sig-prename descclassname"><span class="pre">mayawaves.utils.postprocessingutils.</span></span><span class="sig-name descname"><span class="pre">create_h5_from_simulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">catalog_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#mayawaves.utils.postprocessingutils.create_h5_from_simulation" title="Link to this definition"></a></dt>
 <dd><p>Create a Mayawaves compatible h5 file storing all important information from the raw simulation.</p>
 <p>Stitch and store the simulation data from the raw simulation into a h5 file which can then be read by the
 Coalescence class.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>raw_directory</strong> (<em>str</em>) – directory of the raw simulation</p></li>
 <li><p><strong>output_directory</strong> (<em>str</em>) – directory to store the created h5 file</p></li>
 <li><p><strong>catalog_id</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>, optional) – id for the simulation within a catalog</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>path to the generated h5 file</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
-<dt id="mayawaves.utils.postprocessingutils.determine_lvc_format">
-<code class="sig-prename descclassname"><span class="pre">mayawaves.utils.postprocessingutils.</span></code><code class="sig-name descname"><span class="pre">determine_lvc_format</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coalescence</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="mayawaves.coalescence.html#mayawaves.coalescence.Coalescence" title="mayawaves.coalescence.Coalescence"><span class="pre">mayawaves.coalescence.Coalescence</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_horizon_time</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">int</span><a class="headerlink" href="#mayawaves.utils.postprocessingutils.determine_lvc_format" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="mayawaves.utils.postprocessingutils.determine_lvc_format">
+<span class="sig-prename descclassname"><span class="pre">mayawaves.utils.postprocessingutils.</span></span><span class="sig-name descname"><span class="pre">determine_lvc_format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coalescence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="mayawaves.coalescence.html#mayawaves.coalescence.Coalescence" title="mayawaves.coalescence.Coalescence"><span class="pre">Coalescence</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_horizon_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#mayawaves.utils.postprocessingutils.determine_lvc_format" title="Link to this definition"></a></dt>
 <dd><p>Determine the LVC format number based upon the data available from the simulation</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>coalescence</strong> (<a class="reference internal" href="mayawaves.coalescence.html#mayawaves.coalescence.Coalescence" title="mayawaves.coalescence.Coalescence"><em>Coalescence</em></a>) – the Coalescence object being exported</p></li>
 <li><p><strong>initial_horizon_time</strong> (<em>float</em>) – the time for initial data at the horizon</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>the LVC format (1, 2, 3)</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>int</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
-<dt id="mayawaves.utils.postprocessingutils.export_to_ascii">
-<code class="sig-prename descclassname"><span class="pre">mayawaves.utils.postprocessingutils.</span></code><code class="sig-name descname"><span class="pre">export_to_ascii</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coalescence</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="mayawaves.coalescence.html#mayawaves.coalescence.Coalescence" title="mayawaves.coalescence.Coalescence"><span class="pre">mayawaves.coalescence.Coalescence</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_directory</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">center_of_mass_correction</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mayawaves.utils.postprocessingutils.export_to_ascii" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="mayawaves.utils.postprocessingutils.export_to_ascii">
+<span class="sig-prename descclassname"><span class="pre">mayawaves.utils.postprocessingutils.</span></span><span class="sig-name descname"><span class="pre">export_to_ascii</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coalescence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="mayawaves.coalescence.html#mayawaves.coalescence.Coalescence" title="mayawaves.coalescence.Coalescence"><span class="pre">Coalescence</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">center_of_mass_correction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mayawaves.utils.postprocessingutils.export_to_ascii" title="Link to this definition"></a></dt>
 <dd><p>Export a Coalescence object to ascii format in the specified output directory.</p>
 <p>Export all information contained in the Coalescence object to individual ascii files in the specified output
 directory.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>coalescence</strong> (<a class="reference internal" href="mayawaves.coalescence.html#mayawaves.coalescence.Coalescence" title="mayawaves.coalescence.Coalescence"><em>Coalescence</em></a>) – the Coalescence object to be exported</p></li>
 <li><p><strong>output_directory</strong> (<em>str</em>) – the location to store the exported ascii data</p></li>
@@ -263,13 +189,13 @@ directory.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="mayawaves.utils.postprocessingutils.export_to_lal_compatible_format">
-<code class="sig-prename descclassname"><span class="pre">mayawaves.utils.postprocessingutils.</span></code><code class="sig-name descname"><span class="pre">export_to_lal_compatible_format</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coalescence</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="mayawaves.coalescence.html#mayawaves.coalescence.Coalescence" title="mayawaves.coalescence.Coalescence"><span class="pre">mayawaves.coalescence.Coalescence</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NR_group</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NR_code</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bibtex_keys</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contact_email</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extraction_radius</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">license_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'LVC-internal'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nr_techniques</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comparable_simulation</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">files_in_error_series</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">production_run</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">center_of_mass_correction</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mayawaves.utils.postprocessingutils.export_to_lal_compatible_format" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="mayawaves.utils.postprocessingutils.export_to_lal_compatible_format">
+<span class="sig-prename descclassname"><span class="pre">mayawaves.utils.postprocessingutils.</span></span><span class="sig-name descname"><span class="pre">export_to_lal_compatible_format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coalescence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="mayawaves.coalescence.html#mayawaves.coalescence.Coalescence" title="mayawaves.coalescence.Coalescence"><span class="pre">Coalescence</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NR_group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NR_code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bibtex_keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contact_email</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extraction_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">license_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'LVC-internal'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nr_techniques</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comparable_simulation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">files_in_error_series</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">production_run</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">center_of_mass_correction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mayawaves.utils.postprocessingutils.export_to_lal_compatible_format" title="Link to this definition"></a></dt>
 <dd><p>Exports the Coalescence object to a format compatible with LALSuite.</p>
 <p>Exports the Coalescence object into the format required by <a class="reference external" href="https://arxiv.org/abs/1703.01076">https://arxiv.org/abs/1703.01076</a> in order to be
 readable by LALSuite and PyCBC. Less stringent requirements than the LVC-NR catalog.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>coalescence</strong> (<a class="reference internal" href="mayawaves.coalescence.html#mayawaves.coalescence.Coalescence" title="mayawaves.coalescence.Coalescence"><em>Coalescence</em></a>) – the Coalescence object being exported</p></li>
 <li><p><strong>output_directory</strong> (<em>str</em>) – location to store the exported catalog file</p></li>
@@ -291,14 +217,14 @@ readable by LALSuite and PyCBC. Less stringent requirements than the LVC-NR cata
 </dd></dl>
 
 <dl class="py function">
-<dt id="mayawaves.utils.postprocessingutils.export_to_lvcnr_catalog">
-<code class="sig-prename descclassname"><span class="pre">mayawaves.utils.postprocessingutils.</span></code><code class="sig-name descname"><span class="pre">export_to_lvcnr_catalog</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coalescence</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="mayawaves.coalescence.html#mayawaves.coalescence.Coalescence" title="mayawaves.coalescence.Coalescence"><span class="pre">mayawaves.coalescence.Coalescence</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_directory</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NR_group</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NR_code</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bibtex_keys</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contact_email</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">license_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'LVC-internal'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nr_techniques</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comparable_simulation</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">files_in_error_series</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">production_run</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">center_of_mass_correction</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mayawaves.utils.postprocessingutils.export_to_lvcnr_catalog" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="mayawaves.utils.postprocessingutils.export_to_lvcnr_catalog">
+<span class="sig-prename descclassname"><span class="pre">mayawaves.utils.postprocessingutils.</span></span><span class="sig-name descname"><span class="pre">export_to_lvcnr_catalog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coalescence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="mayawaves.coalescence.html#mayawaves.coalescence.Coalescence" title="mayawaves.coalescence.Coalescence"><span class="pre">Coalescence</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NR_group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NR_code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bibtex_keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contact_email</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">license_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'LVC-internal'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nr_techniques</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comparable_simulation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">files_in_error_series</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">production_run</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">center_of_mass_correction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mayawaves.utils.postprocessingutils.export_to_lvcnr_catalog" title="Link to this definition"></a></dt>
 <dd><p>Exports the Coalescence object to the format required by LIGO to be included in the LVC-NR catalog.</p>
 <p>Exports the Coalescence object into the format required by <a class="reference external" href="https://arxiv.org/abs/1703.01076">https://arxiv.org/abs/1703.01076</a> in order to be
 included in the LVC-NR catalog. Must have sufficient spin data and be able to compute eeccentricity. Will be
 extrapolated to infinite radius.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>coalescence</strong> (<a class="reference internal" href="mayawaves.coalescence.html#mayawaves.coalescence.Coalescence" title="mayawaves.coalescence.Coalescence"><em>Coalescence</em></a>) – the Coalescence object being exported</p></li>
 <li><p><strong>output_directory</strong> (<em>str</em>) – location to store the exported catalog file</p></li>
@@ -319,55 +245,55 @@ extrapolated to infinite radius.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="mayawaves.utils.postprocessingutils.get_stitched_data">
-<code class="sig-prename descclassname"><span class="pre">mayawaves.utils.postprocessingutils.</span></code><code class="sig-name descname"><span class="pre">get_stitched_data</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_directory</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">numpy.ndarray</span><a class="headerlink" href="#mayawaves.utils.postprocessingutils.get_stitched_data" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="mayawaves.utils.postprocessingutils.get_stitched_data">
+<span class="sig-prename descclassname"><span class="pre">mayawaves.utils.postprocessingutils.</span></span><span class="sig-name descname"><span class="pre">get_stitched_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#mayawaves.utils.postprocessingutils.get_stitched_data" title="Link to this definition"></a></dt>
 <dd><p>Stitch together the data for a given file.</p>
 <p>Stitch the data from all outputs for a given file and return the full data as a numpy array with the same number of
 columns as the original files.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>raw_directory</strong> (<em>str</em>) – directory of the raw simulation</p></li>
 <li><p><strong>filename</strong> (<em>str</em>) – filename to be stitched</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>stitched data for the given filename</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>numpy.ndarray</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
-<dt id="mayawaves.utils.postprocessingutils.low_pass_filter">
-<code class="sig-prename descclassname"><span class="pre">mayawaves.utils.postprocessingutils.</span></code><code class="sig-name descname"><span class="pre">low_pass_filter</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low_pass_freq_cutoff</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">numpy.ndarray</span><a class="headerlink" href="#mayawaves.utils.postprocessingutils.low_pass_filter" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="mayawaves.utils.postprocessingutils.low_pass_filter">
+<span class="sig-prename descclassname"><span class="pre">mayawaves.utils.postprocessingutils.</span></span><span class="sig-name descname"><span class="pre">low_pass_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low_pass_freq_cutoff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#mayawaves.utils.postprocessingutils.low_pass_filter" title="Link to this definition"></a></dt>
 <dd><p>Filter out high frequency noise</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>time</strong> (<em>numpy.ndarray</em>) – time stamps associated with data</p></li>
 <li><p><strong>data</strong> (<em>numpy.ndarray</em>) – data to filter</p></li>
 <li><p><strong>low_pass_freq_cutoff</strong> (<em>float</em>) – frequency cutoff to use with butter filter</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>data with high frequencies removed</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>numpy.ndarray</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
-<dt id="mayawaves.utils.postprocessingutils.summarize_coalescence">
-<code class="sig-prename descclassname"><span class="pre">mayawaves.utils.postprocessingutils.</span></code><code class="sig-name descname"><span class="pre">summarize_coalescence</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coalescence</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="mayawaves.coalescence.html#mayawaves.coalescence.Coalescence" title="mayawaves.coalescence.Coalescence"><span class="pre">mayawaves.coalescence.Coalescence</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_directory</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mayawaves.utils.postprocessingutils.summarize_coalescence" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="mayawaves.utils.postprocessingutils.summarize_coalescence">
+<span class="sig-prename descclassname"><span class="pre">mayawaves.utils.postprocessingutils.</span></span><span class="sig-name descname"><span class="pre">summarize_coalescence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coalescence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="mayawaves.coalescence.html#mayawaves.coalescence.Coalescence" title="mayawaves.coalescence.Coalescence"><span class="pre">Coalescence</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mayawaves.utils.postprocessingutils.summarize_coalescence" title="Link to this definition"></a></dt>
 <dd><p>Summarize data collected from a Coalescence simulation.</p>
 <p>Create a summary.txt document and important plots in the specified output directory.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>coalescence</strong> (<a class="reference internal" href="mayawaves.coalescence.html#mayawaves.coalescence.Coalescence" title="mayawaves.coalescence.Coalescence"><em>Coalescence</em></a>) – the Coalescence object to be summarized</p></li>
 <li><p><strong>output_directory</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>, optional) – the location to store the summary file and plots. If a path is not
@@ -377,27 +303,27 @@ provided, the plots are displayed rather than saved.</p></li>
 </dl>
 </dd></dl>
 
-</div>
-<div class="section" id="module-mayawaves.utils.catalogutils">
-<span id="mayawaves-utils-catalogutils-module"></span><h2>mayawaves.utils.catalogutils module<a class="headerlink" href="#module-mayawaves.utils.catalogutils" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="module-mayawaves.utils.catalogutils">
+<span id="mayawaves-utils-catalogutils-module"></span><h2>mayawaves.utils.catalogutils module<a class="headerlink" href="#module-mayawaves.utils.catalogutils" title="Link to this heading"></a></h2>
 <dl class="py class">
-<dt id="mayawaves.utils.catalogutils.Catalog">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mayawaves.utils.catalogutils.</span></code><code class="sig-name descname"><span class="pre">Catalog</span></code><a class="headerlink" href="#mayawaves.utils.catalogutils.Catalog" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="mayawaves.utils.catalogutils.Catalog">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mayawaves.utils.catalogutils.</span></span><span class="sig-name descname"><span class="pre">Catalog</span></span><a class="headerlink" href="#mayawaves.utils.catalogutils.Catalog" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class for interacting with the MAYA catalog.</p>
-<dl class="py method">
-<dt id="mayawaves.utils.catalogutils.Catalog.aligned_spin_simulations">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">aligned_spin_simulations</span></code><a class="headerlink" href="#mayawaves.utils.catalogutils.Catalog.aligned_spin_simulations" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="mayawaves.utils.catalogutils.Catalog.aligned_spin_simulations">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">aligned_spin_simulations</span></span><a class="headerlink" href="#mayawaves.utils.catalogutils.Catalog.aligned_spin_simulations" title="Link to this definition"></a></dt>
 <dd><p>List of all simulations/waveforms with aligned spin.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="mayawaves.utils.catalogutils.Catalog.download_waveforms">
-<code class="sig-name descname"><span class="pre">download_waveforms</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">waveforms</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_wf_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">safety</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lvcnr_format</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mayawaves.utils.catalogutils.Catalog.download_waveforms" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="mayawaves.utils.catalogutils.Catalog.download_waveforms">
+<span class="sig-name descname"><span class="pre">download_waveforms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">waveforms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_wf_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">safety</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lvcnr_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mayawaves.utils.catalogutils.Catalog.download_waveforms" title="Link to this definition"></a></dt>
 <dd><p>Downloads a list of waveform ids from the MAYA Catalog. By default, they are downloaded in the
 MAYA format, but they can also be downloaded in the lvc-nr format (<a class="reference external" href="https://arxiv.org/abs/1703.01076">https://arxiv.org/abs/1703.01076</a>).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>waveforms</strong> (<em>list</em>) – list of waveforms to download</p></li>
 <li><p><strong>save_wf_path</strong> (<em>str</em>) – where to save the downloaded waveforms</p></li>
@@ -411,100 +337,100 @@ False.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="mayawaves.utils.catalogutils.Catalog.get_parameters_for_simulation">
-<code class="sig-name descname"><span class="pre">get_parameters_for_simulation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">catalog_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dict</span><a class="headerlink" href="#mayawaves.utils.catalogutils.Catalog.get_parameters_for_simulation" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="mayawaves.utils.catalogutils.Catalog.get_parameters_for_simulation">
+<span class="sig-name descname"><span class="pre">get_parameters_for_simulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">catalog_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#mayawaves.utils.catalogutils.Catalog.get_parameters_for_simulation" title="Link to this definition"></a></dt>
 <dd><p>Outputs all the metadata for a given waveform.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>catalog_id</strong> (<em>str</em>) – simulation/waveform catalog id</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>parameter dictionary</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="mayawaves.utils.catalogutils.Catalog.get_simulations_with_mass_ratio">
-<code class="sig-name descname"><span class="pre">get_simulations_with_mass_ratio</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mass_ratio</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0.0001</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">list</span><a class="headerlink" href="#mayawaves.utils.catalogutils.Catalog.get_simulations_with_mass_ratio" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="mayawaves.utils.catalogutils.Catalog.get_simulations_with_mass_ratio">
+<span class="sig-name descname"><span class="pre">get_simulations_with_mass_ratio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mass_ratio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0001</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#mayawaves.utils.catalogutils.Catalog.get_simulations_with_mass_ratio" title="Link to this definition"></a></dt>
 <dd><p>List of all waveforms with a given mass ratio within specified tolerance.</p>
 <p>Mass ratio is defined as <span class="math notranslate nohighlight">\(q=m_1 / m_2 \geq 1\)</span></p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>mass_ratio</strong> (<em>float</em>) – desired mass ratio value</p></li>
 <li><p><strong>tol</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>, optional) – tolerance</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>a list of simulations/waveforms which satisfy the requirements.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="mayawaves.utils.catalogutils.Catalog.get_simulations_with_parameters">
-<code class="sig-name descname"><span class="pre">get_simulations_with_parameters</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">list</span><a class="headerlink" href="#mayawaves.utils.catalogutils.Catalog.get_simulations_with_parameters" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="mayawaves.utils.catalogutils.Catalog.get_simulations_with_parameters">
+<span class="sig-name descname"><span class="pre">get_simulations_with_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#mayawaves.utils.catalogutils.Catalog.get_simulations_with_parameters" title="Link to this definition"></a></dt>
 <dd><p>This function takes in a list of parameters, their correspnding values and tolerances (optional, 0.0001
 if not provided) and returns all the waveforms with those values within those tolerances.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>params</strong> (<em>list</em>) – list of parameters</p></li>
 <li><p><strong>values</strong> (<em>list</em>) – list of corresponding values</p></li>
 <li><p><strong>tol</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code>, optional) – list of tolerances. If not provided, tolerances of 0.0001 will be used.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>a list of simulations/waveforms which satisfy the requirements</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="mayawaves.utils.catalogutils.Catalog.get_simulations_with_symmetric_mass_ratio">
-<code class="sig-name descname"><span class="pre">get_simulations_with_symmetric_mass_ratio</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0.0001</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">list</span><a class="headerlink" href="#mayawaves.utils.catalogutils.Catalog.get_simulations_with_symmetric_mass_ratio" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="mayawaves.utils.catalogutils.Catalog.get_simulations_with_symmetric_mass_ratio">
+<span class="sig-name descname"><span class="pre">get_simulations_with_symmetric_mass_ratio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0001</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#mayawaves.utils.catalogutils.Catalog.get_simulations_with_symmetric_mass_ratio" title="Link to this definition"></a></dt>
 <dd><p>List of all waveforms with a given symmetric mass ratio within specified tolerance.</p>
 <p>Symmetric mass ratio defined as <span class="math notranslate nohighlight">\(q/(1+q)^2\)</span></p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>eta</strong> (<em>float</em>) – desired symmetric mass ratio</p></li>
 <li><p><strong>tol</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>, optional) – tolerance</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>a list of simulations/waveforms which satisfy the requirements.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list</p>
 </dd>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="mayawaves.utils.catalogutils.Catalog.nonspinning_simulations">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">nonspinning_simulations</span></code><a class="headerlink" href="#mayawaves.utils.catalogutils.Catalog.nonspinning_simulations" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="mayawaves.utils.catalogutils.Catalog.nonspinning_simulations">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nonspinning_simulations</span></span><a class="headerlink" href="#mayawaves.utils.catalogutils.Catalog.nonspinning_simulations" title="Link to this definition"></a></dt>
 <dd><p>List of all simulations/waveforms with no spin.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="mayawaves.utils.catalogutils.Catalog.plot_catalog_parameters">
-<code class="sig-name descname"><span class="pre">plot_catalog_parameters</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p1</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#mayawaves.utils.catalogutils.Parameter" title="mayawaves.utils.catalogutils.Parameter"><span class="pre">mayawaves.utils.catalogutils.Parameter</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#mayawaves.utils.catalogutils.Parameter" title="mayawaves.utils.catalogutils.Parameter"><span class="pre">mayawaves.utils.catalogutils.Parameter</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dpi</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'cornflowerblue'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mayawaves.utils.catalogutils.Catalog.plot_catalog_parameters" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="mayawaves.utils.catalogutils.Catalog.plot_catalog_parameters">
+<span class="sig-name descname"><span class="pre">plot_catalog_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#mayawaves.utils.catalogutils.Parameter" title="mayawaves.utils.catalogutils.Parameter"><span class="pre">Parameter</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#mayawaves.utils.catalogutils.Parameter" title="mayawaves.utils.catalogutils.Parameter"><span class="pre">Parameter</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dpi</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'cornflowerblue'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mayawaves.utils.catalogutils.Catalog.plot_catalog_parameters" title="Link to this definition"></a></dt>
 <dd><p>Plots the two parameter against each other as well as a histogram distribution of each parameter for all waveforms
 in the catalog. If a path is provided, figures will be saved in the provided directory. If a path is not provided,
 the figures will be displayed.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>p1</strong> (<a class="reference internal" href="#mayawaves.utils.catalogutils.Parameter" title="mayawaves.utils.catalogutils.Parameter"><em>Parameter</em></a>) – one of the parameters to plot</p></li>
 <li><p><strong>p2</strong> (<a class="reference internal" href="#mayawaves.utils.catalogutils.Parameter" title="mayawaves.utils.catalogutils.Parameter"><em>Parameter</em></a>) – the other parameter to plot</p></li>
@@ -516,24 +442,24 @@ the figures will be displayed.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="mayawaves.utils.catalogutils.Catalog.precessing_simulations">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">precessing_simulations</span></code><a class="headerlink" href="#mayawaves.utils.catalogutils.Catalog.precessing_simulations" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="mayawaves.utils.catalogutils.Catalog.precessing_simulations">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">precessing_simulations</span></span><a class="headerlink" href="#mayawaves.utils.catalogutils.Catalog.precessing_simulations" title="Link to this definition"></a></dt>
 <dd><p>List of all simulations/waveforms with precessing spin.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="mayawaves.utils.catalogutils.Catalog.spin_magnitudes_for_simulation">
-<code class="sig-name descname"><span class="pre">spin_magnitudes_for_simulation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">tuple</span><a class="headerlink" href="#mayawaves.utils.catalogutils.Catalog.spin_magnitudes_for_simulation" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="mayawaves.utils.catalogutils.Catalog.spin_magnitudes_for_simulation">
+<span class="sig-name descname"><span class="pre">spin_magnitudes_for_simulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#mayawaves.utils.catalogutils.Catalog.spin_magnitudes_for_simulation" title="Link to this definition"></a></dt>
 <dd><p>Calculates spin magnitude for each object in the binary system and returns a tuple with individual spin magnitudes.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – simulation/waveform name</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>spin of the primary object, spin of the secondary object</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>tuple</p>
 </dd>
 </dl>
@@ -542,23 +468,23 @@ the figures will be displayed.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="mayawaves.utils.catalogutils.Parameter">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mayawaves.utils.catalogutils.</span></code><code class="sig-name descname"><span class="pre">Parameter</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mayawaves.utils.catalogutils.Parameter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<dt class="sig sig-object py" id="mayawaves.utils.catalogutils.Parameter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mayawaves.utils.catalogutils.</span></span><span class="sig-name descname"><span class="pre">Parameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mayawaves.utils.catalogutils.Parameter" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
 <p>Enum for easily referencing parameters of the simulations.</p>
 </dd></dl>
 
-</div>
-<div class="section" id="module-mayawaves.utils.postnewtonianutils">
-<span id="mayawaves-utils-postnewtonianutils-module"></span><h2>mayawaves.utils.postnewtonianutils module<a class="headerlink" href="#module-mayawaves.utils.postnewtonianutils" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="module-mayawaves.utils.postnewtonianutils">
+<span id="mayawaves-utils-postnewtonianutils-module"></span><h2>mayawaves.utils.postnewtonianutils module<a class="headerlink" href="#module-mayawaves.utils.postnewtonianutils" title="Link to this heading"></a></h2>
 <dl class="py function">
-<dt id="mayawaves.utils.postnewtonianutils.dH_dr_from_separation">
-<code class="sig-prename descclassname"><span class="pre">mayawaves.utils.postnewtonianutils.</span></code><code class="sig-name descname"><span class="pre">dH_dr_from_separation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">separation</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_ratio</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">primary_dimensionless_spin</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secondary_dimensionless_spin</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">float</span><a class="headerlink" href="#mayawaves.utils.postnewtonianutils.dH_dr_from_separation" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="mayawaves.utils.postnewtonianutils.dH_dr_from_separation">
+<span class="sig-prename descclassname"><span class="pre">mayawaves.utils.postnewtonianutils.</span></span><span class="sig-name descname"><span class="pre">dH_dr_from_separation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">separation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_ratio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">primary_dimensionless_spin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secondary_dimensionless_spin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#mayawaves.utils.postnewtonianutils.dH_dr_from_separation" title="Link to this definition"></a></dt>
 <dd><p>Derivative of the hamiltonian with respect to separation.</p>
 <p>Derivative of the hamiltonian with respect to separation at the given separation for a binary with the provided
 parameters.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>separation</strong> (<em>float</em>) – the separation between the two objects</p></li>
 <li><p><strong>mass_ratio</strong> (<em>float</em>) – the ratio of the masses of the two objects, <span class="math notranslate nohighlight">\(q = m_1 / m_2 &gt; 1\)</span></p></li>
@@ -566,23 +492,23 @@ parameters.</p>
 <li><p><strong>secondary_dimensionless_spin</strong> (<em>numpy.ndarray</em>) – the dimensionless spin of the smaller object</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>derivative of the hamiltonian with respect to separation</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
-<dt id="mayawaves.utils.postnewtonianutils.orbital_frequency_from_separation">
-<code class="sig-prename descclassname"><span class="pre">mayawaves.utils.postnewtonianutils.</span></code><code class="sig-name descname"><span class="pre">orbital_frequency_from_separation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">separation</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_ratio</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">primary_dimensionless_spin</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secondary_dimensionless_spin</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">float</span><a class="headerlink" href="#mayawaves.utils.postnewtonianutils.orbital_frequency_from_separation" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="mayawaves.utils.postnewtonianutils.orbital_frequency_from_separation">
+<span class="sig-prename descclassname"><span class="pre">mayawaves.utils.postnewtonianutils.</span></span><span class="sig-name descname"><span class="pre">orbital_frequency_from_separation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">separation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_ratio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">primary_dimensionless_spin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secondary_dimensionless_spin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#mayawaves.utils.postnewtonianutils.orbital_frequency_from_separation" title="Link to this definition"></a></dt>
 <dd><p>The orbital frequency for a binary at a given separation.</p>
 <p>For a quasi-circular binary with the provided parameters, this returns the orbital frequency at the requested
 separation. Uses equations from <a class="reference external" href="https://arxiv.org/pdf/1702.00872.pdf">https://arxiv.org/pdf/1702.00872.pdf</a>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>separation</strong> (<em>float</em>) – the separation between the two objects</p></li>
 <li><p><strong>mass_ratio</strong> (<em>float</em>) – the ratio of the masses of the two objects, <span class="math notranslate nohighlight">\(q = m_1 / m_2 &gt; 1\)</span></p></li>
@@ -590,23 +516,23 @@ separation. Uses equations from <a class="reference external" href="https://arxi
 <li><p><strong>secondary_dimensionless_spin</strong> (<em>numpy.ndarray</em>) – the dimensionless spin of the smaller object</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>orbital frequency for a quasi-circular binary at the given separation</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
-<dt id="mayawaves.utils.postnewtonianutils.radial_momentum_from_separation">
-<code class="sig-prename descclassname"><span class="pre">mayawaves.utils.postnewtonianutils.</span></code><code class="sig-name descname"><span class="pre">radial_momentum_from_separation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">separation</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_ratio</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">primary_dimensionless_spin</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secondary_dimensionless_spin</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mayawaves.utils.postnewtonianutils.radial_momentum_from_separation" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="mayawaves.utils.postnewtonianutils.radial_momentum_from_separation">
+<span class="sig-prename descclassname"><span class="pre">mayawaves.utils.postnewtonianutils.</span></span><span class="sig-name descname"><span class="pre">radial_momentum_from_separation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">separation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_ratio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">primary_dimensionless_spin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secondary_dimensionless_spin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mayawaves.utils.postnewtonianutils.radial_momentum_from_separation" title="Link to this definition"></a></dt>
 <dd><p>The radial momentum for a quasi-circular binary at the given separation.</p>
 <p>For a binary of the provided parameters, this gives the radial momentum to obtain a quasi-circular orbit. Uses
 equations from <a class="reference external" href="https://arxiv.org/pdf/1702.00872.pdf">https://arxiv.org/pdf/1702.00872.pdf</a> and <a class="reference external" href="https://arxiv.org/pdf/1810.00036.pdf">https://arxiv.org/pdf/1810.00036.pdf</a>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>separation</strong> (<em>float</em>) – the separation between the two objects</p></li>
 <li><p><strong>mass_ratio</strong> (<em>float</em>) – the ratio of the masses of the two objects, <span class="math notranslate nohighlight">\(q = m_1 / m_2 &gt; 1\)</span></p></li>
@@ -614,23 +540,23 @@ equations from <a class="reference external" href="https://arxiv.org/pdf/1702.00
 <li><p><strong>secondary_dimensionless_spin</strong> (<em>numpy.ndarray</em>) – the dimensionless spin of the smaller object</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>the radial momentum of a quasi-circular orbit for the given binary</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
-<dt id="mayawaves.utils.postnewtonianutils.separation_from_orbital_frequency">
-<code class="sig-prename descclassname"><span class="pre">mayawaves.utils.postnewtonianutils.</span></code><code class="sig-name descname"><span class="pre">separation_from_orbital_frequency</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">orbital_frequency</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_ratio</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">primary_dimensionless_spin</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secondary_dimensionless_spin</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">float</span><a class="headerlink" href="#mayawaves.utils.postnewtonianutils.separation_from_orbital_frequency" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="mayawaves.utils.postnewtonianutils.separation_from_orbital_frequency">
+<span class="sig-prename descclassname"><span class="pre">mayawaves.utils.postnewtonianutils.</span></span><span class="sig-name descname"><span class="pre">separation_from_orbital_frequency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">orbital_frequency</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_ratio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">primary_dimensionless_spin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secondary_dimensionless_spin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#mayawaves.utils.postnewtonianutils.separation_from_orbital_frequency" title="Link to this definition"></a></dt>
 <dd><p>The separation at which a binary will have the given orbital frequency.</p>
 <p>For a quasi-circular binary with the provided parameters, this returns the separation in M at which the binary will
 have the given orbital frequency. Uses equations from <a class="reference external" href="https://arxiv.org/pdf/1702.00872.pdf">https://arxiv.org/pdf/1702.00872.pdf</a>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>orbital_frequency</strong> (<em>float</em>) – the orbital frequency of the binary</p></li>
 <li><p><strong>mass_ratio</strong> (<em>float</em>) – the ratio of the masses of the two objects, <span class="math notranslate nohighlight">\(q = m_1 / m_2 &gt; 1\)</span></p></li>
@@ -638,23 +564,23 @@ have the given orbital frequency. Uses equations from <a class="reference extern
 <li><p><strong>secondary_dimensionless_spin</strong> (<em>numpy.ndarray</em>) – the dimensionless spin of the smaller object</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>the separation at which a quasi-circular binary will have the provided orbital frequency</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
-<dt id="mayawaves.utils.postnewtonianutils.tangential_momentum_from_separation">
-<code class="sig-prename descclassname"><span class="pre">mayawaves.utils.postnewtonianutils.</span></code><code class="sig-name descname"><span class="pre">tangential_momentum_from_separation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">separation</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_ratio</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">primary_dimensionless_spin</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secondary_dimensionless_spin</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">float</span><a class="headerlink" href="#mayawaves.utils.postnewtonianutils.tangential_momentum_from_separation" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="mayawaves.utils.postnewtonianutils.tangential_momentum_from_separation">
+<span class="sig-prename descclassname"><span class="pre">mayawaves.utils.postnewtonianutils.</span></span><span class="sig-name descname"><span class="pre">tangential_momentum_from_separation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">separation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_ratio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">primary_dimensionless_spin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secondary_dimensionless_spin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#mayawaves.utils.postnewtonianutils.tangential_momentum_from_separation" title="Link to this definition"></a></dt>
 <dd><p>The tangential momentum for a quasi-circular binary at the given separation.</p>
 <p>For a binary of the provided parameters, this gives the tangential momentum to obtain a quasi-circular orbit. Uses
 equations from <a class="reference external" href="https://arxiv.org/pdf/1702.00872.pdf">https://arxiv.org/pdf/1702.00872.pdf</a>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>separation</strong> (<em>float</em>) – the separation between the two objects</p></li>
 <li><p><strong>mass_ratio</strong> (<em>float</em>) – the ratio of the masses of the two objects, <span class="math notranslate nohighlight">\(q = m_1 / m_2 &gt; 1\)</span></p></li>
@@ -662,64 +588,47 @@ equations from <a class="reference external" href="https://arxiv.org/pdf/1702.00
 <li><p><strong>secondary_dimensionless_spin</strong> (<em>numpy.ndarray</em>) – the dimensionless spin of the smaller object</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>the tangential momentum of a quasi-circular orbit for the given binary</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
 
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="notebooks/creating_h5.html" class="btn btn-neutral float-right" title="Creating a Mayawaves h5 File" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="mayawaves.radiation.html" class="btn btn-neutral float-left" title="mayawaves.radiation module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="notebooks/creating_h5.html" class="btn btn-neutral float-right" title="Creating a Mayawaves h5 File" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2023, MAYA Collaboration.
-
-    </p>
+    <p>&#169; Copyright 2023, MAYA Collaboration.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>
