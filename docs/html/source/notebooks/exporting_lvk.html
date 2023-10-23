@@ -108,8 +108,8 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from mayawaves.coalescence import Coalescence
-from mayawaves.utils.postprocessingutils import export_to_lvcnr_catalog, export_to_lal_compatible_format
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mayawaves.coalescence</span> <span class="kn">import</span> <span class="n">Coalescence</span>
+<span class="kn">from</span> <span class="nn">mayawaves.utils.postprocessingutils</span> <span class="kn">import</span> <span class="n">export_to_lvcnr_catalog</span><span class="p">,</span> <span class="n">export_to_lal_compatible_format</span>
 </pre></div>
 </div>
 </div>
@@ -119,8 +119,8 @@ from mayawaves.utils.postprocessingutils import export_to_lvcnr_catalog, export_
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>example_h5_filepath = &quot;../../../example_simulation/D11_q5_a1_-0.362_-0.0548_-0.64_a2_-0.0013_0.001_-0.0838_m533.33.h5&quot;
-output_direcory = &quot;&quot;
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">example_h5_filepath</span> <span class="o">=</span> <span class="s2">&quot;../example_simulation/D11_q5_a1_-0.362_-0.0548_-0.64_a2_-0.0013_0.001_-0.0838_m533.33.h5&quot;</span>
+<span class="n">output_direcory</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -128,7 +128,7 @@ output_direcory = &quot;&quot;
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>coalescence = Coalescence(example_h5_filepath)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coalescence</span> <span class="o">=</span> <span class="n">Coalescence</span><span class="p">(</span><span class="n">example_h5_filepath</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -144,7 +144,7 @@ output_direcory = &quot;&quot;
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>export_to_lvcnr_catalog(coalescence, output_direcory, NR_group=&#39;UT Austin&#39;, NR_code=&#39;MAYA&#39;, bibtex_keys=&#39;Jani:2016wkt&#39;, contact_email=&#39;email@email.com&#39;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">export_to_lvcnr_catalog</span><span class="p">(</span><span class="n">coalescence</span><span class="p">,</span> <span class="n">output_direcory</span><span class="p">,</span> <span class="n">NR_group</span><span class="o">=</span><span class="s1">&#39;UT Austin&#39;</span><span class="p">,</span> <span class="n">NR_code</span><span class="o">=</span><span class="s1">&#39;MAYA&#39;</span><span class="p">,</span> <span class="n">bibtex_keys</span><span class="o">=</span><span class="s1">&#39;Jani:2016wkt&#39;</span><span class="p">,</span> <span class="n">contact_email</span><span class="o">=</span><span class="s1">&#39;email@email.com&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -175,31 +175,6 @@ Storing (l, m)=(4, 1)
 Storing (l, m)=(4, 2)
 Storing (l, m)=(4, 3)
 Storing (l, m)=(4, 4)
-Storing mass1-vs-time
-Storing spin1x-vs-time
-Storing spin1y-vs-time
-Storing spin1z-vs-time
-Storing position1x-vs-time
-Storing position1y-vs-time
-Storing position1z-vs-time
-Storing mass2-vs-time
-Storing spin2x-vs-time
-Storing spin2y-vs-time
-Storing spin2z-vs-time
-Storing position2x-vs-time
-Storing position2y-vs-time
-Storing position2z-vs-time
-Storing LNhatx-vs-time
-Storing LNhaty-vs-time
-Storing LNhatz-vs-time
-Storing Omega-vs-time
-Storing remnant-mass-vs-time
-Storing remnant-spinx-vs-time
-Storing remnant-spiny-vs-time
-Storing remnant-spinz-vs-time
-Storing remnant-positionx-vs-time
-Storing remnant-positiony-vs-time
-Storing remnant-positionz-vs-time
 </pre></div></div>
 </div>
 </section>
@@ -209,7 +184,7 @@ Storing remnant-positionz-vs-time
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>export_to_lvcnr_catalog(coalescence, output_direcory, name=&#39;SIM0001&#39;, NR_group=&#39;UT Austin&#39;, NR_code=&#39;MAYA&#39;, bibtex_keys=&#39;Jani:2016wkt&#39;, contact_email=&#39;email@email.com&#39;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">export_to_lvcnr_catalog</span><span class="p">(</span><span class="n">coalescence</span><span class="p">,</span> <span class="n">output_direcory</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;SIM0001&#39;</span><span class="p">,</span> <span class="n">NR_group</span><span class="o">=</span><span class="s1">&#39;UT Austin&#39;</span><span class="p">,</span> <span class="n">NR_code</span><span class="o">=</span><span class="s1">&#39;MAYA&#39;</span><span class="p">,</span> <span class="n">bibtex_keys</span><span class="o">=</span><span class="s1">&#39;Jani:2016wkt&#39;</span><span class="p">,</span> <span class="n">contact_email</span><span class="o">=</span><span class="s1">&#39;email@email.com&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -240,41 +215,16 @@ Storing (l, m)=(4, 1)
 Storing (l, m)=(4, 2)
 Storing (l, m)=(4, 3)
 Storing (l, m)=(4, 4)
-Storing mass1-vs-time
-Storing spin1x-vs-time
-Storing spin1y-vs-time
-Storing spin1z-vs-time
-Storing position1x-vs-time
-Storing position1y-vs-time
-Storing position1z-vs-time
-Storing mass2-vs-time
-Storing spin2x-vs-time
-Storing spin2y-vs-time
-Storing spin2z-vs-time
-Storing position2x-vs-time
-Storing position2y-vs-time
-Storing position2z-vs-time
-Storing LNhatx-vs-time
-Storing LNhaty-vs-time
-Storing LNhatz-vs-time
-Storing Omega-vs-time
-Storing remnant-mass-vs-time
-Storing remnant-spinx-vs-time
-Storing remnant-spiny-vs-time
-Storing remnant-spinz-vs-time
-Storing remnant-positionx-vs-time
-Storing remnant-positiony-vs-time
-Storing remnant-positionz-vs-time
 </pre></div></div>
 </div>
 </section>
 <section id="You-can-optionally-correct-for-the-center-of-mass-drift-before-exporting">
 <h3>You can optionally correct for the center of mass drift before exporting<a class="headerlink" href="#You-can-optionally-correct-for-the-center-of-mass-drift-before-exporting" title="Link to this heading"></a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>export_to_lvcnr_catalog(coalescence, output_direcory, center_of_mass_correction=True, NR_group=&#39;UT Austin&#39;, NR_code=&#39;MAYA&#39;, bibtex_keys=&#39;Jani:2016wkt&#39;, contact_email=&#39;email@email.com&#39;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">export_to_lvcnr_catalog</span><span class="p">(</span><span class="n">coalescence</span><span class="p">,</span> <span class="n">output_direcory</span><span class="p">,</span> <span class="n">center_of_mass_correction</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">NR_group</span><span class="o">=</span><span class="s1">&#39;UT Austin&#39;</span><span class="p">,</span> <span class="n">NR_code</span><span class="o">=</span><span class="s1">&#39;MAYA&#39;</span><span class="p">,</span> <span class="n">bibtex_keys</span><span class="o">=</span><span class="s1">&#39;Jani:2016wkt&#39;</span><span class="p">,</span> <span class="n">contact_email</span><span class="o">=</span><span class="s1">&#39;email@email.com&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -305,31 +255,6 @@ Storing (l, m)=(4, 1)
 Storing (l, m)=(4, 2)
 Storing (l, m)=(4, 3)
 Storing (l, m)=(4, 4)
-Storing mass1-vs-time
-Storing spin1x-vs-time
-Storing spin1y-vs-time
-Storing spin1z-vs-time
-Storing position1x-vs-time
-Storing position1y-vs-time
-Storing position1z-vs-time
-Storing mass2-vs-time
-Storing spin2x-vs-time
-Storing spin2y-vs-time
-Storing spin2z-vs-time
-Storing position2x-vs-time
-Storing position2y-vs-time
-Storing position2z-vs-time
-Storing LNhatx-vs-time
-Storing LNhaty-vs-time
-Storing LNhatz-vs-time
-Storing Omega-vs-time
-Storing remnant-mass-vs-time
-Storing remnant-spinx-vs-time
-Storing remnant-spiny-vs-time
-Storing remnant-spinz-vs-time
-Storing remnant-positionx-vs-time
-Storing remnant-positiony-vs-time
-Storing remnant-positionz-vs-time
 </pre></div></div>
 </div>
 </section>
@@ -339,10 +264,10 @@ Storing remnant-positionz-vs-time
 <section id="This-format-lets-you-use-the-waveform-with-LALSimulation-and-PyCBC.-It-is-of-the-same-format-as-the-LVC-NR-catalog-but-allows-you-to-specify-a-finite-extraction-radius-if-so-desired.">
 <h3>This format lets you use the waveform with LALSimulation and PyCBC. It is of the same format as the LVC NR catalog but allows you to specify a finite extraction radius if so desired.<a class="headerlink" href="#This-format-lets-you-use-the-waveform-with-LALSimulation-and-PyCBC.-It-is-of-the-same-format-as-the-LVC-NR-catalog-but-allows-you-to-specify-a-finite-extraction-radius-if-so-desired." title="Link to this heading"></a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>export_to_lal_compatible_format(coalescence, output_direcory, extraction_radius=75, NR_group=&#39;UT Austin&#39;, NR_code=&#39;MAYA&#39;, bibtex_keys=&#39;Jani:2016wkt&#39;, contact_email=&#39;email@email.com&#39;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">export_to_lal_compatible_format</span><span class="p">(</span><span class="n">coalescence</span><span class="p">,</span> <span class="n">output_direcory</span><span class="p">,</span> <span class="n">extraction_radius</span><span class="o">=</span><span class="mi">75</span><span class="p">,</span> <span class="n">NR_group</span><span class="o">=</span><span class="s1">&#39;UT Austin&#39;</span><span class="p">,</span> <span class="n">NR_code</span><span class="o">=</span><span class="s1">&#39;MAYA&#39;</span><span class="p">,</span> <span class="n">bibtex_keys</span><span class="o">=</span><span class="s1">&#39;Jani:2016wkt&#39;</span><span class="p">,</span> <span class="n">contact_email</span><span class="o">=</span><span class="s1">&#39;email@email.com&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -372,31 +297,6 @@ Storing (l, m)=(4, 1)
 Storing (l, m)=(4, 2)
 Storing (l, m)=(4, 3)
 Storing (l, m)=(4, 4)
-Storing mass1-vs-time
-Storing spin1x-vs-time
-Storing spin1y-vs-time
-Storing spin1z-vs-time
-Storing position1x-vs-time
-Storing position1y-vs-time
-Storing position1z-vs-time
-Storing mass2-vs-time
-Storing spin2x-vs-time
-Storing spin2y-vs-time
-Storing spin2z-vs-time
-Storing position2x-vs-time
-Storing position2y-vs-time
-Storing position2z-vs-time
-Storing LNhatx-vs-time
-Storing LNhaty-vs-time
-Storing LNhatz-vs-time
-Storing Omega-vs-time
-Storing remnant-mass-vs-time
-Storing remnant-spinx-vs-time
-Storing remnant-spiny-vs-time
-Storing remnant-spinz-vs-time
-Storing remnant-positionx-vs-time
-Storing remnant-positiony-vs-time
-Storing remnant-positionz-vs-time
 </pre></div></div>
 </div>
 </section>
@@ -404,10 +304,10 @@ Storing remnant-positionz-vs-time
 <section id="Close-the-Coalescence-object-to-close-the-associated-h5-file">
 <h2>Close the Coalescence object to close the associated h5 file<a class="headerlink" href="#Close-the-Coalescence-object-to-close-the-associated-h5-file" title="Link to this heading"></a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>coalescence.close()
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coalescence</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
