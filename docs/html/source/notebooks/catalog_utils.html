@@ -117,8 +117,8 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from mayawaves.utils.catalogutils import Catalog
-from mayawaves.utils.catalogutils import Parameter as p
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mayawaves.utils.catalogutils</span> <span class="kn">import</span> <span class="n">Catalog</span>
+<span class="kn">from</span> <span class="nn">mayawaves.utils.catalogutils</span> <span class="kn">import</span> <span class="n">Parameter</span> <span class="k">as</span> <span class="n">p</span>
 </pre></div>
 </div>
 </div>
@@ -129,7 +129,7 @@ from mayawaves.utils.catalogutils import Parameter as p
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>catalog = Catalog()
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">catalog</span> <span class="o">=</span> <span class="n">Catalog</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -140,9 +140,9 @@ from mayawaves.utils.catalogutils import Parameter as p
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>all_simulations = catalog.simulations
-print(f&quot;Total number of waveforms in the metadata file is {len(all_simulations)}. First waveform is {all_simulations[0]}&quot;)
-print(f&quot;The first ten waveforms are {all_simulations[:10]}&quot;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">all_simulations</span> <span class="o">=</span> <span class="n">catalog</span><span class="o">.</span><span class="n">simulations</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total number of waveforms in the metadata file is </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">all_simulations</span><span class="p">)</span><span class="si">}</span><span class="s2">. First waveform is </span><span class="si">{</span><span class="n">all_simulations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The first ten waveforms are </span><span class="si">{</span><span class="n">all_simulations</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -162,7 +162,7 @@ The first ten waveforms are [&#39;GT0001&#39;, &#39;GT0002&#39;, &#39;GT0003&#39
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>print(*[(param) for param in p], sep = &quot;\n&quot;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="o">*</span><span class="p">[(</span><span class="n">param</span><span class="p">)</span> <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">p</span><span class="p">],</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -204,8 +204,8 @@ Parameter.LVCNR_SIZE_GB
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>nonspinning_simulations = catalog.nonspinning_simulations
-print(f&quot;Total number of waveforms with no spin: {len(nonspinning_simulations)}. First waveform is {nonspinning_simulations[0]}&quot;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nonspinning_simulations</span> <span class="o">=</span> <span class="n">catalog</span><span class="o">.</span><span class="n">nonspinning_simulations</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total number of waveforms with no spin: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">nonspinning_simulations</span><span class="p">)</span><span class="si">}</span><span class="s2">. First waveform is </span><span class="si">{</span><span class="n">nonspinning_simulations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -221,8 +221,8 @@ Total number of waveforms with no spin: 103. First waveform is GT0370
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>aligned_spin_simulations = catalog.aligned_spin_simulations
-print(f&quot;Total number of waveforms with aligned spins: {len(aligned_spin_simulations)}. First waveform is {aligned_spin_simulations[0]}&quot;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">aligned_spin_simulations</span> <span class="o">=</span> <span class="n">catalog</span><span class="o">.</span><span class="n">aligned_spin_simulations</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total number of waveforms with aligned spins: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">aligned_spin_simulations</span><span class="p">)</span><span class="si">}</span><span class="s2">. First waveform is </span><span class="si">{</span><span class="n">aligned_spin_simulations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -238,8 +238,8 @@ Total number of waveforms with aligned spins: 157. First waveform is GT0355
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>precessing_simulations = catalog.precessing_simulations
-print(f&quot;Total number of precessing waveforms: {len(precessing_simulations)}. First waveform is {precessing_simulations[0]}&quot;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">precessing_simulations</span> <span class="o">=</span> <span class="n">catalog</span><span class="o">.</span><span class="n">precessing_simulations</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total number of precessing waveforms: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">precessing_simulations</span><span class="p">)</span><span class="si">}</span><span class="s2">. First waveform is </span><span class="si">{</span><span class="n">precessing_simulations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -258,9 +258,9 @@ Total number of precessing waveforms: 370. First waveform is GT0001
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>mass_ratio = 2
-sims = catalog.get_simulations_with_mass_ratio(mass_ratio = mass_ratio)
-print(f&quot;Total number of waveforms with q = {mass_ratio} is {len(sims)}. First waveform is {sims[0]}&quot;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mass_ratio</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">sims</span> <span class="o">=</span> <span class="n">catalog</span><span class="o">.</span><span class="n">get_simulations_with_mass_ratio</span><span class="p">(</span><span class="n">mass_ratio</span> <span class="o">=</span> <span class="n">mass_ratio</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total number of waveforms with q = </span><span class="si">{</span><span class="n">mass_ratio</span><span class="si">}</span><span class="s2"> is </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">sims</span><span class="p">)</span><span class="si">}</span><span class="s2">. First waveform is </span><span class="si">{</span><span class="n">sims</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -278,10 +278,10 @@ Total number of waveforms with q = 2 is 53. First waveform is GT0428
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>mass_ratio = 2
-tol = 0.1
-sims = catalog.get_simulations_with_mass_ratio(mass_ratio=mass_ratio, tol=tol)
-print(f&quot;Total number of waveforms with q = {mass_ratio} and tolerance {tol} is {len(sims)}. First waveform is {sims[0]}&quot;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mass_ratio</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">tol</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">sims</span> <span class="o">=</span> <span class="n">catalog</span><span class="o">.</span><span class="n">get_simulations_with_mass_ratio</span><span class="p">(</span><span class="n">mass_ratio</span><span class="o">=</span><span class="n">mass_ratio</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total number of waveforms with q = </span><span class="si">{</span><span class="n">mass_ratio</span><span class="si">}</span><span class="s2"> and tolerance </span><span class="si">{</span><span class="n">tol</span><span class="si">}</span><span class="s2"> is </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">sims</span><span class="p">)</span><span class="si">}</span><span class="s2">. First waveform is </span><span class="si">{</span><span class="n">sims</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -301,10 +301,10 @@ Total number of waveforms with q = 2 and tolerance 0.1 is 92. First waveform is 
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>eta = 0.23
-tol = 0.005
-sims = catalog.get_simulations_with_symmetric_mass_ratio(eta=eta, tol=tol)
-print(f&quot;Total number of waveforms with eta = {eta} and tol = {tol} is {len(sims)}. First waveform is {sims[0]}&quot;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eta</span> <span class="o">=</span> <span class="mf">0.23</span>
+<span class="n">tol</span> <span class="o">=</span> <span class="mf">0.005</span>
+<span class="n">sims</span> <span class="o">=</span> <span class="n">catalog</span><span class="o">.</span><span class="n">get_simulations_with_symmetric_mass_ratio</span><span class="p">(</span><span class="n">eta</span><span class="o">=</span><span class="n">eta</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total number of waveforms with eta = </span><span class="si">{</span><span class="n">eta</span><span class="si">}</span><span class="s2"> and tol = </span><span class="si">{</span><span class="n">tol</span><span class="si">}</span><span class="s2"> is </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">sims</span><span class="p">)</span><span class="si">}</span><span class="s2">. First waveform is </span><span class="si">{</span><span class="n">sims</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -323,8 +323,8 @@ Total number of waveforms with eta = 0.23 and tol = 0.005 is 9. First waveform i
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>simulation_parameters = catalog.get_parameters_for_simulation(&quot;GT0378&quot;)
-print(f&#39;The mass ratio of GT0378 is {simulation_parameters[p.MASS_RATIO]}&#39;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">simulation_parameters</span> <span class="o">=</span> <span class="n">catalog</span><span class="o">.</span><span class="n">get_parameters_for_simulation</span><span class="p">(</span><span class="s2">&quot;GT0378&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The mass ratio of GT0378 is </span><span class="si">{</span><span class="n">simulation_parameters</span><span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">MASS_RATIO</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -340,8 +340,8 @@ The mass ratio of GT0378 is 2.050005889145129
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>simulation_parameter_string = &#39;\n&#39;.join([f&#39;{par.value}: {value}&#39; for par, value in simulation_parameters.items()])
-print(f&quot;All available parameters of GT0378 are:\n\n{simulation_parameter_string}&quot;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">simulation_parameter_string</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">par</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">par</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">simulation_parameters</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;All available parameters of GT0378 are:</span><span class="se">\n\n</span><span class="si">{</span><span class="n">simulation_parameter_string</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -387,14 +387,14 @@ lvcnr file size (GB): 0.00412185862660408
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>simulations = catalog.get_simulations_with_parameters(params = [p.MASS_RATIO, p.DIMENSIONLESS_SPIN_Z_1], values =  [1, 0.5], tol = [0.01, 0.5] )
-print(len(simulations))
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">simulations</span> <span class="o">=</span> <span class="n">catalog</span><span class="o">.</span><span class="n">get_simulations_with_parameters</span><span class="p">(</span><span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">MASS_RATIO</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">DIMENSIONLESS_SPIN_Z_1</span><span class="p">],</span> <span class="n">values</span> <span class="o">=</span>  <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> <span class="n">tol</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">simulations</span><span class="p">))</span>
 
-simulations = catalog.get_simulations_with_parameters(params = [p.MASS_RATIO, p.DIMENSIONLESS_SPIN_X_1, p.DIMENSIONLESS_SPIN_Y_1, p.DIMENSIONLESS_SPIN_Z_1, p.DIMENSIONLESS_SPIN_X_2, p.DIMENSIONLESS_SPIN_Y_2, p.DIMENSIONLESS_SPIN_Z_2], values =  [1, 0.0, 0.0, 0.6, 0.0, 0.0, 0.6], tol = [0.01, 0.001, 0.001, 0.5, 0.001, 0.001, 0.4999] )
-print(len(simulations))
+<span class="n">simulations</span> <span class="o">=</span> <span class="n">catalog</span><span class="o">.</span><span class="n">get_simulations_with_parameters</span><span class="p">(</span><span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">MASS_RATIO</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">DIMENSIONLESS_SPIN_X_1</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">DIMENSIONLESS_SPIN_Y_1</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">DIMENSIONLESS_SPIN_Z_1</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">DIMENSIONLESS_SPIN_X_2</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">DIMENSIONLESS_SPIN_Y_2</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">DIMENSIONLESS_SPIN_Z_2</span><span class="p">],</span> <span class="n">values</span> <span class="o">=</span>  <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">],</span> <span class="n">tol</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.4999</span><span class="p">]</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">simulations</span><span class="p">))</span>
 
-simulations = catalog.get_simulations_with_parameters(params = [p.MASS_RATIO, p.DIMENSIONLESS_SPIN_2], values =  [1, 0.1], tol = [0.01, 0.1] )
-print(len(simulations))
+<span class="n">simulations</span> <span class="o">=</span> <span class="n">catalog</span><span class="o">.</span><span class="n">get_simulations_with_parameters</span><span class="p">(</span><span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">MASS_RATIO</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">DIMENSIONLESS_SPIN_2</span><span class="p">],</span> <span class="n">values</span> <span class="o">=</span>  <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span> <span class="n">tol</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">simulations</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -416,7 +416,7 @@ print(len(simulations))
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>catalog.plot_catalog_parameters(p.MASS_RATIO, p.CHI_EFF, dpi = 500)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">catalog</span><span class="o">.</span><span class="n">plot_catalog_parameters</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">MASS_RATIO</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">CHI_EFF</span><span class="p">,</span> <span class="n">dpi</span> <span class="o">=</span> <span class="mi">500</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -478,7 +478,7 @@ Minimum chi_eff: -0.8089458636660637, maximum chi_eff: 0.8085713846964644
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>catalog.plot_catalog_parameters(p.MASS_RATIO, p.CHI_P, dpi = 500, color = &quot;salmon&quot;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">catalog</span><span class="o">.</span><span class="n">plot_catalog_parameters</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">MASS_RATIO</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">CHI_P</span><span class="p">,</span> <span class="n">dpi</span> <span class="o">=</span> <span class="mi">500</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;salmon&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -542,7 +542,7 @@ Minimum chi_p: 4.990315336895653e-18, maximum chi_p: 0.9316840649738882
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>catalog.plot_catalog_parameters(p.MASS_RATIO, p.DIMENSIONLESS_SPIN_2, dpi = 500 , color = &quot;green&quot;, save_path=&#39;.&#39;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">catalog</span><span class="o">.</span><span class="n">plot_catalog_parameters</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">MASS_RATIO</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">DIMENSIONLESS_SPIN_2</span><span class="p">,</span> <span class="n">dpi</span> <span class="o">=</span> <span class="mi">500</span> <span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;green&quot;</span><span class="p">,</span> <span class="n">save_path</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -588,7 +588,7 @@ Minimum a2: 3.8462054439966505e-10, maximum a2: 0.9261967059788215
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>catalog.download_waveforms([&#39;GT0898&#39;], save_wf_path = &#39;.&#39;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">catalog</span><span class="o">.</span><span class="n">download_waveforms</span><span class="p">([</span><span class="s1">&#39;GT0898&#39;</span><span class="p">],</span> <span class="n">save_wf_path</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -634,7 +634,7 @@ lvcnr file size (GB)  0.0084
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>catalog.download_waveforms([&#39;GT0898&#39;], save_wf_path=&#39;.&#39;, lvcnr_format=True)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">catalog</span><span class="o">.</span><span class="n">download_waveforms</span><span class="p">([</span><span class="s1">&#39;GT0898&#39;</span><span class="p">],</span> <span class="n">save_wf_path</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">lvcnr_format</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
