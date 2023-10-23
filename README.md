@@ -1,4 +1,4 @@
-[![DOI](https://zenodo.org/badge/685792148.svg)](https://zenodo.org/badge/latestdoi/685792148)
+[![DOI](https://zenodo.org/badge/685792148.svg)](https://zenodo.org/doi/10.5281/zenodo.8339252)
 
 # mayawaves
 
