@@ -54,7 +54,7 @@ Extracting these signals from noise and using them to infer the parameters of co
 While analytic solutions exist for the simplest cases within GR, e.g. single BHs, merging BBHs have no analytic solution.
 Approximate methods can be used when the BHs are far apart or have highly unequal masses, but the coalescence of BHs of comparable mass must be solved computationally.
 Numerical relativity (NR) simulations accomplish this by evolving a BBH space-time on supercomputers, enabling us to study the dymanics of BBH systems as well as predict the GWs they emit.
-The Einstein Toolkit (ETK) is a set of tools created to perform these NR simulations [@Loffler:2011ay], and `MAYA` is a branch of ETK used by the MAYA collaboration [@Herrmann:2006ks; @Jani:2016wkt; @Vaishnav:2007nm; @Healy:2009zm; @Pekowsky:2013ska].
+The Einstein Toolkit (ETK) is a set of tools created to perform these NR simulations [@Loffler:2011ay], and `MAYA` is a branch of ETK used by the MAYA collaboration [@Herrmann_2007; @Jani:2016wkt; @Vaishnav:2007nm; @Healy:2009zm; @Pekowsky:2013ska].
 
 These tools allow us to study the coalescence of compact objects, their evolution, and the gravitational radiation they emit.
 The `Mayawaves` library introduced in this paper is an analysis pipeline used to process and analyze such NR simulations. 
