@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Getting Started &mdash; Mayawaves  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Getting Help" href="getting_help.html" />
+    <link rel="prev" title="Welcome to Mayawaves’s documentation!" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Mayawaves
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-cite">How to cite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-install">How to install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#basic-overview-of-structure">Basic overview of structure</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#coalescence">Coalescence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compactobject">CompactObject</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#radiationbundle">RadiationBundle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#utilities">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#basic-overview-of-workflow">Basic overview of workflow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#obtaining-a-mayawaves-compatible-h5-file">Obtaining a mayawaves compatible h5 file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#working-with-a-mayawaves-h5-file-using-coalescence">Working with a mayawaves h5 file using Coalescence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#analyzing-raw-simulations-without-creating-an-h5-file">Analyzing raw simulations without creating an h5 file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#analyzing-the-maya-catalog">Analyzing the MAYA Catalog</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="getting_help.html">Getting Help</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributor’s Guide</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/creating_h5.html">Creating a Mayawaves h5 File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/gravitational_waves.html">Gravitational Waves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/compact_objects.html">Compact Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/exporting_lvk.html">Exporting to LVK Catalog Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/reading_raw_files.html">Reading raw simulation files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/catalog_utils.html">Catalog Utils</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Documentation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="mayawaves.coalescence.html">mayawaves.coalescence module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mayawaves.compactobject.html">mayawaves.compactobject module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mayawaves.radiation.html">mayawaves.radiation module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mayawaves.utils.html">mayawaves.utils package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Mayawaves</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Getting Started</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/source/getting_started.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="getting-started">
+<h1>Getting Started<a class="headerlink" href="#getting-started" title="Link to this heading"></a></h1>
+<section id="how-to-cite">
+<h2>How to cite<a class="headerlink" href="#how-to-cite" title="Link to this heading"></a></h2>
+<p>If you use this library for your research please cite it using the following:</p>
+<p>bibtex:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@software</span><span class="p">{</span><span class="n">Ferguson_mayawaves_2023</span><span class="p">,</span>
+    <span class="n">author</span> <span class="o">=</span> <span class="p">{</span><span class="n">Ferguson</span><span class="p">,</span> <span class="n">Deborah</span> <span class="ow">and</span> <span class="n">Anne</span><span class="p">,</span> <span class="n">Surendra</span> <span class="ow">and</span> <span class="n">Gracia</span><span class="o">-</span><span class="n">Linares</span><span class="p">,</span> <span class="n">Miguel</span> <span class="ow">and</span> <span class="n">Iglesias</span><span class="p">,</span> <span class="n">Hector</span> <span class="ow">and</span> <span class="n">Jan</span><span class="p">,</span> <span class="n">Aasim</span> <span class="ow">and</span> <span class="n">Martinez</span><span class="p">,</span> <span class="n">Erick</span> <span class="ow">and</span> <span class="n">Lu</span><span class="p">,</span> <span class="n">Lu</span> <span class="ow">and</span> <span class="n">Meoni</span><span class="p">,</span> <span class="n">Filippo</span> <span class="ow">and</span> <span class="n">Nowicki</span><span class="p">,</span> <span class="n">Ryan</span> <span class="ow">and</span> <span class="n">Trostel</span><span class="p">,</span> <span class="n">Max</span> <span class="ow">and</span> <span class="n">Tsao</span><span class="p">,</span> <span class="n">Bing</span><span class="o">-</span><span class="n">Jyun</span> <span class="ow">and</span> <span class="n">Valorz</span><span class="p">,</span> <span class="n">Finny</span><span class="p">},</span>
+    <span class="n">doi</span> <span class="o">=</span> <span class="p">{</span><span class="mf">10.5281</span><span class="o">/</span><span class="n">zenodo</span><span class="mf">.10035526</span><span class="p">},</span>
+    <span class="n">month</span> <span class="o">=</span> <span class="nb">oct</span><span class="p">,</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="p">{{</span><span class="n">mayawaves</span><span class="p">}},</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="p">{</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">MayaWaves</span><span class="o">/</span><span class="n">mayawaves</span><span class="p">},</span>
+    <span class="n">version</span> <span class="o">=</span> <span class="p">{</span><span class="n">v2023</span><span class="mf">.10</span><span class="p">},</span>
+    <span class="n">year</span> <span class="o">=</span> <span class="p">{</span><span class="mi">2023</span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>APA:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Ferguson</span><span class="p">,</span> <span class="n">D</span><span class="o">.</span><span class="p">,</span> <span class="n">Anne</span><span class="p">,</span> <span class="n">S</span><span class="o">.</span><span class="p">,</span> <span class="n">Gracia</span><span class="o">-</span><span class="n">Linares</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="p">,</span> <span class="n">Iglesias</span><span class="p">,</span> <span class="n">H</span><span class="o">.</span><span class="p">,</span> <span class="n">Jan</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="p">,</span> <span class="n">Martinez</span><span class="p">,</span> <span class="n">E</span><span class="o">.</span><span class="p">,</span> <span class="n">Lu</span><span class="p">,</span> <span class="n">L</span><span class="o">.</span><span class="p">,</span> <span class="n">Meoni</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="p">,</span> <span class="n">Nowicki</span><span class="p">,</span> <span class="n">R</span><span class="o">.</span><span class="p">,</span> <span class="n">Trostel</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="p">,</span> <span class="n">Tsao</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="p">,</span> <span class="o">&amp;</span> <span class="n">Valorz</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span> <span class="p">(</span><span class="mi">2023</span><span class="p">)</span><span class="o">.</span> <span class="n">mayawaves</span> <span class="p">(</span><span class="n">Version</span> <span class="n">v2023</span><span class="mf">.10</span><span class="p">)</span> <span class="p">[</span><span class="n">Computer</span> <span class="n">software</span><span class="p">]</span><span class="o">.</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">doi</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="mf">10.5281</span><span class="o">/</span><span class="n">zenodo</span><span class="mf">.10035526</span>
+</pre></div>
+</div>
+<p>These citations can also be downloaded directly from the github repository.</p>
+</section>
+<section id="how-to-install">
+<h2>How to install<a class="headerlink" href="#how-to-install" title="Link to this heading"></a></h2>
+<p>This package can be installed either from PyPI or from source.</p>
+<p>PyPi:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">mayawaves</span>
+</pre></div>
+</div>
+<p>Source:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">git</span><span class="nd">@github</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="n">MayaWaves</span><span class="o">/</span><span class="n">mayawaves</span><span class="o">.</span><span class="n">git</span>
+<span class="n">cd</span> <span class="n">mayawaves</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="o">.</span>
+</pre></div>
+</div>
+<p>To use it in your python code, put:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">mayawaves</span>
+</pre></div>
+</div>
+<p>at the top of your file. You can also import specific parts of mayawaves instead if you would rather such as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mayawaves.utils.postprocessingutils</span> <span class="kn">import</span> <span class="n">create_h5_from_simulation</span>
+</pre></div>
+</div>
+</section>
+<section id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading"></a></h2>
+<p>Due to its dependencies, this package requires python &lt; 3.11.</p>
+<p>It also relies upon the following python packages which are automatically installed from pip when you install mayawaves:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">numpy</span><span class="p">,</span> <span class="n">scipy</span><span class="p">,</span> <span class="n">pandas</span><span class="p">,</span> <span class="n">romspline</span><span class="p">,</span> <span class="n">wget</span><span class="p">,</span> <span class="n">matplotlib</span><span class="p">,</span> <span class="n">mock</span><span class="p">,</span> <span class="n">numba</span><span class="p">,</span> <span class="n">scri</span>
+</pre></div>
+</div>
+<p>This package has been tested with Einstein Toolkit Release Meitner (released on December 6th, 2023).
+It supports output from the following thorns:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AHFinderDirect</span>
+<span class="n">PunctureTracker</span>
+<span class="n">QuasiLocalMeasures</span>
+<span class="n">Multipole</span>
+<span class="n">WeylScal4</span>
+</pre></div>
+</div>
+<p>In addition, it supports the following thorns that are specific to the MAYA catalog simulations:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">IHSpin</span>
+<span class="n">ShiftTracker</span>
+<span class="n">Ylm_Decomp</span>
+<span class="n">RunStats</span>
+</pre></div>
+</div>
+</section>
+<section id="basic-overview-of-structure">
+<h2>Basic overview of structure<a class="headerlink" href="#basic-overview-of-structure" title="Link to this heading"></a></h2>
+<img alt="../_images/structure.png" src="../_images/structure.png" />
+<section id="coalescence">
+<h3>Coalescence<a class="headerlink" href="#coalescence" title="Link to this heading"></a></h3>
+<p>The Coalescence object is the heart of the library. It interacts with an h5 file that contains everything about the
+simulation.</p>
+</section>
+<section id="compactobject">
+<h3>CompactObject<a class="headerlink" href="#compactobject" title="Link to this heading"></a></h3>
+<p>Each Coalescence object has CompactObjects for each of the black holes involved in the simulation.
+Refer to the “Compact Objects” tutorial for more details on how to use CompactObjects.
+Each Coalescence object has a list of all compact objects as well as specific attributes to access the primary,
+secondary, and final compact objects. Primary refers to the larger of the initial black holes.</p>
+</section>
+<section id="radiationbundle">
+<h3>RadiationBundle<a class="headerlink" href="#radiationbundle" title="Link to this heading"></a></h3>
+<p>Each Coalescence object also has a RadiationBundle that handles all the information pertaining to gravitational
+radiation. This is primarily done behind the scenes and you can access all gravitational wave information directly
+through Coalescence. Refer to the “Gravitational Waves” tutorial for more information on reading gravitational wave data.</p>
+<p>The gravitational waves from Einstein Toolkit simulations are extracted on concentric spheres.
+The data for each of these spheres is stored as a RadiationSphere, with each RadiationBundle containing several
+RadiationSpheres.</p>
+<p>To express the gravitational radiation in a way that is independent of the location on the sphere, we decompose it in
+terms of the spherical harmonics.</p>
+<p><span class="math notranslate nohighlight">\(RM\Psi_4(t;\Theta, \Phi) = \sum_{\ell, m}\Psi_{4; \ell, m}(t) {}_{-2}Y_{\ell, m}(\Theta, \Phi)\)</span></p>
+<p>This is done for each RadiationSphere, and each of these <span class="math notranslate nohighlight">\((\ell, m)\)</span> pairs is stored in a RadiationMode.</p>
+</section>
+<section id="utilities">
+<h3>Utilities<a class="headerlink" href="#utilities" title="Link to this heading"></a></h3>
+<p>There are also several utility modules including the postprocessingutils for analyzing raw simulation data and stitching
+the raw simulation into the h5 format that the Coalescence object reads. This is shown in the creating_h5 tutorial. This
+module can also be used to export Coalescence objects to the format used by LVK analyses, as shown in the exporting_lvk
+tutorial.</p>
+<p>The catalogutils module enables the user to interact with the entire MAYA catalog, to access metadata as well as
+download the waveforms. The “Catalog Utils” tutorial walks through how to use this module.</p>
+</section>
+</section>
+<section id="basic-overview-of-workflow">
+<h2>Basic overview of workflow<a class="headerlink" href="#basic-overview-of-workflow" title="Link to this heading"></a></h2>
+<img alt="../_images/workflow.png" src="../_images/workflow.png" />
+<p>The main object you will interact with as a user is the Coalescence, which contains all the information about the
+simulation.</p>
+<section id="obtaining-a-mayawaves-compatible-h5-file">
+<h3>Obtaining a mayawaves compatible h5 file<a class="headerlink" href="#obtaining-a-mayawaves-compatible-h5-file" title="Link to this heading"></a></h3>
+<p>The MAYA Catalog waveforms are provided in two formats.
+When using this library, you will want to download the MAYA-format file.
+This file can then be used directly with Coalescence as described in the section below.</p>
+<p>When beginning with a raw simulation, you can use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">postprocessingutils</span><span class="o">.</span><span class="n">create_h5_from_simulation</span>
+</pre></div>
+</div>
+<p>to create an h5 file which can be read using the Coalescence object.
+Refer to the “Creating a Mayawaves h5 File” tutorial for more detailed instructions.</p>
+</section>
+<section id="working-with-a-mayawaves-h5-file-using-coalescence">
+<h3>Working with a mayawaves h5 file using Coalescence<a class="headerlink" href="#working-with-a-mayawaves-h5-file-using-coalescence" title="Link to this heading"></a></h3>
+<p>With this file in hand, you will begin by creating a Coalescence object from the file with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">coalescence</span> <span class="o">=</span> <span class="n">Coalescence</span><span class="p">(</span><span class="n">h5_filepath</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>From there, you can access data about the simulation directly including, but not limited to, gravitational wave data,
+separation, eccentricity, energy radiated, etc.
+For some examples, refer to the “Gravitational Waves” tutorial.
+For an exhaustive list of Coalesence’s attributes and methods, see <a class="reference internal" href="mayawaves.coalescence.html#coalescence"><span class="std std-ref">mayawaves.coalescence module</span></a>.</p>
+<p>You can also call the primary_compact_object, secondary_compact_object, or final_compact_object attributes to obtain
+the CompactObjects associated with the coalescence. These know all information relevant to the specific compact object
+in question including trajectory, mass and spin data, and any information from the apparent horizon.
+Refer to the “Compact Objects” tutorial for example uses or the documentation (<a class="reference internal" href="mayawaves.compactobject.html#compactobject"><span class="std std-ref">mayawaves.compactobject module</span></a>) for an exhaustive list of the
+attributes and methods of CompactObject.</p>
+<p>Using the postprocessingutils, you can also export the Coalescence object back into an ascii format or to the format
+used in the LVK numerical relativity catalog.
+Refer to the “Exporting to LVK Catalog Format” tutorial or the documentation (<a class="reference internal" href="mayawaves.utils.html#utils"><span class="std std-ref">mayawaves.utils package</span></a>) for more details.</p>
+<p>Using the postprocessingutils, you may also want to use the summarize_coalescence function to generate a quick summary
+of the simulation including the initial parameters, plots of the gravitaitonal waves, and the trajectories.</p>
+</section>
+<section id="analyzing-raw-simulations-without-creating-an-h5-file">
+<h3>Analyzing raw simulations without creating an h5 file<a class="headerlink" href="#analyzing-raw-simulations-without-creating-an-h5-file" title="Link to this heading"></a></h3>
+<p>When monitoring ongoing runs or simply to make quick plots of a specific file, you can use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">postprocessingutils</span><span class="o">.</span><span class="n">get_stitched_data</span>
+</pre></div>
+</div>
+<p>to stitch together all the output data for a given file.
+This will return a numpy array in the same format as the requested data file.
+Refer to the “Reading raw simulation files” tutorial or the documentation (<a class="reference internal" href="mayawaves.utils.html#utils"><span class="std std-ref">mayawaves.utils package</span></a>) for more information.</p>
+</section>
+<section id="analyzing-the-maya-catalog">
+<h3>Analyzing the MAYA Catalog<a class="headerlink" href="#analyzing-the-maya-catalog" title="Link to this heading"></a></h3>
+<p>Using the functions included in the catalogutils module, you can analyze the full public MAYA Catalog, searching by
+parameters including initial spins, masses, eccentricities, etc and even downloading waveforms directly.
+Follow the “Catalog Utils” tutorial for more details or refer to the documentation (<a class="reference internal" href="mayawaves.utils.html#utils"><span class="std std-ref">mayawaves.utils package</span></a>).</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="Welcome to Mayawaves’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="getting_help.html" class="btn btn-neutral float-right" title="Getting Help" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, MAYA Collaboration.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

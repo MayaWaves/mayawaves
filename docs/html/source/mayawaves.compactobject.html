@@ -45,7 +45,21 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Documentation:</span></p>
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_help.html">Getting Help</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributor’s Guide</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/creating_h5.html">Creating a Mayawaves h5 File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/gravitational_waves.html">Gravitational Waves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/compact_objects.html">Compact Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/exporting_lvk.html">Exporting to LVK Catalog Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/reading_raw_files.html">Reading raw simulation files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/catalog_utils.html">Catalog Utils</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Documentation:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="mayawaves.coalescence.html">mayawaves.coalescence module</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">mayawaves.compactobject module</a><ul>
@@ -91,15 +105,6 @@
 <li class="toctree-l1"><a class="reference internal" href="mayawaves.radiation.html">mayawaves.radiation module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mayawaves.utils.html">mayawaves.utils package</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Tutorials:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/creating_h5.html">Creating a Mayawaves h5 File</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/gravitational_waves.html">Gravitational Waves</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/compact_objects.html">Compact Objects</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/exporting_lvk.html">Exporting to LVK Catalog Format</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/reading_raw_files.html">Reading raw simulation files</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/catalog_utils.html">Catalog Utils</a></li>
-</ul>
 
         </div>
       </div>
@@ -126,7 +131,7 @@
            <div itemprop="articleBody">
              
   <section id="module-mayawaves.compactobject">
-<span id="mayawaves-compactobject-module"></span><h1>mayawaves.compactobject module<a class="headerlink" href="#module-mayawaves.compactobject" title="Link to this heading"></a></h1>
+<span id="mayawaves-compactobject-module"></span><span id="compactobject"></span><h1>mayawaves.compactobject module<a class="headerlink" href="#module-mayawaves.compactobject" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="mayawaves.compactobject.CompactObject">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mayawaves.compactobject.</span></span><span class="sig-name descname"><span class="pre">CompactObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_array</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">identifier</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_irreducible_mass</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_horizon_mass</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_dimensionless_spin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_dimensional_spin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mayawaves.compactobject.CompactObject" title="Link to this definition"></a></dt>

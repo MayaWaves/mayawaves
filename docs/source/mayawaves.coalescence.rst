@@ -1,3 +1,5 @@
+.. _coalescence:
+
 mayawaves.coalescence module
 ============================
 

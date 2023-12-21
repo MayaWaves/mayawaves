@@ -1,3 +1,5 @@
+.. _compactobject:
+
 mayawaves.compactobject module
 ==============================
 

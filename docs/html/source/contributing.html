@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contributor’s Guide &mdash; Mayawaves  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Creating a Mayawaves h5 File" href="notebooks/creating_h5.html" />
+    <link rel="prev" title="Getting Help" href="getting_help.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Mayawaves
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_help.html">Getting Help</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Contributor’s Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#make-a-fork">Make a fork</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#keeping-your-fork-up-to-date">Keeping your fork up to date</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#making-changes">Making changes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#running-tests">Running tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#updating-the-documentation">Updating the documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#submitting-a-merge-request">Submitting a merge request</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/creating_h5.html">Creating a Mayawaves h5 File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/gravitational_waves.html">Gravitational Waves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/compact_objects.html">Compact Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/exporting_lvk.html">Exporting to LVK Catalog Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/reading_raw_files.html">Reading raw simulation files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/catalog_utils.html">Catalog Utils</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Documentation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="mayawaves.coalescence.html">mayawaves.coalescence module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mayawaves.compactobject.html">mayawaves.compactobject module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mayawaves.radiation.html">mayawaves.radiation module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mayawaves.utils.html">mayawaves.utils package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Mayawaves</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Contributor’s Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/source/contributing.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="contributor-s-guide">
+<h1>Contributor’s Guide<a class="headerlink" href="#contributor-s-guide" title="Link to this heading"></a></h1>
+<p><cite>Mayawaves</cite> is intended to be a library that will grow and expand with additional analysis tools. We welcome the
+input of the community to both request new features and help in implementing them. In order to make this process smooth, we use the fork-merge
+workflow.</p>
+<p>In this workflow, you will create a fork of the repository.
+You will then create a feature branch and make all of your changes on that branch.
+Do not make any changes to your main branch.
+You may then create a merge request to merge your feature branch into the primary repository.
+This branch can then be merged into main.</p>
+<section id="make-a-fork">
+<h2>Make a fork<a class="headerlink" href="#make-a-fork" title="Link to this heading"></a></h2>
+<p>The steps in this section only need to be done once.</p>
+<p>Click the “fork” button at <a class="reference external" href="https://github.com/MayaWaves/mayawaves">https://github.com/MayaWaves/mayawaves</a></p>
+<p>Then clone your fork to your machine using:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">git</span><span class="nd">@github</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="o">&lt;</span><span class="n">your_workspace</span><span class="o">&gt;/</span><span class="n">mayawaves</span><span class="o">.</span><span class="n">git</span>
+</pre></div>
+</div>
+<p>Link your clone to the primary repository upstream:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">mayawaves</span>
+<span class="n">git</span> <span class="n">remote</span> <span class="n">add</span> <span class="n">upstream</span> <span class="n">git</span><span class="nd">@github</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="n">MayaWaves</span><span class="o">/</span><span class="n">mayawaves</span><span class="o">.</span><span class="n">git</span>
+</pre></div>
+</div>
+<p>Setup main branch to track main branch of the primary repository:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">checkout</span> <span class="n">main</span>
+<span class="n">git</span> <span class="n">fetch</span> <span class="n">upstream</span>
+<span class="n">git</span> <span class="n">branch</span> <span class="o">--</span><span class="nb">set</span><span class="o">-</span><span class="n">upstream</span><span class="o">-</span><span class="n">to</span> <span class="n">upstream</span><span class="o">/</span><span class="n">main</span>
+<span class="n">git</span> <span class="n">pull</span>
+</pre></div>
+</div>
+</section>
+<section id="keeping-your-fork-up-to-date">
+<h2>Keeping your fork up to date<a class="headerlink" href="#keeping-your-fork-up-to-date" title="Link to this heading"></a></h2>
+<p>To keep the main branch of your fork up to date, regularly do the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">checkout</span> <span class="n">main</span>
+<span class="n">git</span> <span class="n">pull</span>
+<span class="n">git</span> <span class="n">push</span> <span class="n">origin</span> <span class="n">main</span>
+</pre></div>
+</div>
+</section>
+<section id="making-changes">
+<h2>Making changes<a class="headerlink" href="#making-changes" title="Link to this heading"></a></h2>
+<p>Make all your changes in a branch on your fork.</p>
+<p>Create a new branch with the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">checkout</span> <span class="n">main</span>
+<span class="n">git</span> <span class="n">pull</span>
+<span class="n">git</span> <span class="n">checkout</span> <span class="o">-</span><span class="n">b</span> <span class="n">new</span><span class="o">-</span><span class="n">feature</span><span class="o">-</span><span class="n">name</span> <span class="n">upstream</span><span class="o">/</span><span class="n">main</span>
+</pre></div>
+</div>
+<p>Make any desired changes, committing frequently and using descriptive commit messages.
+When you are ready to do your first push to your branch on your fork, run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">push</span> <span class="o">--</span><span class="nb">set</span><span class="o">-</span><span class="n">upstream</span> <span class="n">origin</span> <span class="n">new</span><span class="o">-</span><span class="n">feature</span><span class="o">-</span><span class="n">name</span>
+</pre></div>
+</div>
+<p>All future pushes can be done with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">push</span>
+</pre></div>
+</div>
+<p>To keep your branch up to date with the main branch, periodically do the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">checkout</span> <span class="n">main</span>
+<span class="n">git</span> <span class="n">pull</span>
+<span class="n">git</span> <span class="n">checkout</span> <span class="n">new</span><span class="o">-</span><span class="n">feature</span><span class="o">-</span><span class="n">name</span>
+<span class="n">git</span> <span class="n">rebase</span> <span class="n">upstream</span><span class="o">/</span><span class="n">main</span>
+<span class="n">git</span> <span class="n">push</span> <span class="o">-</span><span class="n">f</span> <span class="n">origin</span> <span class="n">new</span><span class="o">-</span><span class="n">feature</span><span class="o">-</span><span class="n">name</span>
+</pre></div>
+</div>
+<section id="running-tests">
+<h3>Running tests<a class="headerlink" href="#running-tests" title="Link to this heading"></a></h3>
+<p>To ensure that all existing functionality is not broken, any changes need to pass the test suite.
+To run the tests, run the following from the main directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">unittest</span> <span class="n">discover</span> <span class="n">tests</span>
+</pre></div>
+</div>
+<p>Please add tests to the suite for any features you add and ensure they also pass.</p>
+</section>
+<section id="updating-the-documentation">
+<h3>Updating the documentation<a class="headerlink" href="#updating-the-documentation" title="Link to this heading"></a></h3>
+<p>To update the documentation with any changes you’ve made, do the following from the main directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">docs</span>
+<span class="n">rm</span> <span class="o">-</span><span class="n">r</span> <span class="n">html</span> <span class="n">doctrees</span>
+<span class="n">make</span> <span class="n">html</span>
+</pre></div>
+</div>
+</section>
+<section id="submitting-a-merge-request">
+<h3>Submitting a merge request<a class="headerlink" href="#submitting-a-merge-request" title="Link to this heading"></a></h3>
+<p>Once you are happy with your changes, you can create a merge request that will be reviewed by the MAYA developer team.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="getting_help.html" class="btn btn-neutral float-left" title="Getting Help" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="notebooks/creating_h5.html" class="btn btn-neutral float-right" title="Creating a Mayawaves h5 File" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, MAYA Collaboration.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

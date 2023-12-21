@@ -20,7 +20,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="mayawaves.coalescence module" href="source/mayawaves.coalescence.html" /> 
+    <link rel="next" title="Getting Started" href="source/getting_started.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -42,12 +42,10 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Documentation:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="source/mayawaves.coalescence.html">mayawaves.coalescence module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="source/mayawaves.compactobject.html">mayawaves.compactobject module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="source/mayawaves.radiation.html">mayawaves.radiation module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="source/mayawaves.utils.html">mayawaves.utils package</a></li>
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="source/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source/getting_help.html">Getting Help</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source/contributing.html">Contributor’s Guide</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials:</span></p>
 <ul>
@@ -57,6 +55,13 @@
 <li class="toctree-l1"><a class="reference internal" href="source/notebooks/exporting_lvk.html">Exporting to LVK Catalog Format</a></li>
 <li class="toctree-l1"><a class="reference internal" href="source/notebooks/reading_raw_files.html">Reading raw simulation files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="source/notebooks/catalog_utils.html">Catalog Utils</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Documentation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="source/mayawaves.coalescence.html">mayawaves.coalescence module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source/mayawaves.compactobject.html">mayawaves.compactobject module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source/mayawaves.radiation.html">mayawaves.radiation module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source/mayawaves.utils.html">mayawaves.utils package</a></li>
 </ul>
 
         </div>
@@ -88,17 +93,24 @@
 <p><cite>Mayawaves</cite> serves as an analysis library for Einstein Toolkit and MAYA simulations. Follow the tutorials to learn how
 to use this library to analyze both your own simulations and the simulations in the MAYA Catalog
 (<a class="reference external" href="https://cgp.ph.utexas.edu/waveform">https://cgp.ph.utexas.edu/waveform</a>).</p>
-<p>The Coalescence object is the heart of the library. It interacts with an h5 file that contains everything about the
-simulation. Each Coalescence object has CompactObjects for each of the black holes involved in the simulation.
-Refer to the compact_objects tutorial for more details on how to use CompactObjects.</p>
-<p>Each Coalescence object also has a RadiationBundle that handles all the information pertaining to gravitational
-radiation. This is primarily done behind the scenes and you can access all gravitational wave information directly
-through Coalescence. Refer to the gravitational_waves tutorial for more information on reading gravitational wave data.</p>
-<p>There is also a utility to stitch a raw simulation into the h5 format that the Coalescence object reads. This is
-shown in the creating_h5 tutorial. Coalescence objects can also be exported to the format used by LVK analyses, as shown in
-the exporking_lvk tuttorial.</p>
-<p>The catalog_utils tutorial walks through using the Catalog object in the catalogutils module to obtain metadata about
-the MAYA catalog and to download simulations from the MAYA catalog.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="source/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source/getting_help.html">Getting Help</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source/contributing.html">Contributor’s Guide</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="source/notebooks/creating_h5.html">Creating a Mayawaves h5 File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source/notebooks/gravitational_waves.html">Gravitational Waves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source/notebooks/compact_objects.html">Compact Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source/notebooks/exporting_lvk.html">Exporting to LVK Catalog Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source/notebooks/reading_raw_files.html">Reading raw simulation files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source/notebooks/catalog_utils.html">Catalog Utils</a></li>
+</ul>
+</div>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Documentation:</span></p>
 <ul>
@@ -124,17 +136,6 @@ the MAYA catalog and to download simulations from the MAYA catalog.</p>
 </li>
 </ul>
 </div>
-<div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Tutorials:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="source/notebooks/creating_h5.html">Creating a Mayawaves h5 File</a></li>
-<li class="toctree-l1"><a class="reference internal" href="source/notebooks/gravitational_waves.html">Gravitational Waves</a></li>
-<li class="toctree-l1"><a class="reference internal" href="source/notebooks/compact_objects.html">Compact Objects</a></li>
-<li class="toctree-l1"><a class="reference internal" href="source/notebooks/exporting_lvk.html">Exporting to LVK Catalog Format</a></li>
-<li class="toctree-l1"><a class="reference internal" href="source/notebooks/reading_raw_files.html">Reading raw simulation files</a></li>
-<li class="toctree-l1"><a class="reference internal" href="source/notebooks/catalog_utils.html">Catalog Utils</a></li>
-</ul>
-</div>
 </section>
 <section id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading"></a></h1>
@@ -148,7 +149,7 @@ the MAYA catalog and to download simulations from the MAYA catalog.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="source/mayawaves.coalescence.html" class="btn btn-neutral float-right" title="mayawaves.coalescence module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="source/getting_started.html" class="btn btn-neutral float-right" title="Getting Started" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
