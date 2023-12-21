@@ -1,3 +1,5 @@
+.. _utils:
+
 mayawaves.utils package
 =======================
 
