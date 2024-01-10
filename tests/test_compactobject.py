@@ -161,6 +161,12 @@ class TestCompactObject(TestCase):
         self.assertTrue(np.all(TestCompactObject.coalescence._Coalescence__h5_file.attrs[
                                    "dimensionless spin 1"] == TestCompactObject.secondary_compact_object.initial_dimensionless_spin))
 
+        TestCompactObject.primary_compact_object._CompactObject__initial_dimensionless_spin = None
+        self.assertIsNone(TestCompactObject.primary_compact_object._CompactObject__initial_dimensionless_spin)
+        self.assertTrue(np.all(
+            np.isclose([0, 0, 0], TestCompactObject.primary_compact_object.initial_dimensionless_spin,
+                       atol=1e-3)))
+
     def test_initial_dimensional_spin(self):
         self.assertTrue(np.all(
             np.isclose(TestCompactObject.primary_compact_object.initial_dimensional_spin, [0, 0, 0],
@@ -173,6 +179,12 @@ class TestCompactObject(TestCase):
         self.assertTrue(np.all(TestCompactObject.coalescence._Coalescence__h5_file.attrs[
                                    "dimensional spin 1"] == TestCompactObject.secondary_compact_object.initial_dimensional_spin))
 
+        TestCompactObject.primary_compact_object._CompactObject__initial_dimensional_spin = None
+        self.assertIsNone(TestCompactObject.primary_compact_object._CompactObject__initial_dimensional_spin)
+        self.assertTrue(np.all(
+            np.isclose([0, 0, 0], TestCompactObject.primary_compact_object.initial_dimensional_spin,
+                       atol=1e-3)))
+
     def test_initial_irreducible_mass(self):
         self.assertTrue(
             np.isclose(TestCompactObject.primary_compact_object.initial_irreducible_mass, 5.16797e-1, atol=1e-4))
@@ -184,6 +196,11 @@ class TestCompactObject(TestCase):
         self.assertTrue(np.all(TestCompactObject.coalescence._Coalescence__h5_file.attrs[
                                    "irreducible mass 1"] == TestCompactObject.secondary_compact_object.initial_irreducible_mass))
 
+        TestCompactObject.primary_compact_object._CompactObject__initial_irreducible_mass = None
+        self.assertIsNone(TestCompactObject.primary_compact_object._CompactObject__initial_irreducible_mass)
+        self.assertTrue(
+            np.isclose(TestCompactObject.primary_compact_object.initial_irreducible_mass, 5.16797e-1, atol=1e-4))
+
     def test_initial_horizon_mass(self):
         self.assertTrue(
             np.isclose(TestCompactObject.primary_compact_object.initial_horizon_mass, 5.16797e-1, atol=1e-4))
@@ -194,6 +211,11 @@ class TestCompactObject(TestCase):
                                    "horizon mass 0"] == TestCompactObject.primary_compact_object.initial_horizon_mass))
         self.assertTrue(np.all(TestCompactObject.coalescence._Coalescence__h5_file.attrs[
                                    "horizon mass 1"] == TestCompactObject.secondary_compact_object.initial_horizon_mass))
+
+        TestCompactObject.primary_compact_object._CompactObject__initial_horizon_mass = None
+        self.assertIsNone(TestCompactObject.primary_compact_object._CompactObject__initial_horizon_mass)
+        self.assertTrue(
+            np.isclose(TestCompactObject.primary_compact_object.initial_horizon_mass, 5.16797e-1, atol=1e-4))
 
     def test_final_dimensionless_spin(self):
         expected_dimensionless_spin = TestCompactObject.primary_compact_object.dimensionless_spin_vector[1]

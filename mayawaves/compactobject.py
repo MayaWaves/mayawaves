@@ -169,22 +169,50 @@ class CompactObject:
     def initial_dimensionless_spin(self) -> np.ndarray:
         """The dimensionless spin (:math:`\pmb{a}` or :math:`\pmb{\chi} = \pmb{J}/M^2`) at the beginning of the
         simulation."""
-        return self.__initial_dimensionless_spin
+        if self.__initial_dimensionless_spin is not None:
+            return self.__initial_dimensionless_spin
+        else:
+            time, dimensionless_spin_vector = self.dimensionless_spin_vector
+            if dimensionless_spin_vector is not None and len(dimensionless_spin_vector) > 0:
+                return dimensionless_spin_vector[0]
+            else:
+                return None
 
     @property
     def initial_dimensional_spin(self) -> np.ndarray:
         """The dimensional spin (:math:`\pmb{S}` or :math:`\pmb{J}`) at the beginning of the simulation."""
-        return self.__initial_dimensional_spin
+        if self.__initial_dimensional_spin is not None:
+            return self.__initial_dimensional_spin
+        else:
+            time, dimensional_spin_vector = self.dimensional_spin_vector
+            if dimensional_spin_vector is not None and len(dimensional_spin_vector) > 0:
+                return dimensional_spin_vector[0]
+            else:
+                return None
 
     @property
     def initial_irreducible_mass(self) -> float:
         """The irreducible mass at the beginning of the simulation."""
-        return self.__initial_irreducible_mass
+        if self.__initial_irreducible_mass is not None:
+            return self.__initial_irreducible_mass
+        else:
+            time, irreducible_mass = self.irreducible_mass
+            if irreducible_mass is not None and len(irreducible_mass) > 0:
+                return irreducible_mass[0]
+            else:
+                return None
 
     @property
     def initial_horizon_mass(self) -> float:
         """The horizon mass at the beginning of the simulation."""
-        return self.__initial_horizon_mass
+        if self.__initial_horizon_mass is not None:
+            return self.__initial_horizon_mass
+        else:
+            time, horizon_mass = self.horizon_mass
+            if horizon_mass is not None and len(horizon_mass) > 0:
+                return horizon_mass[0]
+            else:
+                return None
 
     @property
     def final_dimensionless_spin(self) -> np.ndarray:
@@ -518,8 +546,6 @@ class CompactObject:
             np.ndarray: the dimensional spin vector at the desired time
 
         """
-        if desired_time == 0:
-            return self.initial_dimensional_spin
 
         spin_data = self.get_data_from_columns([self.Column.TIME, self.Column.SX, self.Column.SY,
                                                 self.Column.SZ])
