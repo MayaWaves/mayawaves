@@ -546,8 +546,6 @@ class CompactObject:
             np.ndarray: the dimensional spin vector at the desired time
 
         """
-        #if desired_time == 0:
-        #    return self.initial_dimensional_spin
 
         spin_data = self.get_data_from_columns([self.Column.TIME, self.Column.SX, self.Column.SY,
                                                 self.Column.SZ])
