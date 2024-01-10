@@ -172,8 +172,8 @@ class CompactObject:
         if self.__initial_dimensionless_spin is not None:
             return self.__initial_dimensionless_spin
         else:
-            time, dimensionless_spin_vector = self.dimensional_spin_vector
-            if dimensionless_spin_vector is not None:
+            time, dimensionless_spin_vector = self.dimensionless_spin_vector
+            if dimensionless_spin_vector is not None and len(dimensionless_spin_vector) > 0:
                 return dimensionless_spin_vector[0]
             else:
                 return None
@@ -185,7 +185,7 @@ class CompactObject:
             return self.__initial_dimensional_spin
         else:
             time, dimensional_spin_vector = self.dimensional_spin_vector
-            if dimensional_spin_vector is not None:
+            if dimensional_spin_vector is not None and len(dimensional_spin_vector) > 0:
                 return dimensional_spin_vector[0]
             else:
                 return None
@@ -197,7 +197,7 @@ class CompactObject:
             return self.__initial_irreducible_mass
         else:
             time, irreducible_mass = self.irreducible_mass
-            if irreducible_mass is not None:
+            if irreducible_mass is not None and len(irreducible_mass) > 0:
                 return irreducible_mass[0]
             else:
                 return None
@@ -209,7 +209,7 @@ class CompactObject:
             return self.__initial_horizon_mass
         else:
             time, horizon_mass = self.horizon_mass
-            if horizon_mass is not None:
+            if horizon_mass is not None and len(horizon_mass) > 0:
                 return horizon_mass[0]
             else:
                 return None
