@@ -122,12 +122,15 @@ class TestPostprocessingUtils(TestCase):
     def test__ordered_data_directories(self):
         from mayawaves.utils.postprocessingutils import _ordered_data_directories
 
+        parameter_filepath = os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/main_test_simulation/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/SIMFACTORY/par/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.rpar")
+        with open(parameter_filepath, 'r') as f:
+            parfile_content = f.read()
         # parfile and simulation have same name
         expected_ordered_data_directories = [os.path.join(TestPostprocessingUtils.CURR_DIR,
                                                           "resources/main_test_simulation/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/output-0000/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"),
                                              os.path.join(TestPostprocessingUtils.CURR_DIR,
                                                           "resources/main_test_simulation/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/output-0001/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67")]
-        actual_ordered_data_directories = _ordered_data_directories(TestPostprocessingUtils.raw_directory,
+        actual_ordered_data_directories = _ordered_data_directories(TestPostprocessingUtils.raw_directory, parfile_content,
                                                                     TestPostprocessingUtils.parameter_file_name)
         self.assertTrue(np.all(expected_ordered_data_directories == actual_ordered_data_directories))
 
@@ -135,7 +138,7 @@ class TestPostprocessingUtils(TestCase):
         expected_ordered_data_directories = [os.path.join(TestPostprocessingUtils.CURR_DIR,
                                                           "resources/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name/output-0000/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67")]
         actual_ordered_data_directories = _ordered_data_directories(os.path.join(TestPostprocessingUtils.CURR_DIR,
-                                                                                 "resources/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name"),
+                                                                                 "resources/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name"), parfile_content,
                                                                     "D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67")
         self.assertTrue(np.all(expected_ordered_data_directories == actual_ordered_data_directories))
 
@@ -145,10 +148,28 @@ class TestPostprocessingUtils(TestCase):
                          "resources/main_test_simulation/stitched/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67")]
         actual_ordered_output_directories = _ordered_data_directories(
             os.path.join(TestPostprocessingUtils.CURR_DIR,
-                         "resources/main_test_simulation/stitched/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"),
+                         "resources/main_test_simulation/stitched/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"), parfile_content,
             "D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"
         )
         self.assertTrue(np.all(expected_ordered_output_directories == actual_ordered_output_directories))
+
+        # test when outdir isn't $parfile
+        parfile_content = """#############################################################
+# Output
+#############################################################
+
+IO::out_dir                          = D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67
+IO::out_fileinfo                     = "all"
+
+"""
+        expected_ordered_data_directories = [os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                                          "resources/main_test_simulation/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/output-0000/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"),
+                                             os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                                          "resources/main_test_simulation/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/output-0001/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67")]
+        actual_ordered_data_directories = _ordered_data_directories(TestPostprocessingUtils.raw_directory,
+                                                                    parfile_content,
+                                                                    TestPostprocessingUtils.parameter_file_name)
+        self.assertTrue(np.all(expected_ordered_data_directories == actual_ordered_data_directories))
 
     def test__store_parameter_file(self):
         # todo test if there is only an rpar
@@ -406,9 +427,14 @@ class TestPostprocessingUtils(TestCase):
         from mayawaves.utils.postprocessingutils import _CompactObjectFilenames
         from mayawaves.utils.postprocessingutils import _MiscDataFilenames
 
+        parameter_filepath = os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                          "resources/main_test_simulation/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/SIMFACTORY/par/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.rpar")
+        with open(parameter_filepath, 'r') as f:
+            parfile_content = f.read()
+
         # simulation has same name as parameter file
         actual_relevant_data_filepaths = _all_relevant_data_filepaths(
-            TestPostprocessingUtils.raw_directory, TestPostprocessingUtils.parameter_file_name)
+            TestPostprocessingUtils.raw_directory, parfile_content, TestPostprocessingUtils.parameter_file_name)
 
         actual_psi4_filetypes = set(list(actual_relevant_data_filepaths["radiative"].keys()))
         expected_psi4_filetypes = {_RadiativeFilenames.YLM_WEYLSCAL4_ASC}
@@ -480,6 +506,7 @@ class TestPostprocessingUtils(TestCase):
         # simulation has different name than parameter file
         actual_relevant_data_filepaths = _all_relevant_data_filepaths(os.path.join(TestPostprocessingUtils.CURR_DIR,
                                                                                    "resources/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name"),
+                                                                      parfile_content,
                                                                       "D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67")
         actual_included_prefixes = set(list(actual_relevant_data_filepaths["radiative"].keys())
                                        + list(actual_relevant_data_filepaths["compact_object"].keys())
@@ -492,7 +519,7 @@ class TestPostprocessingUtils(TestCase):
         # test prestitched data
         actual_relevant_data_filepaths = _all_relevant_data_filepaths(
             os.path.join(TestPostprocessingUtils.CURR_DIR,
-                         "resources/main_test_simulation/stitched/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"),
+                         "resources/main_test_simulation/stitched/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"), parfile_content,
             "D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67")
 
         actual_psi4_filetypes = set(list(actual_relevant_data_filepaths["radiative"].keys()))

@@ -1102,7 +1102,7 @@ def _ordered_output_directories(raw_directory: str) -> tuple:
     return output_directories, prestitched
 
 
-def _ordered_data_directories(raw_directory: str, parameter_file_name_base: str) -> list:
+def _ordered_data_directories(raw_directory: str, parameter_file: str, parameter_file_name_base: str) -> list:
     """The directories containing the simulation data files, ordered.
 
     Within each output directory is a data directory. Returns an ordered list of all the data directories. If the data
@@ -1117,14 +1117,27 @@ def _ordered_data_directories(raw_directory: str, parameter_file_name_base: str)
 
     """
     output_directories, prestitched = _ordered_output_directories(raw_directory)
+
     if prestitched:
         # pre-stitched data
         data_directories = output_directories
     else:
-        data_directories = [os.path.join(output_directory, parameter_file_name_base) for output_directory in
-                            output_directories]
-    return data_directories
+        if parameter_file is None:
+            return None
+        data_dir_name = ""
 
+        result = re.search('IO::out_dir\s*=\s*(\S*)\s*\n', parameter_file)
+        try:
+            data_dir_name = result.group(1)
+        except:
+            warnings.warn("Can't find name of the data directory, assuming it is an empty string")
+        if data_dir_name == '\$parfile' or data_dir_name == '$parfile':
+            data_dir_name = parameter_file_name_base
+
+        data_directories = [os.path.join(output_directory, data_dir_name) for output_directory in
+                            output_directories]
+        print(data_directories)
+    return data_directories
 
 def _store_parameter_file(raw_directory: str, h5_file: h5py.File):
     """Store the parameter file in the h5 file
@@ -1195,7 +1208,7 @@ def _store_parameter_file(raw_directory: str, h5_file: h5py.File):
         os.remove(par_file)
 
 
-def _all_relevant_data_filepaths(raw_directory: str, parameter_file_name_base: str) -> dict:
+def _all_relevant_data_filepaths(raw_directory: str, parameter_file: str, parameter_file_name_base: str) -> dict:
     """Dictionary of all relevant data files.
 
     The dictionary points from a data type to a filename which in turn points to a list of filepaths with that filename.
@@ -1208,7 +1221,7 @@ def _all_relevant_data_filepaths(raw_directory: str, parameter_file_name_base: s
         dict: dictionary containing prefix -> filename -> list of filepaths to relevant files
 
     """
-    data_directories = _ordered_data_directories(raw_directory, parameter_file_name_base=parameter_file_name_base)
+    data_directories = _ordered_data_directories(raw_directory, parameter_file=parameter_file, parameter_file_name_base=parameter_file_name_base)
     relevant_data_filepaths = {"compact_object": {}, "radiative": {}, "misc": {}}
 
     # go through all output directories
@@ -1219,6 +1232,7 @@ def _all_relevant_data_filepaths(raw_directory: str, parameter_file_name_base: s
         for filepath in glob.glob(data_path):
             # grab only the filename, not the full path
             filename = filepath.split('/')[-1]
+            print(filename)
             # for all data prefixes we may want
 
             for filetype in _RadiativeFilenames:
@@ -1397,6 +1411,8 @@ def _store_compact_object_data(h5_file: h5py.File, relevant_filepaths: dict):
     compact_object_dict = {}
 
     metadata_dict = {}
+
+    print(relevant_filepaths)
 
     for filetype in sorted(relevant_filepaths["compact_object"].keys()):
 
@@ -1917,6 +1933,8 @@ def _store_meta_data(h5_file: h5py.File, relevant_data_filepaths: dict, relevant
                                 "cputime (cpu hours)"]
                 runstats_dataset.attrs["header"] = header_array
 
+    print(h5_file["compact_object"].keys())
+
     # store attributes
     # name
     h5_file.attrs["name"] = simulation_name
@@ -1974,11 +1992,6 @@ def create_h5_from_simulation(raw_directory: str, output_directory: str, catalog
     simulation_name = _simulation_name(raw_directory)
     parameter_file_name_base = _parameter_file_name_base(raw_directory)
 
-    # get all relevant filepaths
-    relevant_data_filepaths = _all_relevant_data_filepaths(raw_directory,
-                                                           parameter_file_name_base=parameter_file_name_base)
-    relevant_output_filepaths = _all_relevant_output_filepaths(raw_directory)
-
     if catalog_id is not None:
         h5_filename = os.path.join(output_directory, catalog_id + ".h5")
     else:
@@ -1990,6 +2003,12 @@ def create_h5_from_simulation(raw_directory: str, output_directory: str, catalog
     # store parameter file
     print("storing parameter file")
     _store_parameter_file(raw_directory, h5_file)
+
+    # get all relevant filepaths
+    if "parfile" in h5_file.keys():
+        parameter_file = h5_file["parfile"].attrs["par_content"]
+    relevant_data_filepaths = _all_relevant_data_filepaths(raw_directory, parameter_file, parameter_file_name_base)
+    relevant_output_filepaths = _all_relevant_output_filepaths(raw_directory)
 
     # process radiative data
     print("storing radiative information")
@@ -2031,7 +2050,7 @@ def get_stitched_data(raw_directory: str, filename: str) -> np.ndarray:
 
     parameter_file_name_base = _parameter_file_name_base(raw_directory)
 
-    data_directories = _ordered_data_directories(raw_directory, parameter_file_name_base=parameter_file_name_base)
+    data_directories = _ordered_data_directories(raw_directory, parameter_file=parameter_file, parameter_file_name_base=parameter_file_name_base)
     filepaths = []
 
     # go through all output directories
