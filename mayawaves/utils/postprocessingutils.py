@@ -1040,41 +1040,122 @@ def _simulation_name(raw_directory: str) -> str:
     return simulation_name
 
 
-def _parameter_file_name_base(raw_directory: str) -> str:
-    """Base name from the parameter file
+# def _parameter_file_name_base(raw_directory: str) -> str:
+#     """Base name from the parameter file
+#
+#     From the raw directory, compute the base of the parameter file name, whether it be a .rpar or .par file.
+#
+#     Args:
+#         raw_directory (str): the directory that contains all simulation data
+#
+#     Returns:
+#         str: the base name of the parameter file
+#
+#     """
+#     if os.path.isdir(os.path.join(raw_directory, "SIMFACTORY/par")):
+#         parameter_files = glob.glob(os.path.join(raw_directory, "SIMFACTORY/par/*.rpar")) + glob.glob(
+#             os.path.join(raw_directory, "SIMFACTORY/par/*.par"))
+#         if len(parameter_files) > 0:  # if there is an rpar file
+#             parameter_file = parameter_files[0]
+#             parfile_name = parameter_file.split('/')[-1]
+#             parfile_name_base = parfile_name[:parfile_name.rfind('.')]
+#             return parfile_name_base
+#
+#     output_directories, _ = _ordered_output_directories(raw_directory)
+#     output_directories.reverse()  # most recent output directory is first now
+#
+#     for output_dir in output_directories:
+#         parameter_files = glob.glob(os.path.join(output_dir, "*.rpar")) + glob.glob(os.path.join(output_dir, "*.par"))
+#         if len(parameter_files) > 0:  # if there is an rpar file
+#             parameter_file = parameter_files[0]
+#             parfile_name = parameter_file.split('/')[-1]
+#             parfile_name_base = parfile_name[:parfile_name.rfind('.')]
+#             return parfile_name_base
+#
+#     warnings.warn(
+#         "Unable to find a parameter file. Cannot determine parameter file name. Will assume same as simulation name.")
+#     return _simulation_name(raw_directory)
 
-    From the raw directory, compute the base of the parameter file name, whether it be a .rpar or .par file.
+
+def _get_parameter_file_name_and_content(raw_directory: str) -> tuple:
+    """Store the parameter file in the h5 file
+
+    Search for a .rpar file (or a .par file if there is no .rpar file) and store it in a dictionary
 
     Args:
         raw_directory (str): the directory that contains all simulation data
 
     Returns:
-        str: the base name of the parameter file
+        tuple: base name of the parameter file and a dictionary containing the rpar and par content
 
     """
+    parfile_name = None
+    parfile_dict = {}
+
+    # check if SIMFACTORY directory exists
+    rpar_file = None
+    par_file = None
     if os.path.isdir(os.path.join(raw_directory, "SIMFACTORY/par")):
-        parameter_files = glob.glob(os.path.join(raw_directory, "SIMFACTORY/par/*.rpar")) + glob.glob(
-            os.path.join(raw_directory, "SIMFACTORY/par/*.par"))
-        if len(parameter_files) > 0:  # if there is an rpar file
-            parameter_file = parameter_files[0]
-            parfile_name = parameter_file.split('/')[-1]
-            parfile_name_base = parfile_name[:parfile_name.rfind('.')]
-            return parfile_name_base
+        files_with_rpar = glob.glob(os.path.join(raw_directory, "SIMFACTORY/par/*.rpar"))
+        if len(files_with_rpar) > 0:  # if there is an rpar file
+            rpar_file = files_with_rpar[0]
+        files_with_par = glob.glob(os.path.join(raw_directory, "SIMFACTORY/par/*.par"))
+        if len(files_with_par) > 0:  # if there is a par file
+            par_file = files_with_par[0]
 
-    output_directories, _ = _ordered_output_directories(raw_directory)
-    output_directories.reverse()  # most recent output directory is first now
+    # if we haven't found a par file or a rpar file
+    if rpar_file is None and par_file is None:
+        output_directories, _ = _ordered_output_directories(raw_directory)
+        output_directories.reverse()  # most recent output directory is first now
 
-    for output_dir in output_directories:
-        parameter_files = glob.glob(os.path.join(output_dir, "*.rpar")) + glob.glob(os.path.join(output_dir, "*.par"))
-        if len(parameter_files) > 0:  # if there is an rpar file
-            parameter_file = parameter_files[0]
-            parfile_name = parameter_file.split('/')[-1]
-            parfile_name_base = parfile_name[:parfile_name.rfind('.')]
-            return parfile_name_base
+        for output_dir in output_directories:
+            files_with_rpar = glob.glob(os.path.join(output_dir, "*.rpar"))
+            if len(files_with_rpar) > 0:  # if there is a rpar file
+                rpar_file = files_with_rpar[0]
+            files_with_par = glob.glob(os.path.join(output_dir, "*.par"))
+            if len(files_with_par) > 0:  # if there is a par file
+                par_file = files_with_par[0]
 
-    warnings.warn(
-        "Unable to find a parameter file. Cannot determine parameter file name. Will assume same as simulation name.")
-    return _simulation_name(raw_directory)
+            if rpar_file is not None or par_file is not None:
+                break
+
+    # if we never found a parameter file
+    if rpar_file is None and par_file is None:
+        warnings.warn("Unable to locate a .rpar or .par file in this simulation directory.")
+        return None, None
+
+    created_par = False
+
+    # store the rpar file if it exists and create parfile
+    if rpar_file is not None:
+        rpar_name = rpar_file.split('/')[-1]
+        rpar_name_base = rpar_name[:rpar_name.rfind('.')]
+        parfile_name = rpar_name_base
+        with open(rpar_file, 'r') as f:
+            content = f.read()
+        parfile_dict['rpar_content'] = content
+        if par_file is None:
+            temporary_rpar = rpar_file[:rpar_file.rfind('/') + 1] + "temp.rpar"
+            par_file = rpar_file[:rpar_file.rfind('/') + 1] + "temp.par"
+            with open(temporary_rpar, 'w') as f:
+                f.write(parfile_dict['rpar_content'])
+            os.system(f'chmod +x {temporary_rpar}')
+            os.system('%s' % temporary_rpar)
+            created_par = True
+            os.remove(temporary_rpar)
+
+    # store the par file
+    if parfile_name is None:
+        par_name = par_file.split('/')[-1]
+        parfile_name = par_name[:par_name.rfind('.')]
+    with open(par_file, 'r') as f:
+        content = f.read()
+    parfile_dict['par_content'] = content
+
+    if created_par:
+        os.remove(par_file)
+
+    return parfile_name, parfile_dict
 
 
 def _ordered_output_directories(raw_directory: str) -> tuple:
@@ -1139,74 +1220,26 @@ def _ordered_data_directories(raw_directory: str, parameter_file: str, parameter
         print(data_directories)
     return data_directories
 
-def _store_parameter_file(raw_directory: str, h5_file: h5py.File):
+def _store_parameter_file(parfile_dict: dict, h5_file: h5py.File):
     """Store the parameter file in the h5 file
 
-    Search for a .rpar file (or a .par file if there is no .rpar file) and store it
+    Store .rpar and .par file information
 
     Args:
-        raw_directory (str): the directory that contains all simulation data
+        parfile_dict (dict): dictionary containing the rpar and par content
         h5_file (h5py.file): the h5 file to store the parameter file in
 
     """
-    # check if SIMFACTORY directory exists
-    rpar_file = None
-    par_file = None
-    if os.path.isdir(os.path.join(raw_directory, "SIMFACTORY/par")):
-        files_with_rpar = glob.glob(os.path.join(raw_directory, "SIMFACTORY/par/*.rpar"))
-        if len(files_with_rpar) > 0:  # if there is an rpar file
-            rpar_file = files_with_rpar[0]
-        files_with_par = glob.glob(os.path.join(raw_directory, "SIMFACTORY/par/*.par"))
-        if len(files_with_par) > 0:  # if there is a par file
-            par_file = files_with_par[0]
-
-    # if we haven't found a par file or a rpar file
-    if rpar_file is None and par_file is None:
-        output_directories, _ = _ordered_output_directories(raw_directory)
-        output_directories.reverse()  # most recent output directory is first now
-
-        for output_dir in output_directories:
-            files_with_rpar = glob.glob(os.path.join(output_dir, "*.rpar"))
-            if len(files_with_rpar) > 0:  # if there is a rpar file
-                rpar_file = files_with_rpar[0]
-            files_with_par = glob.glob(os.path.join(output_dir, "*.par"))
-            if len(files_with_par) > 0:  # if there is a par file
-                par_file = files_with_par[0]
-
-            if rpar_file is not None or par_file is not None:
-                break
-
-    # if we never found a parameter file
-    if rpar_file is None and par_file is None:
-        warnings.warn("Unable to locate a .rpar or .par file in this simulation directory.")
+    if parfile_dict is None or ("par_content" not in parfile_dict and "rpar_content" not in parfile_dict):
         return
 
     parfile_group = h5_file.create_group('parfile')
-    created_par = False
 
-    # store the rpar file if it exists and create parfile
-    if rpar_file is not None:
-        with open(rpar_file, 'r') as f:
-            content = f.read()
-        parfile_group.attrs['rpar_content'] = content
-        if par_file is None:
-            temporary_rpar = rpar_file[:rpar_file.rfind('/') + 1] + "temp.rpar"
-            par_file = rpar_file[:rpar_file.rfind('/') + 1] + "temp.par"
-            with open(temporary_rpar, 'w') as f:
-                f.write(parfile_group.attrs['rpar_content'])
-            os.system(f'chmod +x {temporary_rpar}')
-            os.system('%s' % temporary_rpar)
-            created_par = True
-            os.remove(temporary_rpar)
+    if "par_content" in parfile_dict:
+        parfile_group.attrs['par_content'] = parfile_dict['par_content']
 
-    # store the par file
-    with open(par_file, 'r') as f:
-        content = f.read()
-    parfile_group.attrs['par_content'] = content
-
-    if created_par:
-        os.remove(par_file)
-
+    if "rpar_content" in parfile_dict:
+        parfile_group.attrs['rpar_content'] = parfile_dict['rpar_content']
 
 def _all_relevant_data_filepaths(raw_directory: str, parameter_file: str, parameter_file_name_base: str) -> dict:
     """Dictionary of all relevant data files.
@@ -1990,7 +2023,7 @@ def create_h5_from_simulation(raw_directory: str, output_directory: str, catalog
         return
 
     simulation_name = _simulation_name(raw_directory)
-    parameter_file_name_base = _parameter_file_name_base(raw_directory)
+    parameter_file_name_base, parameter_file_dict = _get_parameter_file_name_and_content(raw_directory)
 
     if catalog_id is not None:
         h5_filename = os.path.join(output_directory, catalog_id + ".h5")
@@ -2002,7 +2035,7 @@ def create_h5_from_simulation(raw_directory: str, output_directory: str, catalog
 
     # store parameter file
     print("storing parameter file")
-    _store_parameter_file(raw_directory, h5_file)
+    _store_parameter_file(parameter_file_dict, h5_file)
 
     # get all relevant filepaths
     if "parfile" in h5_file.keys():
@@ -2048,9 +2081,13 @@ def get_stitched_data(raw_directory: str, filename: str) -> np.ndarray:
         warnings.warn("That directory does not exist")
         return None
 
-    parameter_file_name_base = _parameter_file_name_base(raw_directory)
+    parameter_file_name_base, parameter_file_dict = _get_parameter_file_name_and_content(raw_directory)
 
-    data_directories = _ordered_data_directories(raw_directory, parameter_file=parameter_file, parameter_file_name_base=parameter_file_name_base)
+    if parameter_file_dict is None or 'par_content' not in parameter_file_dict:
+        warnings.warn('Unable to determine file structure due to lack of parameter file')
+        return None
+
+    data_directories = _ordered_data_directories(raw_directory, parameter_file=parameter_file_dict['par_content'], parameter_file_name_base=parameter_file_name_base)
     filepaths = []
 
     # go through all output directories
