@@ -399,6 +399,96 @@ IO::out_fileinfo                     = "all"
                                                                     TestPostprocessingUtils.parameter_file_name)
         self.assertTrue(np.all(expected_ordered_data_directories == actual_ordered_data_directories))
 
+        # test when outdir isn't $parfile and has quotes
+        parfile_content = """#############################################################
+        # Output
+        #############################################################
+
+        IO::out_dir                          = "D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"
+        IO::out_fileinfo                     = "all"
+
+        """
+        expected_ordered_data_directories = [os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                                          "resources/main_test_simulation/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/output-0000/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"),
+                                             os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                                          "resources/main_test_simulation/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/output-0001/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67")]
+        actual_ordered_data_directories = _ordered_data_directories(TestPostprocessingUtils.raw_directory,
+                                                                    parfile_content,
+                                                                    TestPostprocessingUtils.parameter_file_name)
+        self.assertTrue(np.all(expected_ordered_data_directories == actual_ordered_data_directories))
+
+        # test when outdir isn't $parfile and has quotes
+        parfile_content = """#############################################################
+        # Output
+        #############################################################
+
+        IO::out_dir                          = 'D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67'
+        IO::out_fileinfo                     = "all"
+
+        """
+        expected_ordered_data_directories = [os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                                          "resources/main_test_simulation/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/output-0000/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"),
+                                             os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                                          "resources/main_test_simulation/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/output-0001/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67")]
+        actual_ordered_data_directories = _ordered_data_directories(TestPostprocessingUtils.raw_directory,
+                                                                    parfile_content,
+                                                                    TestPostprocessingUtils.parameter_file_name)
+        self.assertTrue(np.all(expected_ordered_data_directories == actual_ordered_data_directories))
+
+        # test when outdir is @SIMULATION_NAME@
+        parfile_content = """#############################################################
+        # Output
+        #############################################################
+
+        IO::out_dir                          = "@SIMULATION_NAME@"
+        IO::out_fileinfo                     = "all"
+
+        """
+        expected_ordered_data_directories = [os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                                          "resources/main_test_simulation/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/output-0000/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"),
+                                             os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                                          "resources/main_test_simulation/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/output-0001/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67")]
+        actual_ordered_data_directories = _ordered_data_directories(TestPostprocessingUtils.raw_directory,
+                                                                    parfile_content,
+                                                                    'par_name')
+        self.assertTrue(np.all(expected_ordered_data_directories == actual_ordered_data_directories))
+
+        # test when outdir is @SIMULATION_NAME@
+        parfile_content = """#############################################################
+                # Output
+                #############################################################
+
+                IO::out_dir                          = '@SIMULATION_NAME@'
+                IO::out_fileinfo                     = "all"
+
+                """
+        expected_ordered_data_directories = [os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                                          "resources/main_test_simulation/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/output-0000/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"),
+                                             os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                                          "resources/main_test_simulation/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/output-0001/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67")]
+        actual_ordered_data_directories = _ordered_data_directories(TestPostprocessingUtils.raw_directory,
+                                                                    parfile_content,
+                                                                    'par_name')
+        self.assertTrue(np.all(expected_ordered_data_directories == actual_ordered_data_directories))
+
+        # test when outdir is @SIMULATION_NAME@
+        parfile_content = """#############################################################
+                # Output
+                #############################################################
+
+                IO::out_dir                          = @SIMULATION_NAME@
+                IO::out_fileinfo                     = "all"
+
+                """
+        expected_ordered_data_directories = [os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                                          "resources/main_test_simulation/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/output-0000/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"),
+                                             os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                                          "resources/main_test_simulation/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/output-0001/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67")]
+        actual_ordered_data_directories = _ordered_data_directories(TestPostprocessingUtils.raw_directory,
+                                                                    parfile_content,
+                                                                    'par_name')
+        self.assertTrue(np.all(expected_ordered_data_directories == actual_ordered_data_directories))
+
     def test__store_parameter_file(self):
         from mayawaves.utils.postprocessingutils import _store_parameter_file
         from mayawaves.utils.postprocessingutils import _get_parameter_file_name_and_content

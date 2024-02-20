@@ -1181,11 +1181,12 @@ def _ordered_data_directories(raw_directory: str, parameter_file: str, parameter
         result = re.search('IO::out_dir\s*=\s*(\S*)\s*\n', parameter_file)
         try:
             data_dir_name = result.group(1)
+            data_dir_name = data_dir_name.strip('"\'')
         except:
             warnings.warn("Can't find name of the data directory, assuming it is an empty string")
         if data_dir_name == '\$parfile' or data_dir_name == '$parfile':
             data_dir_name = parameter_file_name_base
-        if data_dir_name == '"@SIMULATION_NAME@"':
+        if data_dir_name == '@SIMULATION_NAME@':
             data_dir_name = simulation_name
 
         data_directories = [os.path.join(output_directory, data_dir_name) for output_directory in
