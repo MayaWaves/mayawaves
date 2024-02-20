@@ -568,7 +568,13 @@ class _QuasiLocalMeasures(_CompactObjectFileHandler):
                 header_info = header_info + line
 
         compact_object_count = None
-        parfile_content = parameter_file_group.attrs['par_content']
+        if 'par_content' in parameter_file_group.attrs:
+            parfile_content = parameter_file_group.attrs['par_content']
+        elif 'rpar_content' in parameter_file_group.attrs:
+            parfile_content = parameter_file_group.attrs['rpar_content']
+        else:
+            warnings.warn('No parameter file information. Unable to read QuasiLocalMeasures data.')
+            return
         for line in parfile_content.splitlines():
             if 'QuasiLocalMeasures::num_surfaces' in line:
                 compact_object_count = int(line.split('=')[-1].strip())
@@ -1148,11 +1154,12 @@ def _get_parameter_file_name_and_content(raw_directory: str) -> tuple:
     if parfile_name is None:
         par_name = par_file.split('/')[-1]
         parfile_name = par_name[:par_name.rfind('.')]
-    with open(par_file, 'r') as f:
-        content = f.read()
-    parfile_dict['par_content'] = content
+    if os.path.exists(par_file):
+        with open(par_file, 'r') as f:
+            content = f.read()
+        parfile_dict['par_content'] = content
 
-    if created_par:
+    if created_par and os.path.exists(par_file):
         os.remove(par_file)
 
     return parfile_name, parfile_dict
@@ -1199,6 +1206,8 @@ def _ordered_data_directories(raw_directory: str, parameter_file: str, parameter
     """
     output_directories, prestitched = _ordered_output_directories(raw_directory)
 
+    simulation_name = raw_directory.split('/')[-1]
+
     if prestitched:
         # pre-stitched data
         data_directories = output_directories
@@ -1214,10 +1223,11 @@ def _ordered_data_directories(raw_directory: str, parameter_file: str, parameter
             warnings.warn("Can't find name of the data directory, assuming it is an empty string")
         if data_dir_name == '\$parfile' or data_dir_name == '$parfile':
             data_dir_name = parameter_file_name_base
+        if data_dir_name == '"@SIMULATION_NAME@"':
+            data_dir_name = simulation_name
 
         data_directories = [os.path.join(output_directory, data_dir_name) for output_directory in
                             output_directories]
-        print(data_directories)
     return data_directories
 
 def _store_parameter_file(parfile_dict: dict, h5_file: h5py.File):
@@ -1265,7 +1275,6 @@ def _all_relevant_data_filepaths(raw_directory: str, parameter_file: str, parame
         for filepath in glob.glob(data_path):
             # grab only the filename, not the full path
             filename = filepath.split('/')[-1]
-            print(filename)
             # for all data prefixes we may want
 
             for filetype in _RadiativeFilenames:
@@ -1444,8 +1453,6 @@ def _store_compact_object_data(h5_file: h5py.File, relevant_filepaths: dict):
     compact_object_dict = {}
 
     metadata_dict = {}
-
-    print(relevant_filepaths)
 
     for filetype in sorted(relevant_filepaths["compact_object"].keys()):
 
@@ -1966,8 +1973,6 @@ def _store_meta_data(h5_file: h5py.File, relevant_data_filepaths: dict, relevant
                                 "cputime (cpu hours)"]
                 runstats_dataset.attrs["header"] = header_array
 
-    print(h5_file["compact_object"].keys())
-
     # store attributes
     # name
     h5_file.attrs["name"] = simulation_name
@@ -2039,7 +2044,12 @@ def create_h5_from_simulation(raw_directory: str, output_directory: str, catalog
 
     # get all relevant filepaths
     if "parfile" in h5_file.keys():
-        parameter_file = h5_file["parfile"].attrs["par_content"]
+        if 'par_content'in h5_file["parfile"].attrs:
+            parameter_file = h5_file["parfile"].attrs["par_content"]
+        elif 'rpar_content'in h5_file["parfile"].attrs:
+            parameter_file = h5_file["parfile"].attrs["rpar_content"]
+        else:
+            parameter_file = None
     relevant_data_filepaths = _all_relevant_data_filepaths(raw_directory, parameter_file, parameter_file_name_base)
     relevant_output_filepaths = _all_relevant_output_filepaths(raw_directory)
 
