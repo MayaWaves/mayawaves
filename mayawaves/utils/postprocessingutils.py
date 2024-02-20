@@ -568,7 +568,13 @@ class _QuasiLocalMeasures(_CompactObjectFileHandler):
                 header_info = header_info + line
 
         compact_object_count = None
-        parfile_content = parameter_file_group.attrs['par_content']
+        if 'par_content' in parameter_file_group.attrs:
+            parfile_content = parameter_file_group.attrs['par_content']
+        elif 'rpar_content' in parameter_file_group.attrs:
+            parfile_content = parameter_file_group.attrs['rpar_content']
+        else:
+            warnings.warn('No parameter file information. Unable to read QuasiLocalMeasures data.')
+            return
         for line in parfile_content.splitlines():
             if 'QuasiLocalMeasures::num_surfaces' in line:
                 compact_object_count = int(line.split('=')[-1].strip())
@@ -1039,103 +1045,21 @@ def _simulation_name(raw_directory: str) -> str:
     simulation_name = raw_directory.split('/')[-1]
     return simulation_name
 
-
-def _parameter_file_name_base(raw_directory: str) -> str:
-    """Base name from the parameter file
-
-    From the raw directory, compute the base of the parameter file name, whether it be a .rpar or .par file.
-
-    Args:
-        raw_directory (str): the directory that contains all simulation data
-
-    Returns:
-        str: the base name of the parameter file
-
-    """
-    if os.path.isdir(os.path.join(raw_directory, "SIMFACTORY/par")):
-        parameter_files = glob.glob(os.path.join(raw_directory, "SIMFACTORY/par/*.rpar")) + glob.glob(
-            os.path.join(raw_directory, "SIMFACTORY/par/*.par"))
-        if len(parameter_files) > 0:  # if there is an rpar file
-            parameter_file = parameter_files[0]
-            parfile_name = parameter_file.split('/')[-1]
-            parfile_name_base = parfile_name[:parfile_name.rfind('.')]
-            return parfile_name_base
-
-    output_directories, _ = _ordered_output_directories(raw_directory)
-    output_directories.reverse()  # most recent output directory is first now
-
-    for output_dir in output_directories:
-        parameter_files = glob.glob(os.path.join(output_dir, "*.rpar")) + glob.glob(os.path.join(output_dir, "*.par"))
-        if len(parameter_files) > 0:  # if there is an rpar file
-            parameter_file = parameter_files[0]
-            parfile_name = parameter_file.split('/')[-1]
-            parfile_name_base = parfile_name[:parfile_name.rfind('.')]
-            return parfile_name_base
-
-    warnings.warn(
-        "Unable to find a parameter file. Cannot determine parameter file name. Will assume same as simulation name.")
-    return _simulation_name(raw_directory)
-
-
-def _ordered_output_directories(raw_directory: str) -> tuple:
-    """The output directories within the raw directory, ordered.
-
-    Find all the output directories within the raw directory and sort in ascending order. If the data has been
-    prestitched, there aren't individual output directories.
-
-    Args:
-        raw_directory (str): the directory that contains all simulation data
-
-    Returns:
-        tuple: the output directories sorted in ascending order, boolean specifying whether the data has been
-            prestitched
-
-    """
-    prestitched = False
-    output_directories = glob.glob(
-        os.path.join(raw_directory, "output-[0-9][0-9][0-9][0-9]"))
-    output_directories.sort()
-    if len(output_directories) == 0:
-        # pre-stitched data
-        output_directories = [raw_directory]
-        prestitched = True
-    return output_directories, prestitched
-
-
-def _ordered_data_directories(raw_directory: str, parameter_file_name_base: str) -> list:
-    """The directories containing the simulation data files, ordered.
-
-    Within each output directory is a data directory. Returns an ordered list of all the data directories. If the data
-    is prestitched, this is the same as the output directory and raw directory.
-
-    Args:
-        raw_directory (str): the directory that contains all simulation data
-        parameter_file_name_base (str): the base name of the parameter file
-
-    Returns:
-        list: ordered list containing the ordered data directories
-
-    """
-    output_directories, prestitched = _ordered_output_directories(raw_directory)
-    if prestitched:
-        # pre-stitched data
-        data_directories = output_directories
-    else:
-        data_directories = [os.path.join(output_directory, parameter_file_name_base) for output_directory in
-                            output_directories]
-    return data_directories
-
-
-def _store_parameter_file(raw_directory: str, h5_file: h5py.File):
+def _get_parameter_file_name_and_content(raw_directory: str) -> tuple:
     """Store the parameter file in the h5 file
 
-    Search for a .rpar file (or a .par file if there is no .rpar file) and store it
+    Search for a .rpar file (or a .par file if there is no .rpar file) and store it in a dictionary
 
     Args:
         raw_directory (str): the directory that contains all simulation data
-        h5_file (h5py.file): the h5 file to store the parameter file in
+
+    Returns:
+        tuple: base name of the parameter file and a dictionary containing the rpar and par content
 
     """
+    parfile_name = None
+    parfile_dict = {}
+
     # check if SIMFACTORY directory exists
     rpar_file = None
     par_file = None
@@ -1166,36 +1090,131 @@ def _store_parameter_file(raw_directory: str, h5_file: h5py.File):
     # if we never found a parameter file
     if rpar_file is None and par_file is None:
         warnings.warn("Unable to locate a .rpar or .par file in this simulation directory.")
-        return
+        return None, None
 
-    parfile_group = h5_file.create_group('parfile')
     created_par = False
 
     # store the rpar file if it exists and create parfile
     if rpar_file is not None:
+        rpar_name = rpar_file.split('/')[-1]
+        rpar_name_base = rpar_name[:rpar_name.rfind('.')]
+        parfile_name = rpar_name_base
         with open(rpar_file, 'r') as f:
             content = f.read()
-        parfile_group.attrs['rpar_content'] = content
+        parfile_dict['rpar_content'] = content
         if par_file is None:
             temporary_rpar = rpar_file[:rpar_file.rfind('/') + 1] + "temp.rpar"
             par_file = rpar_file[:rpar_file.rfind('/') + 1] + "temp.par"
             with open(temporary_rpar, 'w') as f:
-                f.write(parfile_group.attrs['rpar_content'])
+                f.write(parfile_dict['rpar_content'])
             os.system(f'chmod +x {temporary_rpar}')
             os.system('%s' % temporary_rpar)
             created_par = True
             os.remove(temporary_rpar)
 
     # store the par file
-    with open(par_file, 'r') as f:
-        content = f.read()
-    parfile_group.attrs['par_content'] = content
+    if parfile_name is None:
+        par_name = par_file.split('/')[-1]
+        parfile_name = par_name[:par_name.rfind('.')]
+    if os.path.exists(par_file):
+        with open(par_file, 'r') as f:
+            content = f.read()
+        parfile_dict['par_content'] = content
 
-    if created_par:
+    if created_par and os.path.exists(par_file):
         os.remove(par_file)
 
+    return parfile_name, parfile_dict
 
-def _all_relevant_data_filepaths(raw_directory: str, parameter_file_name_base: str) -> dict:
+
+def _ordered_output_directories(raw_directory: str) -> tuple:
+    """The output directories within the raw directory, ordered.
+
+    Find all the output directories within the raw directory and sort in ascending order. If the data has been
+    prestitched, there aren't individual output directories.
+
+    Args:
+        raw_directory (str): the directory that contains all simulation data
+
+    Returns:
+        tuple: the output directories sorted in ascending order, boolean specifying whether the data has been
+            prestitched
+
+    """
+    prestitched = False
+    output_directories = glob.glob(
+        os.path.join(raw_directory, "output-[0-9][0-9][0-9][0-9]"))
+    output_directories.sort()
+    if len(output_directories) == 0:
+        # pre-stitched data
+        output_directories = [raw_directory]
+        prestitched = True
+    return output_directories, prestitched
+
+
+def _ordered_data_directories(raw_directory: str, parameter_file: str, parameter_file_name_base: str) -> list:
+    """The directories containing the simulation data files, ordered.
+
+    Within each output directory is a data directory. Returns an ordered list of all the data directories. If the data
+    is prestitched, this is the same as the output directory and raw directory.
+
+    Args:
+        raw_directory (str): the directory that contains all simulation data
+        parameter_file_name_base (str): the base name of the parameter file
+
+    Returns:
+        list: ordered list containing the ordered data directories
+
+    """
+    output_directories, prestitched = _ordered_output_directories(raw_directory)
+
+    simulation_name = raw_directory.split('/')[-1]
+
+    if prestitched:
+        # pre-stitched data
+        data_directories = output_directories
+    else:
+        if parameter_file is None:
+            return None
+        data_dir_name = ""
+
+        result = re.search('IO::out_dir\s*=\s*(\S*)\s*\n', parameter_file)
+        try:
+            data_dir_name = result.group(1)
+            data_dir_name = data_dir_name.strip('"\'')
+        except:
+            warnings.warn("Can't find name of the data directory, assuming it is an empty string")
+        if data_dir_name == '\$parfile' or data_dir_name == '$parfile':
+            data_dir_name = parameter_file_name_base
+        if data_dir_name == '@SIMULATION_NAME@':
+            data_dir_name = simulation_name
+
+        data_directories = [os.path.join(output_directory, data_dir_name) for output_directory in
+                            output_directories]
+    return data_directories
+
+def _store_parameter_file(parfile_dict: dict, h5_file: h5py.File):
+    """Store the parameter file in the h5 file
+
+    Store .rpar and .par file information
+
+    Args:
+        parfile_dict (dict): dictionary containing the rpar and par content
+        h5_file (h5py.file): the h5 file to store the parameter file in
+
+    """
+    if parfile_dict is None or ("par_content" not in parfile_dict and "rpar_content" not in parfile_dict):
+        return
+
+    parfile_group = h5_file.create_group('parfile')
+
+    if "par_content" in parfile_dict:
+        parfile_group.attrs['par_content'] = parfile_dict['par_content']
+
+    if "rpar_content" in parfile_dict:
+        parfile_group.attrs['rpar_content'] = parfile_dict['rpar_content']
+
+def _all_relevant_data_filepaths(raw_directory: str, parameter_file: str, parameter_file_name_base: str) -> dict:
     """Dictionary of all relevant data files.
 
     The dictionary points from a data type to a filename which in turn points to a list of filepaths with that filename.
@@ -1208,7 +1227,7 @@ def _all_relevant_data_filepaths(raw_directory: str, parameter_file_name_base: s
         dict: dictionary containing prefix -> filename -> list of filepaths to relevant files
 
     """
-    data_directories = _ordered_data_directories(raw_directory, parameter_file_name_base=parameter_file_name_base)
+    data_directories = _ordered_data_directories(raw_directory, parameter_file=parameter_file, parameter_file_name_base=parameter_file_name_base)
     relevant_data_filepaths = {"compact_object": {}, "radiative": {}, "misc": {}}
 
     # go through all output directories
@@ -1972,12 +1991,7 @@ def create_h5_from_simulation(raw_directory: str, output_directory: str, catalog
         return
 
     simulation_name = _simulation_name(raw_directory)
-    parameter_file_name_base = _parameter_file_name_base(raw_directory)
-
-    # get all relevant filepaths
-    relevant_data_filepaths = _all_relevant_data_filepaths(raw_directory,
-                                                           parameter_file_name_base=parameter_file_name_base)
-    relevant_output_filepaths = _all_relevant_output_filepaths(raw_directory)
+    parameter_file_name_base, parameter_file_dict = _get_parameter_file_name_and_content(raw_directory)
 
     if catalog_id is not None:
         h5_filename = os.path.join(output_directory, catalog_id + ".h5")
@@ -1989,7 +2003,18 @@ def create_h5_from_simulation(raw_directory: str, output_directory: str, catalog
 
     # store parameter file
     print("storing parameter file")
-    _store_parameter_file(raw_directory, h5_file)
+    _store_parameter_file(parameter_file_dict, h5_file)
+
+    # get all relevant filepaths
+    if "parfile" in h5_file.keys():
+        if 'par_content'in h5_file["parfile"].attrs:
+            parameter_file = h5_file["parfile"].attrs["par_content"]
+        elif 'rpar_content'in h5_file["parfile"].attrs:
+            parameter_file = h5_file["parfile"].attrs["rpar_content"]
+        else:
+            parameter_file = None
+    relevant_data_filepaths = _all_relevant_data_filepaths(raw_directory, parameter_file, parameter_file_name_base)
+    relevant_output_filepaths = _all_relevant_output_filepaths(raw_directory)
 
     # process radiative data
     print("storing radiative information")
@@ -2029,9 +2054,13 @@ def get_stitched_data(raw_directory: str, filename: str) -> np.ndarray:
         warnings.warn("That directory does not exist")
         return None
 
-    parameter_file_name_base = _parameter_file_name_base(raw_directory)
+    parameter_file_name_base, parameter_file_dict = _get_parameter_file_name_and_content(raw_directory)
 
-    data_directories = _ordered_data_directories(raw_directory, parameter_file_name_base=parameter_file_name_base)
+    if parameter_file_dict is None or 'par_content' not in parameter_file_dict:
+        warnings.warn('Unable to determine file structure due to lack of parameter file')
+        return None
+
+    data_directories = _ordered_data_directories(raw_directory, parameter_file=parameter_file_dict['par_content'], parameter_file_name_base=parameter_file_name_base)
     filepaths = []
 
     # go through all output directories

@@ -664,6 +664,9 @@ class Coalescence:
 
         # rough estimate with initial velocity
         time_momentum, momentum_vector = self.primary_compact_object.momentum_vector
+        if momentum_vector is None:
+            return -1, -1
+
         initial_momentum = momentum_vector[0]
         tangential_initial_momentum = initial_momentum[1]
         qc_tangential_momentum = pn.tangential_momentum_from_separation(separation_magnitude[0], mass_ratio,

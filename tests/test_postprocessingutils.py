@@ -66,6 +66,17 @@ class TestPostprocessingUtils(TestCase):
         if os.path.exists(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp")):
             shutil.rmtree(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp"))
 
+        if os.path.exists(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp_stitched")):
+            shutil.rmtree(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp_stitched"))
+
+        if os.path.exists(os.path.join(TestPostprocessingUtils.CURR_DIR,
+                               "resources/main_test_simulation/stitched/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.par")):
+            os.remove(os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                   "resources/main_test_simulation/stitched/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.par"))
+
+        if os.path.exists(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5")):
+            os.remove(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5"))
+
     def test__simulation_name(self):
         from mayawaves.utils.postprocessingutils import _simulation_name
         expected = "D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"
@@ -82,21 +93,238 @@ class TestPostprocessingUtils(TestCase):
         actual = _simulation_name("a/b/c/test_name")
         self.assertEqual(expected, actual)
 
-    def test__parameter_file_name_base(self):
-        from mayawaves.utils.postprocessingutils import _parameter_file_name_base
-        # same as simulation name
-        expected = "D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"
-        actual = _parameter_file_name_base(
-            os.path.join(TestPostprocessingUtils.CURR_DIR,
-                         "resources/main_test_simulations/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"))
-        self.assertEqual(expected, actual)
+    # def test__parameter_file_name_base(self):
+    #     from mayawaves.utils.postprocessingutils import _parameter_file_name_base
+    #     # same as simulation name
+    #     expected = "D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"
+    #     actual = _parameter_file_name_base(
+    #         os.path.join(TestPostprocessingUtils.CURR_DIR,
+    #                      "resources/main_test_simulations/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"))
+    #     self.assertEqual(expected, actual)
+    #
+    #     # different from simulation name
+    #     expected = "D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"
+    #     actual = _parameter_file_name_base(
+    #         os.path.join(TestPostprocessingUtils.CURR_DIR,
+    #                      "resources/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name"))
+    #     self.assertEqual(expected, actual)
 
-        # different from simulation name
-        expected = "D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"
-        actual = _parameter_file_name_base(
-            os.path.join(TestPostprocessingUtils.CURR_DIR,
-                         "resources/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name"))
-        self.assertEqual(expected, actual)
+    def test__get_parameter_file_name_and_content(self):
+        from mayawaves.utils.postprocessingutils import _get_parameter_file_name_and_content
+        temp_raw_directory = os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp_raw")
+        os.mkdir(temp_raw_directory)
+        temp_output_directory = os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp_output")
+        os.mkdir(temp_output_directory)
+        simfactory_directory = "%s/SIMFACTORY" % temp_raw_directory
+        os.mkdir(simfactory_directory)
+        par_directory = "%s/par" % simfactory_directory
+        os.mkdir(par_directory)
+        output_0 = "%s/output-0000" % temp_raw_directory
+        os.mkdir(output_0)
+        output_1 = "%s/output-0001" % temp_raw_directory
+        os.mkdir(output_1)
+        output_2 = "%s/output-0002" % temp_raw_directory
+        os.mkdir(output_2)
+
+        # no parfile exists
+        parameter_file_name_base, parfile_dict = _get_parameter_file_name_and_content(temp_raw_directory)
+        self.assertIsNone(parameter_file_name_base)
+        self.assertIsNone(parfile_dict)
+
+        # par file in output-0000
+        shutil.copy2(
+            os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/main_test_simulation/%s/output-0000/%s.par") % (
+                TestPostprocessingUtils.simulation_name,
+                TestPostprocessingUtils.simulation_name), output_0)
+        parameter_file_name_base, parfile_dict = _get_parameter_file_name_and_content(temp_raw_directory)
+        expected_parameter_file = os.path.join(output_0, f'{TestPostprocessingUtils.simulation_name}.par')
+        with open(expected_parameter_file) as f:
+            expected_par_content = f.read()
+        self.assertIsNotNone(parfile_dict)
+        self.assertEqual(TestPostprocessingUtils.simulation_name, parameter_file_name_base)
+        self.assertTrue('par_content' in parfile_dict)
+        self.assertFalse('rpar_content' in parfile_dict)
+        self.assertEqual(expected_par_content, parfile_dict['par_content'])
+
+        # rpar file in output-0000
+        shutil.copy2(
+            os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/main_test_simulation/%s/output-0000/%s.rpar") % (
+                TestPostprocessingUtils.simulation_name,
+                TestPostprocessingUtils.simulation_name), output_0)
+        parameter_file_name_base, parfile_dict = _get_parameter_file_name_and_content(temp_raw_directory)
+        expected_rpar_file = os.path.join(output_0, f'{TestPostprocessingUtils.simulation_name}.rpar')
+        with open(expected_rpar_file) as f:
+            expected_rpar_content = f.read()
+        expected_par_file = os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/main_test_simulation/%s/output-0000/%s.par") % (
+                TestPostprocessingUtils.simulation_name,
+                TestPostprocessingUtils.simulation_name)
+        with open(expected_par_file) as f:
+            expected_par_content = f.read()
+        self.assertIsNotNone(parfile_dict)
+        self.assertEqual(TestPostprocessingUtils.simulation_name, parameter_file_name_base)
+        self.assertTrue('par_content' in parfile_dict)
+        self.assertTrue('rpar_content' in parfile_dict)
+        self.assertEqual(expected_par_content, parfile_dict['par_content'])
+        self.assertEqual(expected_rpar_content, parfile_dict['rpar_content'])
+
+        # par file in output-0001
+        shutil.copy2(
+            os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/main_test_simulation/%s/output-0000/%s.par") % (
+                TestPostprocessingUtils.simulation_name,
+                TestPostprocessingUtils.simulation_name), output_1)
+        parameter_file_name_base, parfile_dict = _get_parameter_file_name_and_content(temp_raw_directory)
+        expected_parameter_file = os.path.join(output_1, f'{TestPostprocessingUtils.simulation_name}.par')
+        with open(expected_parameter_file) as f:
+            expected_par_content = f.read()
+        self.assertIsNotNone(parfile_dict)
+        self.assertEqual(TestPostprocessingUtils.simulation_name, parameter_file_name_base)
+        self.assertTrue('par_content' in parfile_dict)
+        self.assertFalse('rpar_content' in parfile_dict)
+        self.assertEqual(expected_par_content, parfile_dict['par_content'])
+
+        # rpar file in output-0001
+        shutil.copy2(
+            os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/main_test_simulation/%s/output-0000/%s.rpar") % (
+                TestPostprocessingUtils.simulation_name,
+                TestPostprocessingUtils.simulation_name), output_1)
+        parameter_file_name_base, parfile_dict = _get_parameter_file_name_and_content(temp_raw_directory)
+        expected_rpar_file = os.path.join(output_1, f'{TestPostprocessingUtils.simulation_name}.rpar')
+        with open(expected_rpar_file) as f:
+            expected_rpar_content = f.read()
+        expected_par_file = os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                         "resources/main_test_simulation/%s/output-0000/%s.par") % (
+                                TestPostprocessingUtils.simulation_name,
+                                TestPostprocessingUtils.simulation_name)
+        with open(expected_par_file) as f:
+            expected_par_content = f.read()
+        self.assertIsNotNone(parfile_dict)
+        self.assertEqual(TestPostprocessingUtils.simulation_name, parameter_file_name_base)
+        self.assertTrue('par_content' in parfile_dict)
+        self.assertTrue('rpar_content' in parfile_dict)
+        self.assertEqual(expected_par_content, parfile_dict['par_content'])
+        self.assertEqual(expected_rpar_content, parfile_dict['rpar_content'])
+
+        # rpar file in output-0002
+        shutil.copy2(
+            os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/main_test_simulation/%s/output-0000/%s.rpar") % (
+                TestPostprocessingUtils.simulation_name,
+                TestPostprocessingUtils.simulation_name), output_2)
+        parameter_file_name_base, parfile_dict = _get_parameter_file_name_and_content(temp_raw_directory)
+        expected_rpar_file = os.path.join(output_2, f'{TestPostprocessingUtils.simulation_name}.rpar')
+        with open(expected_rpar_file) as f:
+            expected_rpar_content = f.read()
+        expected_par_file = os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                         "resources/main_test_simulation/%s/output-0000/%s.par") % (
+                                TestPostprocessingUtils.simulation_name,
+                                TestPostprocessingUtils.simulation_name)
+        with open(expected_par_file) as f:
+            expected_par_content = f.read()
+        self.assertIsNotNone(parfile_dict)
+        self.assertEqual(TestPostprocessingUtils.simulation_name, parameter_file_name_base)
+        self.assertTrue('par_content' in parfile_dict)
+        self.assertTrue('rpar_content' in parfile_dict)
+        self.assertEqual(expected_par_content, parfile_dict['par_content'])
+        self.assertEqual(expected_rpar_content, parfile_dict['rpar_content'])
+
+        # par file in simfactory
+        shutil.copy2(
+            os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/main_test_simulation/%s/output-0000/%s.par") % (
+                TestPostprocessingUtils.simulation_name,
+                TestPostprocessingUtils.simulation_name), par_directory)
+        parameter_file_name_base, parfile_dict = _get_parameter_file_name_and_content(temp_raw_directory)
+        expected_parameter_file = os.path.join(par_directory, f'{TestPostprocessingUtils.simulation_name}.par')
+        with open(expected_parameter_file) as f:
+            expected_content = f.read()
+        self.assertIsNotNone(parfile_dict)
+        self.assertEqual(TestPostprocessingUtils.simulation_name, parameter_file_name_base)
+        self.assertTrue('par_content' in parfile_dict)
+        self.assertFalse('rpar_content' in parfile_dict)
+        self.assertEqual(expected_par_content, parfile_dict['par_content'])
+
+        # rpar file in simfactory
+        shutil.copy2(
+            os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/main_test_simulation/%s/output-0000/%s.rpar") % (
+                TestPostprocessingUtils.simulation_name,
+                TestPostprocessingUtils.simulation_name), par_directory)
+        parameter_file_name_base, parfile_dict = _get_parameter_file_name_and_content(temp_raw_directory)
+        expected_rpar_file = os.path.join(par_directory, f'{TestPostprocessingUtils.simulation_name}.rpar')
+        with open(expected_rpar_file) as f:
+            expected_rpar_content = f.read()
+        expected_par_file = os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                         "resources/main_test_simulation/%s/output-0000/%s.par") % (
+                                TestPostprocessingUtils.simulation_name,
+                                TestPostprocessingUtils.simulation_name)
+        with open(expected_par_file) as f:
+            expected_par_content = f.read()
+        self.assertIsNotNone(parfile_dict)
+        self.assertEqual(TestPostprocessingUtils.simulation_name, parameter_file_name_base)
+        self.assertTrue('par_content' in parfile_dict)
+        self.assertTrue('rpar_content' in parfile_dict)
+        self.assertEqual(expected_par_content, parfile_dict['par_content'])
+        self.assertEqual(expected_rpar_content, parfile_dict['rpar_content'])
+
+        # prestitched data
+        temp_stitched_directory = os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp_stitched")
+        os.mkdir(temp_stitched_directory)
+
+        # if rpar in prestitched directory
+        shutil.copy2(os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                  "resources/main_test_simulation/stitched/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.rpar"),
+                     temp_stitched_directory)
+        parameter_file_name_base, parfile_dict = _get_parameter_file_name_and_content(temp_stitched_directory)
+        expected_rpar_file = os.path.join(temp_stitched_directory,
+                                               f'{TestPostprocessingUtils.simulation_name}.rpar')
+        with open(expected_rpar_file) as f:
+            expected_rpar_content = f.read()
+        os.system(os.path.join(TestPostprocessingUtils.CURR_DIR,
+                               "resources/main_test_simulation/stitched/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.rpar"))
+        expected_par_file = os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                  "resources/main_test_simulation/stitched/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.par")
+        with open(expected_par_file) as f:
+            expected_par_content = f.read()
+        self.assertIsNotNone(parfile_dict)
+        self.assertEqual(TestPostprocessingUtils.simulation_name, parameter_file_name_base)
+        self.assertTrue('par_content' in parfile_dict)
+        self.assertTrue('rpar_content' in parfile_dict)
+        print(len(expected_par_content))
+        print(len(parfile_dict['par_content']))
+        print(expected_par_content[:10])
+        print(parfile_dict['par_content'][:10])
+        for i in range(len(expected_par_content)):
+            if expected_par_content[i] != parfile_dict['par_content'][i]:
+                print(f'{i}: {expected_par_content[i]}, {parfile_dict["par_content"][i]}')
+        self.assertEqual(expected_par_content, parfile_dict['par_content'])
+        self.assertEqual(expected_rpar_content, parfile_dict['rpar_content'])
+        os.remove(os.path.join(TestPostprocessingUtils.CURR_DIR,
+                               "resources/main_test_simulation/stitched/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.par"))
+
+        # if par in prestitched directory
+        os.system(os.path.join(TestPostprocessingUtils.CURR_DIR,
+                               "resources/main_test_simulation/stitched/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.rpar"))
+        shutil.copy2(os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                  "resources/main_test_simulation/stitched/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.par"),
+                     temp_stitched_directory)
+        parameter_file_name_base, parfile_dict = _get_parameter_file_name_and_content(temp_stitched_directory)
+        expected_rpar_file = os.path.join(temp_stitched_directory,
+                                          f'{TestPostprocessingUtils.simulation_name}.rpar')
+        with open(expected_rpar_file) as f:
+            expected_rpar_content = f.read()
+        expected_par_file = os.path.join(temp_stitched_directory,
+                                         f'{TestPostprocessingUtils.simulation_name}.par')
+        with open(expected_par_file) as f:
+            expected_par_content = f.read()
+        self.assertIsNotNone(parfile_dict)
+        self.assertEqual(TestPostprocessingUtils.simulation_name, parameter_file_name_base)
+        self.assertTrue('par_content' in parfile_dict)
+        self.assertTrue('rpar_content' in parfile_dict)
+        self.assertEqual(expected_par_content, parfile_dict['par_content'])
+        self.assertEqual(expected_rpar_content, parfile_dict['rpar_content'])
+        os.remove(os.path.join(TestPostprocessingUtils.CURR_DIR,
+                               "resources/main_test_simulation/stitched/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.par"))
+
+        shutil.rmtree(temp_stitched_directory)
+        shutil.rmtree(temp_raw_directory)
+        shutil.rmtree(temp_output_directory)
 
     def test__ordered_output_directories(self):
         from mayawaves.utils.postprocessingutils import _ordered_output_directories
@@ -122,12 +350,15 @@ class TestPostprocessingUtils(TestCase):
     def test__ordered_data_directories(self):
         from mayawaves.utils.postprocessingutils import _ordered_data_directories
 
+        parameter_filepath = os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/main_test_simulation/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/SIMFACTORY/par/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.rpar")
+        with open(parameter_filepath, 'r') as f:
+            parfile_content = f.read()
         # parfile and simulation have same name
         expected_ordered_data_directories = [os.path.join(TestPostprocessingUtils.CURR_DIR,
                                                           "resources/main_test_simulation/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/output-0000/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"),
                                              os.path.join(TestPostprocessingUtils.CURR_DIR,
                                                           "resources/main_test_simulation/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/output-0001/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67")]
-        actual_ordered_data_directories = _ordered_data_directories(TestPostprocessingUtils.raw_directory,
+        actual_ordered_data_directories = _ordered_data_directories(TestPostprocessingUtils.raw_directory, parfile_content,
                                                                     TestPostprocessingUtils.parameter_file_name)
         self.assertTrue(np.all(expected_ordered_data_directories == actual_ordered_data_directories))
 
@@ -135,7 +366,7 @@ class TestPostprocessingUtils(TestCase):
         expected_ordered_data_directories = [os.path.join(TestPostprocessingUtils.CURR_DIR,
                                                           "resources/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name/output-0000/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67")]
         actual_ordered_data_directories = _ordered_data_directories(os.path.join(TestPostprocessingUtils.CURR_DIR,
-                                                                                 "resources/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name"),
+                                                                                 "resources/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name"), parfile_content,
                                                                     "D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67")
         self.assertTrue(np.all(expected_ordered_data_directories == actual_ordered_data_directories))
 
@@ -145,14 +376,122 @@ class TestPostprocessingUtils(TestCase):
                          "resources/main_test_simulation/stitched/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67")]
         actual_ordered_output_directories = _ordered_data_directories(
             os.path.join(TestPostprocessingUtils.CURR_DIR,
-                         "resources/main_test_simulation/stitched/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"),
+                         "resources/main_test_simulation/stitched/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"), parfile_content,
             "D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"
         )
         self.assertTrue(np.all(expected_ordered_output_directories == actual_ordered_output_directories))
 
+        # test when outdir isn't $parfile
+        parfile_content = """#############################################################
+# Output
+#############################################################
+
+IO::out_dir                          = D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67
+IO::out_fileinfo                     = "all"
+
+"""
+        expected_ordered_data_directories = [os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                                          "resources/main_test_simulation/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/output-0000/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"),
+                                             os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                                          "resources/main_test_simulation/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/output-0001/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67")]
+        actual_ordered_data_directories = _ordered_data_directories(TestPostprocessingUtils.raw_directory,
+                                                                    parfile_content,
+                                                                    TestPostprocessingUtils.parameter_file_name)
+        self.assertTrue(np.all(expected_ordered_data_directories == actual_ordered_data_directories))
+
+        # test when outdir isn't $parfile and has quotes
+        parfile_content = """#############################################################
+        # Output
+        #############################################################
+
+        IO::out_dir                          = "D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"
+        IO::out_fileinfo                     = "all"
+
+        """
+        expected_ordered_data_directories = [os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                                          "resources/main_test_simulation/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/output-0000/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"),
+                                             os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                                          "resources/main_test_simulation/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/output-0001/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67")]
+        actual_ordered_data_directories = _ordered_data_directories(TestPostprocessingUtils.raw_directory,
+                                                                    parfile_content,
+                                                                    TestPostprocessingUtils.parameter_file_name)
+        self.assertTrue(np.all(expected_ordered_data_directories == actual_ordered_data_directories))
+
+        # test when outdir isn't $parfile and has quotes
+        parfile_content = """#############################################################
+        # Output
+        #############################################################
+
+        IO::out_dir                          = 'D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67'
+        IO::out_fileinfo                     = "all"
+
+        """
+        expected_ordered_data_directories = [os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                                          "resources/main_test_simulation/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/output-0000/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"),
+                                             os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                                          "resources/main_test_simulation/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/output-0001/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67")]
+        actual_ordered_data_directories = _ordered_data_directories(TestPostprocessingUtils.raw_directory,
+                                                                    parfile_content,
+                                                                    TestPostprocessingUtils.parameter_file_name)
+        self.assertTrue(np.all(expected_ordered_data_directories == actual_ordered_data_directories))
+
+        # test when outdir is @SIMULATION_NAME@
+        parfile_content = """#############################################################
+        # Output
+        #############################################################
+
+        IO::out_dir                          = "@SIMULATION_NAME@"
+        IO::out_fileinfo                     = "all"
+
+        """
+        expected_ordered_data_directories = [os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                                          "resources/main_test_simulation/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/output-0000/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"),
+                                             os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                                          "resources/main_test_simulation/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/output-0001/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67")]
+        actual_ordered_data_directories = _ordered_data_directories(TestPostprocessingUtils.raw_directory,
+                                                                    parfile_content,
+                                                                    'par_name')
+        self.assertTrue(np.all(expected_ordered_data_directories == actual_ordered_data_directories))
+
+        # test when outdir is @SIMULATION_NAME@
+        parfile_content = """#############################################################
+                # Output
+                #############################################################
+
+                IO::out_dir                          = '@SIMULATION_NAME@'
+                IO::out_fileinfo                     = "all"
+
+                """
+        expected_ordered_data_directories = [os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                                          "resources/main_test_simulation/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/output-0000/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"),
+                                             os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                                          "resources/main_test_simulation/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/output-0001/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67")]
+        actual_ordered_data_directories = _ordered_data_directories(TestPostprocessingUtils.raw_directory,
+                                                                    parfile_content,
+                                                                    'par_name')
+        self.assertTrue(np.all(expected_ordered_data_directories == actual_ordered_data_directories))
+
+        # test when outdir is @SIMULATION_NAME@
+        parfile_content = """#############################################################
+                # Output
+                #############################################################
+
+                IO::out_dir                          = @SIMULATION_NAME@
+                IO::out_fileinfo                     = "all"
+
+                """
+        expected_ordered_data_directories = [os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                                          "resources/main_test_simulation/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/output-0000/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"),
+                                             os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                                          "resources/main_test_simulation/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/output-0001/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67")]
+        actual_ordered_data_directories = _ordered_data_directories(TestPostprocessingUtils.raw_directory,
+                                                                    parfile_content,
+                                                                    'par_name')
+        self.assertTrue(np.all(expected_ordered_data_directories == actual_ordered_data_directories))
+
     def test__store_parameter_file(self):
-        # todo test if there is only an rpar
         from mayawaves.utils.postprocessingutils import _store_parameter_file
+        from mayawaves.utils.postprocessingutils import _get_parameter_file_name_and_content
         temp_raw_directory = os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp_raw")
         os.mkdir(temp_raw_directory)
         temp_output_directory = os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp_output")
@@ -168,7 +507,8 @@ class TestPostprocessingUtils(TestCase):
 
         # no parfile exists
         temp_h5_file = h5py.File(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5"), 'w')
-        _store_parameter_file(temp_raw_directory, temp_h5_file)
+        parfile_name_base, parfile_dict = _get_parameter_file_name_and_content(temp_raw_directory)
+        _store_parameter_file(parfile_dict, temp_h5_file)
         self.assertFalse('parfile' in temp_h5_file.keys())
 
         # clean up
@@ -181,7 +521,8 @@ class TestPostprocessingUtils(TestCase):
                 TestPostprocessingUtils.simulation_name,
                 TestPostprocessingUtils.simulation_name), output_0)
         temp_h5_file = h5py.File(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5"), 'w')
-        _store_parameter_file(temp_raw_directory, temp_h5_file)
+        parfile_name_base, parfile_dict = _get_parameter_file_name_and_content(temp_raw_directory)
+        _store_parameter_file(parfile_dict, temp_h5_file)
         expected_parameter_file = os.path.join(output_0, f'{TestPostprocessingUtils.simulation_name}.par')
         with open(expected_parameter_file) as f:
             expected_content = f.read()
@@ -206,7 +547,8 @@ class TestPostprocessingUtils(TestCase):
                 TestPostprocessingUtils.simulation_name,
                 TestPostprocessingUtils.simulation_name), output_0)
         temp_h5_file = h5py.File(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5"), 'w')
-        _store_parameter_file(temp_raw_directory, temp_h5_file)
+        parfile_name_base, parfile_dict = _get_parameter_file_name_and_content(temp_raw_directory)
+        _store_parameter_file(parfile_dict, temp_h5_file)
         expected_parameter_file = os.path.join(output_0, f'{TestPostprocessingUtils.simulation_name}.rpar')
         with open(expected_parameter_file) as f:
             expected_content = f.read()
@@ -234,7 +576,8 @@ class TestPostprocessingUtils(TestCase):
                 TestPostprocessingUtils.simulation_name,
                 TestPostprocessingUtils.simulation_name), output_1)
         temp_h5_file = h5py.File(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5"), 'w')
-        _store_parameter_file(temp_raw_directory, temp_h5_file)
+        parfile_name_base, parfile_dict = _get_parameter_file_name_and_content(temp_raw_directory)
+        _store_parameter_file(parfile_dict, temp_h5_file)
         expected_parameter_file = os.path.join(output_1, f'{TestPostprocessingUtils.simulation_name}.par')
         with open(expected_parameter_file) as f:
             expected_content = f.read()
@@ -259,7 +602,8 @@ class TestPostprocessingUtils(TestCase):
                 TestPostprocessingUtils.simulation_name,
                 TestPostprocessingUtils.simulation_name), output_1)
         temp_h5_file = h5py.File(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5"), 'w')
-        _store_parameter_file(temp_raw_directory, temp_h5_file)
+        parfile_name_base, parfile_dict = _get_parameter_file_name_and_content(temp_raw_directory)
+        _store_parameter_file(parfile_dict, temp_h5_file)
         expected_parameter_file = os.path.join(output_1, f'{TestPostprocessingUtils.simulation_name}.rpar')
         with open(expected_parameter_file) as f:
             expected_content = f.read()
@@ -287,7 +631,8 @@ class TestPostprocessingUtils(TestCase):
                 TestPostprocessingUtils.simulation_name,
                 TestPostprocessingUtils.simulation_name), par_directory)
         temp_h5_file = h5py.File(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5"), 'w')
-        _store_parameter_file(temp_raw_directory, temp_h5_file)
+        parfile_name_base, parfile_dict = _get_parameter_file_name_and_content(temp_raw_directory)
+        _store_parameter_file(parfile_dict, temp_h5_file)
         expected_parameter_file = os.path.join(par_directory, f'{TestPostprocessingUtils.simulation_name}.par')
         with open(expected_parameter_file) as f:
             expected_content = f.read()
@@ -312,7 +657,8 @@ class TestPostprocessingUtils(TestCase):
                 TestPostprocessingUtils.simulation_name,
                 TestPostprocessingUtils.simulation_name), par_directory)
         temp_h5_file = h5py.File(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5"), 'w')
-        _store_parameter_file(temp_raw_directory, temp_h5_file)
+        parfile_name_base, parfile_dict = _get_parameter_file_name_and_content(temp_raw_directory)
+        _store_parameter_file(parfile_dict, temp_h5_file)
         expected_parameter_file = os.path.join(par_directory, f'{TestPostprocessingUtils.simulation_name}.rpar')
         with open(expected_parameter_file) as f:
             expected_content = f.read()
@@ -345,7 +691,8 @@ class TestPostprocessingUtils(TestCase):
                                   "resources/main_test_simulation/stitched/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.par"),
                      temp_stitched_directory)
         temp_h5_file = h5py.File(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5"), 'w')
-        _store_parameter_file(temp_stitched_directory, temp_h5_file)
+        parfile_name_base, parfile_dict = _get_parameter_file_name_and_content(temp_stitched_directory)
+        _store_parameter_file(parfile_dict, temp_h5_file)
         expected_parameter_file = os.path.join(temp_stitched_directory,
                                                f'{TestPostprocessingUtils.simulation_name}.par')
         with open(expected_parameter_file) as f:
@@ -373,7 +720,8 @@ class TestPostprocessingUtils(TestCase):
                                   "resources/main_test_simulation/stitched/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.rpar"),
                      temp_stitched_directory)
         temp_h5_file = h5py.File(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5"), 'w')
-        _store_parameter_file(temp_stitched_directory, temp_h5_file)
+        parfile_name_base, parfile_dict = _get_parameter_file_name_and_content(temp_stitched_directory)
+        _store_parameter_file(parfile_dict, temp_h5_file)
         expected_parameter_file = os.path.join(temp_stitched_directory,
                                                f'{TestPostprocessingUtils.simulation_name}.rpar')
         with open(expected_parameter_file) as f:
@@ -400,15 +748,77 @@ class TestPostprocessingUtils(TestCase):
         shutil.rmtree(temp_raw_directory)
         shutil.rmtree(temp_output_directory)
 
+        # parfile dict is None
+        parfile_dict = None
+        temp_h5_file = h5py.File(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5"), 'w')
+        _store_parameter_file(parfile_dict, temp_h5_file)
+        self.assertFalse('parfile' in temp_h5_file.keys())
+        temp_h5_file.close()
+        os.remove(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5"))
+
+        # neither par_content nor rpar_content in parfile_dict
+        parfile_dict = {}
+        temp_h5_file = h5py.File(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5"), 'w')
+        _store_parameter_file(parfile_dict, temp_h5_file)
+        self.assertFalse('parfile' in temp_h5_file.keys())
+        temp_h5_file.close()
+        os.remove(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5"))
+
+        # both par_content and rpar_content in parfile_dict
+        parfile_dict = {
+            'par_content': 'ABCDE',
+            'rpar_content': 'FGHIJ'
+        }
+        temp_h5_file = h5py.File(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5"), 'w')
+        _store_parameter_file(parfile_dict, temp_h5_file)
+        self.assertTrue('parfile' in temp_h5_file.keys())
+        self.assertTrue('par_content' in temp_h5_file['parfile'].attrs)
+        self.assertTrue('rpar_content' in temp_h5_file['parfile'].attrs)
+        self.assertEqual('ABCDE', temp_h5_file['parfile'].attrs['par_content'])
+        self.assertEqual('FGHIJ', temp_h5_file['parfile'].attrs['rpar_content'])
+        temp_h5_file.close()
+        os.remove(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5"))
+
+        # par_content in parfile_dict
+        parfile_dict = {
+            'par_content': '12345'
+        }
+        temp_h5_file = h5py.File(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5"), 'w')
+        _store_parameter_file(parfile_dict, temp_h5_file)
+        self.assertTrue('parfile' in temp_h5_file.keys())
+        self.assertTrue('par_content' in temp_h5_file['parfile'].attrs)
+        self.assertFalse('rpar_content' in temp_h5_file['parfile'].attrs)
+        self.assertEqual('12345', temp_h5_file['parfile'].attrs['par_content'])
+        temp_h5_file.close()
+        os.remove(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5"))
+
+        # rpar_content in parfile_dict
+        parfile_dict = {
+            'rpar_content': '67890'
+        }
+        temp_h5_file = h5py.File(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5"), 'w')
+        _store_parameter_file(parfile_dict, temp_h5_file)
+        self.assertTrue('parfile' in temp_h5_file.keys())
+        self.assertFalse('par_content' in temp_h5_file['parfile'].attrs)
+        self.assertTrue('rpar_content' in temp_h5_file['parfile'].attrs)
+        self.assertEqual('67890', temp_h5_file['parfile'].attrs['rpar_content'])
+        temp_h5_file.close()
+        os.remove(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5"))
+
     def test__all_relevant_data_filepaths(self):
         from mayawaves.utils.postprocessingutils import _all_relevant_data_filepaths
         from mayawaves.utils.postprocessingutils import _RadiativeFilenames
         from mayawaves.utils.postprocessingutils import _CompactObjectFilenames
         from mayawaves.utils.postprocessingutils import _MiscDataFilenames
 
+        parameter_filepath = os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                          "resources/main_test_simulation/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/SIMFACTORY/par/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.rpar")
+        with open(parameter_filepath, 'r') as f:
+            parfile_content = f.read()
+
         # simulation has same name as parameter file
         actual_relevant_data_filepaths = _all_relevant_data_filepaths(
-            TestPostprocessingUtils.raw_directory, TestPostprocessingUtils.parameter_file_name)
+            TestPostprocessingUtils.raw_directory, parfile_content, TestPostprocessingUtils.parameter_file_name)
 
         actual_psi4_filetypes = set(list(actual_relevant_data_filepaths["radiative"].keys()))
         expected_psi4_filetypes = {_RadiativeFilenames.YLM_WEYLSCAL4_ASC}
@@ -480,6 +890,7 @@ class TestPostprocessingUtils(TestCase):
         # simulation has different name than parameter file
         actual_relevant_data_filepaths = _all_relevant_data_filepaths(os.path.join(TestPostprocessingUtils.CURR_DIR,
                                                                                    "resources/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name"),
+                                                                      parfile_content,
                                                                       "D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67")
         actual_included_prefixes = set(list(actual_relevant_data_filepaths["radiative"].keys())
                                        + list(actual_relevant_data_filepaths["compact_object"].keys())
@@ -492,7 +903,7 @@ class TestPostprocessingUtils(TestCase):
         # test prestitched data
         actual_relevant_data_filepaths = _all_relevant_data_filepaths(
             os.path.join(TestPostprocessingUtils.CURR_DIR,
-                         "resources/main_test_simulation/stitched/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"),
+                         "resources/main_test_simulation/stitched/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"), parfile_content,
             "D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67")
 
         actual_psi4_filetypes = set(list(actual_relevant_data_filepaths["radiative"].keys()))

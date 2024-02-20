@@ -159,6 +159,42 @@ class TestQuasiLocalMeasures(TestCase):
         temp_h5_file.close()
         os.remove(os.path.join(TestQuasiLocalMeasures.CURR_DIR, "resources/temp.h5"))
 
+        # multiple outputs, 3 tracked surfaces, rpar data only
+        simulation_name = "GW150914"
+        filepaths = {
+            "quasilocalmeasures-qlm_scalars..asc":
+                [
+                    os.path.join(TestQuasiLocalMeasures.CURR_DIR,
+                                 "resources/sample_etk_simulations/%s/output-0000/%s/quasilocalmeasures-qlm_scalars..asc") % (
+                        simulation_name, simulation_name),
+                    os.path.join(TestQuasiLocalMeasures.CURR_DIR,
+                                 "resources/sample_etk_simulations/%s/output-0001/%s/quasilocalmeasures-qlm_scalars..asc") % (
+                        simulation_name, simulation_name),
+                    os.path.join(TestQuasiLocalMeasures.CURR_DIR,
+                                 "resources/sample_etk_simulations/%s/output-0002/%s/quasilocalmeasures-qlm_scalars..asc") % (
+                        simulation_name, simulation_name)
+                ]
+        }
+        rpar_file_path = os.path.join(TestQuasiLocalMeasures.CURR_DIR,
+                                           "resources/sample_etk_simulations/%s/output-0000/%s.rpar") % (
+                                  simulation_name, simulation_name)
+        temp_h5_file = h5py.File(os.path.join(TestQuasiLocalMeasures.CURR_DIR, "resources/temp.h5"), 'w')
+        parfile_group = temp_h5_file.create_group('parfile')
+        with open(rpar_file_path) as f:
+            parfile_group.attrs['rpar_content'] = f.read()
+        compact_object_dict = {}
+        actual_compact_object_dict, metadata_dict = _QuasiLocalMeasures.store_compact_object_data_from_filetype(
+            filepaths,
+            compact_object_dict,
+            parfile_group)
+
+        expected_compact_objects = [0, 1, 2]
+        actual_compact_objects = sorted(actual_compact_object_dict.keys())
+        self.assertEqual(expected_compact_objects, actual_compact_objects)
+
+        temp_h5_file.close()
+        os.remove(os.path.join(TestQuasiLocalMeasures.CURR_DIR, "resources/temp.h5"))
+
         # multiple outputs, 3 tracked surfaces
         simulation_name = "GW150914"
         filepaths = {
