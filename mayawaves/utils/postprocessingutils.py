@@ -1045,44 +1045,6 @@ def _simulation_name(raw_directory: str) -> str:
     simulation_name = raw_directory.split('/')[-1]
     return simulation_name
 
-
-# def _parameter_file_name_base(raw_directory: str) -> str:
-#     """Base name from the parameter file
-#
-#     From the raw directory, compute the base of the parameter file name, whether it be a .rpar or .par file.
-#
-#     Args:
-#         raw_directory (str): the directory that contains all simulation data
-#
-#     Returns:
-#         str: the base name of the parameter file
-#
-#     """
-#     if os.path.isdir(os.path.join(raw_directory, "SIMFACTORY/par")):
-#         parameter_files = glob.glob(os.path.join(raw_directory, "SIMFACTORY/par/*.rpar")) + glob.glob(
-#             os.path.join(raw_directory, "SIMFACTORY/par/*.par"))
-#         if len(parameter_files) > 0:  # if there is an rpar file
-#             parameter_file = parameter_files[0]
-#             parfile_name = parameter_file.split('/')[-1]
-#             parfile_name_base = parfile_name[:parfile_name.rfind('.')]
-#             return parfile_name_base
-#
-#     output_directories, _ = _ordered_output_directories(raw_directory)
-#     output_directories.reverse()  # most recent output directory is first now
-#
-#     for output_dir in output_directories:
-#         parameter_files = glob.glob(os.path.join(output_dir, "*.rpar")) + glob.glob(os.path.join(output_dir, "*.par"))
-#         if len(parameter_files) > 0:  # if there is an rpar file
-#             parameter_file = parameter_files[0]
-#             parfile_name = parameter_file.split('/')[-1]
-#             parfile_name_base = parfile_name[:parfile_name.rfind('.')]
-#             return parfile_name_base
-#
-#     warnings.warn(
-#         "Unable to find a parameter file. Cannot determine parameter file name. Will assume same as simulation name.")
-#     return _simulation_name(raw_directory)
-
-
 def _get_parameter_file_name_and_content(raw_directory: str) -> tuple:
     """Store the parameter file in the h5 file
 
