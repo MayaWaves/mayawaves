@@ -1072,19 +1072,21 @@ def _get_parameter_file_name_and_content(raw_directory: str) -> tuple:
             par_file = files_with_par[0]
 
     # if we haven't found a par file or a rpar file
-    if rpar_file is None and par_file is None:
+    if rpar_file is None or par_file is None:
         output_directories, _ = _ordered_output_directories(raw_directory)
         output_directories.reverse()  # most recent output directory is first now
 
         for output_dir in output_directories:
-            files_with_rpar = glob.glob(os.path.join(output_dir, "*.rpar"))
-            if len(files_with_rpar) > 0:  # if there is a rpar file
-                rpar_file = files_with_rpar[0]
-            files_with_par = glob.glob(os.path.join(output_dir, "*.par"))
-            if len(files_with_par) > 0:  # if there is a par file
-                par_file = files_with_par[0]
+            if rpar_file is None:
+                files_with_rpar = glob.glob(os.path.join(output_dir, "*.rpar"))
+                if len(files_with_rpar) > 0:  # if there is a rpar file
+                    rpar_file = files_with_rpar[0]
+            if par_file is None:
+                files_with_par = glob.glob(os.path.join(output_dir, "*.par"))
+                if len(files_with_par) > 0:  # if there is a par file
+                    par_file = files_with_par[0]
 
-            if rpar_file is not None or par_file is not None:
+            if rpar_file is not None and par_file is not None:
                 break
 
     # if we never found a parameter file
