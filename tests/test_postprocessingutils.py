@@ -93,22 +93,6 @@ class TestPostprocessingUtils(TestCase):
         actual = _simulation_name("a/b/c/test_name")
         self.assertEqual(expected, actual)
 
-    # def test__parameter_file_name_base(self):
-    #     from mayawaves.utils.postprocessingutils import _parameter_file_name_base
-    #     # same as simulation name
-    #     expected = "D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"
-    #     actual = _parameter_file_name_base(
-    #         os.path.join(TestPostprocessingUtils.CURR_DIR,
-    #                      "resources/main_test_simulations/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"))
-    #     self.assertEqual(expected, actual)
-    #
-    #     # different from simulation name
-    #     expected = "D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"
-    #     actual = _parameter_file_name_base(
-    #         os.path.join(TestPostprocessingUtils.CURR_DIR,
-    #                      "resources/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67_different_name"))
-    #     self.assertEqual(expected, actual)
-
     def test__get_parameter_file_name_and_content(self):
         from mayawaves.utils.postprocessingutils import _get_parameter_file_name_and_content
         temp_raw_directory = os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp_raw")
@@ -131,33 +115,19 @@ class TestPostprocessingUtils(TestCase):
         self.assertIsNone(parameter_file_name_base)
         self.assertIsNone(parfile_dict)
 
-        # par file in output-0000
-        shutil.copy2(
-            os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/main_test_simulation/%s/output-0000/%s.par") % (
-                TestPostprocessingUtils.simulation_name,
-                TestPostprocessingUtils.simulation_name), output_0)
-        parameter_file_name_base, parfile_dict = _get_parameter_file_name_and_content(temp_raw_directory)
-        expected_parameter_file = os.path.join(output_0, f'{TestPostprocessingUtils.simulation_name}.par')
-        with open(expected_parameter_file) as f:
-            expected_par_content = f.read()
-        self.assertIsNotNone(parfile_dict)
-        self.assertEqual(TestPostprocessingUtils.simulation_name, parameter_file_name_base)
-        self.assertTrue('par_content' in parfile_dict)
-        self.assertFalse('rpar_content' in parfile_dict)
-        self.assertEqual(expected_par_content, parfile_dict['par_content'])
-
-        # rpar file in output-0000
+        # rpar file in output-0002
         shutil.copy2(
             os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/main_test_simulation/%s/output-0000/%s.rpar") % (
                 TestPostprocessingUtils.simulation_name,
-                TestPostprocessingUtils.simulation_name), output_0)
+                TestPostprocessingUtils.simulation_name), output_2)
         parameter_file_name_base, parfile_dict = _get_parameter_file_name_and_content(temp_raw_directory)
-        expected_rpar_file = os.path.join(output_0, f'{TestPostprocessingUtils.simulation_name}.rpar')
+        expected_rpar_file = os.path.join(output_2, f'{TestPostprocessingUtils.simulation_name}.rpar')
         with open(expected_rpar_file) as f:
             expected_rpar_content = f.read()
-        expected_par_file = os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/main_test_simulation/%s/output-0000/%s.par") % (
-                TestPostprocessingUtils.simulation_name,
-                TestPostprocessingUtils.simulation_name)
+        expected_par_file = os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                         "resources/main_test_simulation/%s/output-0000/%s.par") % (
+                                TestPostprocessingUtils.simulation_name,
+                                TestPostprocessingUtils.simulation_name)
         with open(expected_par_file) as f:
             expected_par_content = f.read()
         self.assertIsNotNone(parfile_dict)
@@ -166,6 +136,7 @@ class TestPostprocessingUtils(TestCase):
         self.assertTrue('rpar_content' in parfile_dict)
         self.assertEqual(expected_par_content, parfile_dict['par_content'])
         self.assertEqual(expected_rpar_content, parfile_dict['rpar_content'])
+        os.remove(expected_rpar_file)
 
         # par file in output-0001
         shutil.copy2(
@@ -203,20 +174,36 @@ class TestPostprocessingUtils(TestCase):
         self.assertTrue('rpar_content' in parfile_dict)
         self.assertEqual(expected_par_content, parfile_dict['par_content'])
         self.assertEqual(expected_rpar_content, parfile_dict['rpar_content'])
+        os.remove(expected_rpar_file)
+        os.remove(os.path.join(output_1, f'{TestPostprocessingUtils.simulation_name}.par'))
 
-        # rpar file in output-0002
+        # par file in output-0000
+        shutil.copy2(
+            os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/main_test_simulation/%s/output-0000/%s.par") % (
+                TestPostprocessingUtils.simulation_name,
+                TestPostprocessingUtils.simulation_name), output_0)
+        parameter_file_name_base, parfile_dict = _get_parameter_file_name_and_content(temp_raw_directory)
+        expected_parameter_file = os.path.join(output_0, f'{TestPostprocessingUtils.simulation_name}.par')
+        with open(expected_parameter_file) as f:
+            expected_par_content = f.read()
+        self.assertIsNotNone(parfile_dict)
+        self.assertEqual(TestPostprocessingUtils.simulation_name, parameter_file_name_base)
+        self.assertTrue('par_content' in parfile_dict)
+        self.assertFalse('rpar_content' in parfile_dict)
+        self.assertEqual(expected_par_content, parfile_dict['par_content'])
+
+        # rpar file in output-0000
         shutil.copy2(
             os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/main_test_simulation/%s/output-0000/%s.rpar") % (
                 TestPostprocessingUtils.simulation_name,
-                TestPostprocessingUtils.simulation_name), output_2)
+                TestPostprocessingUtils.simulation_name), output_0)
         parameter_file_name_base, parfile_dict = _get_parameter_file_name_and_content(temp_raw_directory)
-        expected_rpar_file = os.path.join(output_2, f'{TestPostprocessingUtils.simulation_name}.rpar')
+        expected_rpar_file = os.path.join(output_0, f'{TestPostprocessingUtils.simulation_name}.rpar')
         with open(expected_rpar_file) as f:
             expected_rpar_content = f.read()
-        expected_par_file = os.path.join(TestPostprocessingUtils.CURR_DIR,
-                                         "resources/main_test_simulation/%s/output-0000/%s.par") % (
-                                TestPostprocessingUtils.simulation_name,
-                                TestPostprocessingUtils.simulation_name)
+        expected_par_file = os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/main_test_simulation/%s/output-0000/%s.par") % (
+                TestPostprocessingUtils.simulation_name,
+                TestPostprocessingUtils.simulation_name)
         with open(expected_par_file) as f:
             expected_par_content = f.read()
         self.assertIsNotNone(parfile_dict)
@@ -234,12 +221,16 @@ class TestPostprocessingUtils(TestCase):
         parameter_file_name_base, parfile_dict = _get_parameter_file_name_and_content(temp_raw_directory)
         expected_parameter_file = os.path.join(par_directory, f'{TestPostprocessingUtils.simulation_name}.par')
         with open(expected_parameter_file) as f:
-            expected_content = f.read()
+            expected_par_content = f.read()
+        expected_rpar_file = os.path.join(output_0, f'{TestPostprocessingUtils.simulation_name}.rpar')
+        with open(expected_rpar_file) as f:
+            expected_rpar_content = f.read()
         self.assertIsNotNone(parfile_dict)
         self.assertEqual(TestPostprocessingUtils.simulation_name, parameter_file_name_base)
         self.assertTrue('par_content' in parfile_dict)
-        self.assertFalse('rpar_content' in parfile_dict)
+        self.assertTrue('rpar_content' in parfile_dict)
         self.assertEqual(expected_par_content, parfile_dict['par_content'])
+        self.assertEqual(expected_rpar_content, parfile_dict['rpar_content'])
 
         # rpar file in simfactory
         shutil.copy2(
@@ -567,6 +558,7 @@ IO::out_fileinfo                     = "all"
 
         # clean up
         temp_h5_file.close()
+        os.remove(expected_parameter_file)
         os.remove(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5"))
         os.remove(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp_parfile.rpar"))
 
@@ -593,6 +585,7 @@ IO::out_fileinfo                     = "all"
 
         # clean up
         temp_h5_file.close()
+        os.remove(expected_parameter_file)
         os.remove(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5"))
         os.remove(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp_parfile.par"))
 
@@ -615,13 +608,17 @@ IO::out_fileinfo                     = "all"
         with open(temp_parameter_file, 'w') as f:
             f.write(parfile_group.attrs['rpar_content'])
         self.assertTrue(filecmp.cmp(expected_parameter_file, temp_parameter_file))
-        with open(expected_parameter_file.replace('.rpar', '.par')) as f:
+        expected_par_file = os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/main_test_simulation/%s/output-0000/%s.par") % (
+                TestPostprocessingUtils.simulation_name,
+                TestPostprocessingUtils.simulation_name)
+        with open(expected_par_file) as f:
             expected_par_contents = f.read()
         self.assertTrue('par_content' in parfile_group.attrs)
         self.assertEqual(expected_par_contents, parfile_group.attrs['par_content'])
 
         # clean up
         temp_h5_file.close()
+        os.remove(expected_parameter_file)
         os.remove(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5"))
         os.remove(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp_parfile.rpar"))
 
@@ -648,6 +645,7 @@ IO::out_fileinfo                     = "all"
 
         # clean up
         temp_h5_file.close()
+        os.remove(expected_parameter_file)
         os.remove(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5"))
         os.remove(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp_parfile.par"))
 
@@ -670,13 +668,17 @@ IO::out_fileinfo                     = "all"
         with open(temp_parameter_file, 'w') as f:
             f.write(parfile_group.attrs['rpar_content'])
         self.assertTrue(filecmp.cmp(expected_parameter_file, temp_parameter_file))
-        with open(expected_parameter_file.replace('.rpar', '.par')) as f:
+        expected_par_file = os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/main_test_simulation/%s/output-0000/%s.par") % (
+                TestPostprocessingUtils.simulation_name,
+                TestPostprocessingUtils.simulation_name)
+        with open(expected_par_file) as f:
             expected_par_contents = f.read()
         self.assertTrue('par_content' in parfile_group.attrs)
         self.assertEqual(expected_par_contents, parfile_group.attrs['par_content'])
 
         # clean up
         temp_h5_file.close()
+        os.remove(expected_parameter_file)
         os.remove(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5"))
         os.remove(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp_parfile.rpar"))
 
@@ -709,6 +711,7 @@ IO::out_fileinfo                     = "all"
 
         # clean up
         temp_h5_file.close()
+        os.remove(expected_parameter_file)
         os.remove(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5"))
         os.remove(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp_parfile.par"))
 
@@ -734,13 +737,11 @@ IO::out_fileinfo                     = "all"
         with open(temp_parameter_file, 'w') as f:
             f.write(parfile_group.attrs['rpar_content'])
         self.assertTrue(filecmp.cmp(expected_parameter_file, temp_parameter_file))
-        with open(expected_parameter_file.replace('.rpar', '.par')) as f:
-            expected_par_contents = f.read()
         self.assertTrue('par_content' in parfile_group.attrs)
-        self.assertEqual(expected_par_contents, parfile_group.attrs['par_content'])
 
         # clean up
         temp_h5_file.close()
+        os.remove(expected_parameter_file)
         os.remove(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5"))
         os.remove(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp_parfile.rpar"))
 
