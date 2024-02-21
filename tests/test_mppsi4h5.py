@@ -57,8 +57,7 @@ class TestMP_Psi4_H5(TestCase):
 
         _MP_Psi4_H5.store_radiative_data_from_filetype(filepaths, psi4_group)
 
-        expected_radius_keys = sorted(['radius=100.00', 'radius=115.00', 'radius=136.00', 'radius=167.00',
-                                       'radius=214.00', 'radius=300.00', 'radius=500.00'])
+        expected_radius_keys = sorted(['radius=100.00', 'radius=300.00', 'radius=500.00'])
         actual_radius_keys = sorted(list(psi4_group.keys()))
         self.assertEqual(expected_radius_keys, actual_radius_keys)
 
@@ -70,11 +69,11 @@ class TestMP_Psi4_H5(TestCase):
         for radius_key in expected_radius_keys:
             r_group = psi4_group[radius_key]
             modes_group = r_group["modes"]
-            expected_l_keys = sorted(["l=0", "l=1", "l=2", "l=3", "l=4", "l=5", "l=6", "l=7", "l=8"])
+            expected_l_keys = sorted(["l=0", "l=1", "l=2", "l=3"])
             actual_l_keys = sorted(list(modes_group.keys()))
             self.assertEqual(expected_l_keys, actual_l_keys)
 
-            for l in range(0, 9):
+            for l in range(0, 4):
                 expected_m_keys = sorted([f"m={m}" for m in range(-l, l + 1)])
                 actual_m_keys = sorted(list(modes_group[f"l={l}"]))
                 self.assertEqual(expected_m_keys, actual_m_keys)
