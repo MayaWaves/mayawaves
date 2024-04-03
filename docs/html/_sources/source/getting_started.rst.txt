@@ -6,28 +6,6 @@
 Getting Started
 =====================================
 
-How to cite
--------------------------------------
-If you use this library for your research please cite it using the following:
-
-bibtex::
-
-    @software{Ferguson_mayawaves_2023,
-        author = {Ferguson, Deborah and Anne, Surendra and Gracia-Linares, Miguel and Iglesias, Hector and Jan, Aasim and Martinez, Erick and Lu, Lu and Meoni, Filippo and Nowicki, Ryan and Trostel, Max and Tsao, Bing-Jyun and Valorz, Finny},
-        doi = {10.5281/zenodo.10035526},
-        month = oct,
-        title = {{mayawaves}},
-        url = {https://github.com/MayaWaves/mayawaves},
-        version = {v2023.10},
-        year = {2023}
-    }
-
-APA::
-
-    Ferguson, D., Anne, S., Gracia-Linares, M., Iglesias, H., Jan, A., Martinez, E., Lu, L., Meoni, F., Nowicki, R., Trostel, M., Tsao, B., & Valorz, F. (2023). mayawaves (Version v2023.10) [Computer software]. https://doi.org/10.5281/zenodo.10035526
-
-These citations can also be downloaded directly from the github repository.
-
 How to install
 -------------------------------------
 
@@ -53,7 +31,7 @@ at the top of your file. You can also import specific parts of mayawaves instead
 
 Requirements
 -------------------------------------
-Due to its dependencies, this package requires python < 3.11.
+Due to its dependencies, this package requires 3.9 :math:`\leq` python :math:`\leq` 3.10.
 
 It also relies upon the following python packages which are automatically installed from pip when you install mayawaves::
 
@@ -74,6 +52,28 @@ In addition, it supports the following thorns that are specific to the MAYA cata
     ShiftTracker
     Ylm_Decomp
     RunStats
+
+How to cite
+-------------------------------------
+If you use this library for your research please cite it using the following:
+
+bibtex::
+
+    @software{Ferguson_mayawaves_2023,
+        author = {Ferguson, Deborah and Anne, Surendra and Gracia-Linares, Miguel and Iglesias, Hector and Jan, Aasim and Martinez, Erick and Lu, Lu and Meoni, Filippo and Nowicki, Ryan and Trostel, Max and Tsao, Bing-Jyun and Valorz, Finny},
+        doi = {10.5281/zenodo.10035526},
+        month = oct,
+        title = {{mayawaves}},
+        url = {https://github.com/MayaWaves/mayawaves},
+        version = {v2023.10},
+        year = {2023}
+    }
+
+APA::
+
+    Ferguson, D., Anne, S., Gracia-Linares, M., Iglesias, H., Jan, A., Martinez, E., Lu, L., Meoni, F., Nowicki, R., Trostel, M., Tsao, B., & Valorz, F. (2023). mayawaves (Version v2023.10) [Computer software]. https://doi.org/10.5281/zenodo.10035526
+
+These citations can also be downloaded directly from the github repository.
 
 Basic overview of structure
 -------------------------------------

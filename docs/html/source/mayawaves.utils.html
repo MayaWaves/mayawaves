@@ -158,7 +158,8 @@ Coalescence class.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="mayawaves.utils.postprocessingutils.determine_lvc_format">
 <span class="sig-prename descclassname"><span class="pre">mayawaves.utils.postprocessingutils.</span></span><span class="sig-name descname"><span class="pre">determine_lvc_format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coalescence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="mayawaves.coalescence.html#mayawaves.coalescence.Coalescence" title="mayawaves.coalescence.Coalescence"><span class="pre">Coalescence</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_horizon_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#mayawaves.utils.postprocessingutils.determine_lvc_format" title="Link to this definition"></a></dt>
-<dd><p>Determine the LVC format number based upon the data available from the simulation</p>
+<dd><p>Determine the LVC format number based upon the data available from the simulation and the definitions in
+<a class="reference external" href="https://arxiv.org/abs/1703.01076">https://arxiv.org/abs/1703.01076</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -273,7 +274,7 @@ columns as the original files.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="mayawaves.utils.postprocessingutils.low_pass_filter">
 <span class="sig-prename descclassname"><span class="pre">mayawaves.utils.postprocessingutils.</span></span><span class="sig-name descname"><span class="pre">low_pass_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low_pass_freq_cutoff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#mayawaves.utils.postprocessingutils.low_pass_filter" title="Link to this definition"></a></dt>
-<dd><p>Filter out high frequency noise</p>
+<dd><p>Filter out high frequency noise using a butter filter.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -318,13 +319,13 @@ provided, the plots are displayed rather than saved.</p></li>
 <dl class="py property">
 <dt class="sig sig-object py" id="mayawaves.utils.catalogutils.Catalog.aligned_spin_simulations">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">aligned_spin_simulations</span></span><a class="headerlink" href="#mayawaves.utils.catalogutils.Catalog.aligned_spin_simulations" title="Link to this definition"></a></dt>
-<dd><p>List of all simulations/waveforms with aligned spin.</p>
+<dd><p>List of all simulations/waveforms with spins aligned or anti-aligned with the orbital angular momentum.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="mayawaves.utils.catalogutils.Catalog.download_waveforms">
 <span class="sig-name descname"><span class="pre">download_waveforms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">waveforms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_wf_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">safety</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lvcnr_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mayawaves.utils.catalogutils.Catalog.download_waveforms" title="Link to this definition"></a></dt>
-<dd><p>Downloads a list of waveform ids from the MAYA Catalog. By default, they are downloaded in the
+<dd><p>Downloads waveforms from the MAYA Catalog given a list of waveform ids. By default, they are downloaded in the
 MAYA format, but they can also be downloaded in the lvc-nr format (<a class="reference external" href="https://arxiv.org/abs/1703.01076">https://arxiv.org/abs/1703.01076</a>).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -381,7 +382,7 @@ False.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="mayawaves.utils.catalogutils.Catalog.get_simulations_with_parameters">
 <span class="sig-name descname"><span class="pre">get_simulations_with_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#mayawaves.utils.catalogutils.Catalog.get_simulations_with_parameters" title="Link to this definition"></a></dt>
-<dd><p>This function takes in a list of parameters, their correspnding values and tolerances (optional, 0.0001
+<dd><p>Takes in a list of parameters, their corresponding values and tolerances (optional, 0.0001
 if not provided) and returns all the waveforms with those values within those tolerances.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -449,13 +450,15 @@ the figures will be displayed.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="mayawaves.utils.catalogutils.Catalog.precessing_simulations">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">precessing_simulations</span></span><a class="headerlink" href="#mayawaves.utils.catalogutils.Catalog.precessing_simulations" title="Link to this definition"></a></dt>
-<dd><p>List of all simulations/waveforms with precessing spin.</p>
+<dd><p>List of all simulations/waveforms with precessing spins (spins not aligned with the orbital angular
+momentum).</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="mayawaves.utils.catalogutils.Catalog.spin_magnitudes_for_simulation">
 <span class="sig-name descname"><span class="pre">spin_magnitudes_for_simulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#mayawaves.utils.catalogutils.Catalog.spin_magnitudes_for_simulation" title="Link to this definition"></a></dt>
-<dd><p>Calculates spin magnitude for each object in the binary system and returns a tuple with individual spin magnitudes.</p>
+<dd><p>Calculates spin magnitude for each object in the binary system and returns a tuple with individual spin
+magnitudes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – simulation/waveform name</p>

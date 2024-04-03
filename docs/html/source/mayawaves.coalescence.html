@@ -218,7 +218,8 @@ horizon mass.</p>
 <dt class="sig sig-object py" id="mayawaves.coalescence.Coalescence.dEnergy_dt_radiated">
 <span class="sig-name descname"><span class="pre">dEnergy_dt_radiated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lmin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lmax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extraction_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#mayawaves.coalescence.Coalescence.dEnergy_dt_radiated" title="Link to this definition"></a></dt>
 <dd><p>Rate at which energy is radiated in gravitational waves</p>
-<p>If no lmin, lmax, l, or m are provided, it computes the total sum of all modes.</p>
+<p>Computed using the method described in <a class="reference external" href="https://arxiv.org/abs/0707.4654">https://arxiv.org/abs/0707.4654</a>. If no lmin, lmax, l, or m are provided,
+it computes the total sum of all modes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -244,7 +245,8 @@ np.array: dE/dt</p>
 <dt class="sig sig-object py" id="mayawaves.coalescence.Coalescence.dP_dt_radiated">
 <span class="sig-name descname"><span class="pre">dP_dt_radiated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lmin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lmax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extraction_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#mayawaves.coalescence.Coalescence.dP_dt_radiated" title="Link to this definition"></a></dt>
 <dd><p>Derivative of linear momentum radiated.</p>
-<p>The rate of linear momentum being radiated through gravitational waves. If no lmin, lmax, l, or m are provided, it computes the total sum of all modes.</p>
+<p>The rate of linear momentum being radiated through gravitational waves, computed using the method described in
+<a class="reference external" href="https://arxiv.org/abs/0707.4654">https://arxiv.org/abs/0707.4654</a>. If no lmin, lmax, l, or m are provided, it computes the total sum of all modes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -270,21 +272,21 @@ np.ndarray: dP/dt</p>
 <dt class="sig sig-object py" id="mayawaves.coalescence.Coalescence.eccentricity_and_mean_anomaly_at_time">
 <span class="sig-name descname"><span class="pre">eccentricity_and_mean_anomaly_at_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desired_time</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#mayawaves.coalescence.Coalescence.eccentricity_and_mean_anomaly_at_time" title="Link to this definition"></a></dt>
 <dd><p>Eccentricity and mean anomaly at desired time.</p>
-<p>Compute the eccentricity and the mean anomaly using the orbital frequency as described in <a class="reference external" href="https://arxiv.org/abs/1810.00036">https://arxiv.org/abs/1810.00036</a>.
-Computes the eccentricity averaged over four orbits. If it is unable to fit four orbits of data succesfully, it returns
-an estimate of the eccentricity based on the initial momentum.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>start_time</strong> (<em>float</em>) – time from which to begin fitting eccentricity</p></li>
-<li><p><strong>desired_time</strong> (<em>float</em>) – time at which to return the eccentricity</p></li>
-</ul>
+<blockquote>
+<div><p>Compute the eccentricity and the mean anomaly using the orbital frequency as described in <a class="reference external" href="https://arxiv.org/abs/1810.00036">https://arxiv.org/abs/1810.00036</a>.
+Computes the eccentricity averaged over four orbits. If it is unable to fit four orbits of data successfully, it returns
+an estimate of the eccentricity based on the initial momentum. Mean anomaly is defined as
+:math:<a href="#id1"><span class="problematic" id="id2">`</span></a>2 pi *</p>
+</div></blockquote>
+<dl>
+<dt>rac{t - T_{prev}}{T_{next} - T_{prev}}` where :math:<a href="#id3"><span class="problematic" id="id4">`</span></a>T_{next}’ and :math:<a href="#id5"><span class="problematic" id="id6">`</span></a>T_{prev}’ are</dt><dd><p>periapsis times.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>start_time (float): time from which to begin fitting eccentricity
+desired_time (float): time at which to return the eccentricity</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>averaged eccentricity over first four orbits and the mean anomaly at the desired time</p>
+<dt>Returns:</dt><dd><p>tuple: averaged eccentricity over first four orbits and the mean anomaly at the desired time</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>tuple</p>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -293,7 +295,8 @@ an estimate of the eccentricity based on the initial momentum.</p>
 <dt class="sig sig-object py" id="mayawaves.coalescence.Coalescence.energy_radiated">
 <span class="sig-name descname"><span class="pre">energy_radiated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lmin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lmax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extraction_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#mayawaves.coalescence.Coalescence.energy_radiated" title="Link to this definition"></a></dt>
 <dd><p>Cummulative nergy radiated in gravitational waves.</p>
-<p>Returns the cumulative energy radiated. If no lmin, lmax, l, or m are provided, it computes the total sum of all modes.</p>
+<p>Returns the cumulative energy radiated computed using the method described in <a class="reference external" href="https://arxiv.org/abs/0707.4654">https://arxiv.org/abs/0707.4654</a>.
+If no lmin, lmax, l, or m are provided, it computes the total sum of all modes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -319,7 +322,8 @@ np.array: cumulative energy radiated for a given l range and extraction radius</
 <dt class="sig sig-object py" id="mayawaves.coalescence.Coalescence.extrapolate_psi4_to_infinite_radius">
 <span class="sig-name descname"><span class="pre">extrapolate_psi4_to_infinite_radius</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extraction_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mayawaves.coalescence.Coalescence.extrapolate_psi4_to_infinite_radius" title="Link to this definition"></a></dt>
 <dd><p>Calculate <span class="math notranslate nohighlight">\(\Psi_4\)</span> at infinite radius by extrapolation.</p>
-<p>Extrapolates from a finite radius to obtain <span class="math notranslate nohighlight">\(\Psi_4\)</span> at infinite radius.</p>
+<p>Extrapolates from a finite radius to obtain <span class="math notranslate nohighlight">\(\Psi_4\)</span> at infinite radius using the method described in
+<a class="reference external" href="https://arxiv.org/abs/1008.4360">https://arxiv.org/abs/1008.4360</a> and <a class="reference external" href="https://arxiv.org/abs/1108.4421">https://arxiv.org/abs/1108.4421</a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -379,8 +383,8 @@ primary and secondary compact objects.</p>
 <dt class="sig sig-object py" id="mayawaves.coalescence.Coalescence.linear_momentum_radiated">
 <span class="sig-name descname"><span class="pre">linear_momentum_radiated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lmin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lmax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extraction_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#mayawaves.coalescence.Coalescence.linear_momentum_radiated" title="Link to this definition"></a></dt>
 <dd><p>Cummulative inear momentum radiated.</p>
-<p>Cummulative linear momentum radiated through gravitational waves. If no lmin, lmax, l, or m are provided, it
-computes the total sum of all modes.</p>
+<p>Cummulative linear momentum radiated through gravitational waves, computed using the method described in
+<a class="reference external" href="https://arxiv.org/abs/0707.4654">https://arxiv.org/abs/0707.4654</a>. If no lmin, lmax, l, or m are provided, it computes the total sum of all modes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -412,7 +416,7 @@ object divided by the horizon mass of the smaller compact object. <span class="m
 <dl class="py property">
 <dt class="sig sig-object py" id="mayawaves.coalescence.Coalescence.merge_time">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">merge_time</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#mayawaves.coalescence.Coalescence.merge_time" title="Link to this definition"></a></dt>
-<dd><p>Time at which the separation goes below 1e-2</p>
+<dd><p>Time at which the coordinate separation goes below 1e-2</p>
 </dd></dl>
 
 <dl class="py property">
@@ -431,16 +435,16 @@ object divided by the horizon mass of the smaller compact object. <span class="m
 <dt class="sig sig-object py" id="mayawaves.coalescence.Coalescence.orbital_angular_momentum_unit_vector">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">orbital_angular_momentum_unit_vector</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><a class="headerlink" href="#mayawaves.coalescence.Coalescence.orbital_angular_momentum_unit_vector" title="Link to this definition"></a></dt>
 <dd><p>Time and orbital angular momentum unit vector over time.</p>
-<p>Unit vector for the orbital angular momentum computed from the positions of the primary and secondary compact
-objects.</p>
+<p>Unit vector for the orbital angular momentum computed from the coordinate positions of the primary and secondary
+compact objects.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="mayawaves.coalescence.Coalescence.orbital_angular_momentum_unit_vector_at_time">
 <span class="sig-name descname"><span class="pre">orbital_angular_momentum_unit_vector_at_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">desired_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#mayawaves.coalescence.Coalescence.orbital_angular_momentum_unit_vector_at_time" title="Link to this definition"></a></dt>
 <dd><p>Orbital angular momentum unit vector at desired time.</p>
-<p>Unit vector for the orbital angular momentum computed from the positions of the primary and secondary compact
-objects.</p>
+<p>Unit vector for the orbital angular momentum computed from the coordinate positions of the primary and secondary
+compact objects.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>desired_time</strong> (<em>float</em>) – time at which to return the orbital separation</p>
@@ -458,16 +462,16 @@ objects.</p>
 <dt class="sig sig-object py" id="mayawaves.coalescence.Coalescence.orbital_frequency">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">orbital_frequency</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><a class="headerlink" href="#mayawaves.coalescence.Coalescence.orbital_frequency" title="Link to this definition"></a></dt>
 <dd><p>Time and orbital frequency over time.</p>
-<p>Compute and return the orbital frequency as a function of time, calculated from the separation between the
-primary and secondary compact objects.</p>
+<p>Compute and return the orbital frequency as a function of time, calculated from the coordinate separation
+between the primary and secondary compact objects.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="mayawaves.coalescence.Coalescence.orbital_frequency_at_time">
 <span class="sig-name descname"><span class="pre">orbital_frequency_at_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">desired_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#mayawaves.coalescence.Coalescence.orbital_frequency_at_time" title="Link to this definition"></a></dt>
 <dd><p>Orbital frequency at given time.</p>
-<p>Compute and return the orbital frequency at the desired time, calculated from the separation between the
-primary and secondary compact objects.</p>
+<p>Compute and return the orbital frequency at the desired time, calculated from the coordinate separation between
+the primary and secondary compact objects.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>desired_time</strong> (<em>float</em>) – time at which to return the orbital separation</p>
@@ -484,7 +488,7 @@ primary and secondary compact objects.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="mayawaves.coalescence.Coalescence.orbital_phase_in_xy_plane">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">orbital_phase_in_xy_plane</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><a class="headerlink" href="#mayawaves.coalescence.Coalescence.orbital_phase_in_xy_plane" title="Link to this definition"></a></dt>
-<dd><p>Time and orbital phase over time in the xy plane.</p>
+<dd><p>Time and orbital phase over time in the xy plane computed from the coordinate positions.</p>
 </dd></dl>
 
 <dl class="py property">
@@ -596,7 +600,8 @@ extrapolates to infinite radius.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="mayawaves.coalescence.Coalescence.recoil_speed">
 <span class="sig-name descname"><span class="pre">recoil_speed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">km_per_sec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#mayawaves.coalescence.Coalescence.recoil_speed" title="Link to this definition"></a></dt>
-<dd><p>Magnitude of the recoil of the final object</p>
+<dd><p>Magnitude of the recoil of the final object.</p>
+<p>Computed from the momentum radiated in gravitational waves.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>km_per_sec</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code>, optional) – whether to report the speed in km/s. Defaults to reporting as a fraction of c.</p>
@@ -614,7 +619,7 @@ extrapolates to infinite radius.</p></li>
 <dt class="sig sig-object py" id="mayawaves.coalescence.Coalescence.recoil_velocity">
 <span class="sig-name descname"><span class="pre">recoil_velocity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">km_per_sec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#mayawaves.coalescence.Coalescence.recoil_velocity" title="Link to this definition"></a></dt>
 <dd><p>Kick vector of the final object</p>
-<p>Computed from the momentum radiated in gravitational waves</p>
+<p>Computed from the momentum radiated in gravitational waves.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>km_per_sec</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code>, optional) – whether to report the velocity in km/s. Defaults to reporting as a fraction of c.</p>
@@ -645,7 +650,7 @@ extrapolates to infinite radius.</p></li>
 <span class="sig-name descname"><span class="pre">separation_at_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">desired_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#mayawaves.coalescence.Coalescence.separation_at_time" title="Link to this definition"></a></dt>
 <dd><p>Separation at a given time.</p>
 <p>Computes and returns the coordinate separation between the primary and secondary compact object centers at
-the desired time.</p>
+the desired time. Points from the primary object to the secondary object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>desired_time</strong> (<em>float</em>) – time at which to return the separation</p>
@@ -663,8 +668,8 @@ the desired time.</p>
 <dt class="sig sig-object py" id="mayawaves.coalescence.Coalescence.separation_unit_vector_at_time">
 <span class="sig-name descname"><span class="pre">separation_unit_vector_at_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">desired_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#mayawaves.coalescence.Coalescence.separation_unit_vector_at_time" title="Link to this definition"></a></dt>
 <dd><p>Separation unit vector at desired time.</p>
-<p>Unit vector for the separation computed from the positions of the primary and secondary compact objects.
-Points from the primary object to the secondary object.</p>
+<p>Unit vector for the separation computed from the coordinate positions of the primary and secondary compact
+objects. Points from the primary object to the secondary object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>desired_time</strong> (<em>float</em>) – time at which to return the separation unit vector</p>
@@ -711,7 +716,7 @@ orbital angular momentum.</p>
 <span class="sig-name descname"><span class="pre">strain_amp_phase_for_mode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extraction_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#mayawaves.coalescence.Coalescence.strain_amp_phase_for_mode" title="Link to this definition"></a></dt>
 <dd><p>Amplitude and phase of strain for a given mode.</p>
 <p>Returns the time and amplitude and phase of the strain for a given mode and extraction radius. The
-strain is the second time integral of <span class="math notranslate nohighlight">\(\Psi_4\)</span>.</p>
+strain is the second time integral of <span class="math notranslate nohighlight">\(\Psi_4\)</span> computed using fixed-frequency integration.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -734,8 +739,9 @@ extrapolates to infinite radius.</p></li>
 <dt class="sig sig-object py" id="mayawaves.coalescence.Coalescence.strain_for_mode">
 <span class="sig-name descname"><span class="pre">strain_for_mode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extraction_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#mayawaves.coalescence.Coalescence.strain_for_mode" title="Link to this definition"></a></dt>
 <dd><p>Real and imaginary components of strain for a given mode.</p>
-<p>Returns the time and the plus and cross components of <span class="math notranslate nohighlight">\(rh\)</span> for a given mode and extraction radius, where r is the extraction radiys. The
-strain is the second time integral of <span class="math notranslate nohighlight">\(\Psi_4\)</span>.</p>
+<p>Returns the time and the plus and cross components of <span class="math notranslate nohighlight">\(rh\)</span> for a given mode and extraction radius,
+where r is the extraction radiys. The strain is the second time integral of <span class="math notranslate nohighlight">\(\Psi_4\)</span> computed using
+fixed-frequency integration.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">

@@ -192,7 +192,8 @@
 <dd><p>Create a RadiationSphere object extrapolated from the RadiationSphere at the provided radius for
 extrapolation.</p>
 <p>Extrapolate the <span class="math notranslate nohighlight">\(\Psi_4\)</span> of all RadiationModes in the RadiationSphere at the set radius for extrapolation
-to infinite radius and create and store a new RadiationSphere with those extrapolated RadiationModes.</p>
+to infinite radius and create and store a new RadiationSphere with those extrapolated RadiationModes. Uses
+the extrapolation method described in <a class="reference external" href="https://arxiv.org/abs/1008.4360">https://arxiv.org/abs/1008.4360</a> and <a class="reference external" href="https://arxiv.org/abs/1108.4421">https://arxiv.org/abs/1108.4421</a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>order</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional) – the extrapolation order. Defaults to 1.</p>
@@ -222,7 +223,7 @@ and all extraction radii.</p>
 <dt class="sig sig-object py" id="mayawaves.radiation.RadiationBundle.extrapolated_sphere">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">extrapolated_sphere</span></span><a class="headerlink" href="#mayawaves.radiation.RadiationBundle.extrapolated_sphere" title="Link to this definition"></a></dt>
 <dd><p>The RadiationSphere with extrapolated radius. All <span class="math notranslate nohighlight">\(\Psi_4\)</span> data has been extrapolated to infinite
-radius.</p>
+radius using the method described in <a class="reference external" href="https://arxiv.org/abs/1008.4360">https://arxiv.org/abs/1008.4360</a> and <a class="reference external" href="https://arxiv.org/abs/1108.4421">https://arxiv.org/abs/1108.4421</a>.</p>
 </dd></dl>
 
 <dl class="py property">
@@ -237,7 +238,8 @@ radius.</p>
 <dt class="sig sig-object py" id="mayawaves.radiation.RadiationBundle.get_dEnergy_dt_radiated">
 <span class="sig-name descname"><span class="pre">get_dEnergy_dt_radiated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">extraction_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#mayawaves.radiation.RadiationBundle.get_dEnergy_dt_radiated" title="Link to this definition"></a></dt>
 <dd><p>Rate at which energy is radiated, <span class="math notranslate nohighlight">\(dE/dt\)</span></p>
-<p>If no lmin, lmax, l, or m are provided, it computes the total sum of all modes.</p>
+<p>Uses the method described in <a class="reference external" href="https://arxiv.org/abs/0707.4654">https://arxiv.org/abs/0707.4654</a>. If no lmin, lmax, l, or m are provided, it
+computes the total sum of all modes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -265,7 +267,8 @@ extrapolates to infinite radius.</p></li>
 <dt class="sig sig-object py" id="mayawaves.radiation.RadiationBundle.get_dP_dt_radiated">
 <span class="sig-name descname"><span class="pre">get_dP_dt_radiated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">extraction_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#mayawaves.radiation.RadiationBundle.get_dP_dt_radiated" title="Link to this definition"></a></dt>
 <dd><p>Rate at which linear momentum is radiated</p>
-<p>Rate at which linear momentum is radiated through gravitational waves. If no lmin, lmax, l, or m are provided,
+<p>Rate at which linear momentum is radiated through gravitational waves, computed using the method described in
+<a class="reference external" href="https://arxiv.org/abs/0707.4654">https://arxiv.org/abs/0707.4654</a>. If no lmin, lmax, l, or m are provided,
 it computes the total sum of all modes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -294,7 +297,8 @@ extrapolates to infinite radius.</p></li>
 <dt class="sig sig-object py" id="mayawaves.radiation.RadiationBundle.get_energy_radiated">
 <span class="sig-name descname"><span class="pre">get_energy_radiated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">extraction_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#mayawaves.radiation.RadiationBundle.get_energy_radiated" title="Link to this definition"></a></dt>
 <dd><p>Cumulative radiated energy <span class="math notranslate nohighlight">\(E\)</span></p>
-<p>If no lmin, lmax, l, or m are provided, it computes the total sum of all modes.</p>
+<p>Uses the method described in <a class="reference external" href="https://arxiv.org/abs/0707.4654">https://arxiv.org/abs/0707.4654</a>. If no lmin, lmax, l, or m are provided, it
+computes the total sum of all modes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -322,7 +326,8 @@ extrapolates to infinite radius.</p></li>
 <dt class="sig sig-object py" id="mayawaves.radiation.RadiationBundle.get_linear_momentum_radiated">
 <span class="sig-name descname"><span class="pre">get_linear_momentum_radiated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">extraction_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#mayawaves.radiation.RadiationBundle.get_linear_momentum_radiated" title="Link to this definition"></a></dt>
 <dd><p>Linear momentum radiated</p>
-<p>Cummulative linear momentum radiated through gravitational waves. If no lmin, lmax, l, or m are provided, it
+<p>Cummulative linear momentum radiated through gravitational waves, computed using the method described in
+<a class="reference external" href="https://arxiv.org/abs/0707.4654">https://arxiv.org/abs/0707.4654</a>. If no lmin, lmax, l, or m are provided, it
 computes the total sum of all modes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -471,7 +476,8 @@ infinity is provided.</p></li>
 <span class="sig-name descname"><span class="pre">get_strain_amplitude_for_mode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extraction_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#mayawaves.radiation.RadiationBundle.get_strain_amplitude_for_mode" title="Link to this definition"></a></dt>
 <dd><p>Amplitude of <span class="math notranslate nohighlight">\(rh\)</span> for a given mode and extraction radius.</p>
 <p>Returns the amplitude of strain for a given mode and extraction radius. The strain is the second time
-integral of <span class="math notranslate nohighlight">\(\Psi_4\)</span>. If the extraction radius is 0, the data is extrapolated to infinite radius.</p>
+integral of <span class="math notranslate nohighlight">\(\Psi_4\)</span> computed using fixed-frequency integration. If the extraction radius is 0, the data
+is extrapolated to infinite radius.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -495,7 +501,8 @@ provided.</p></li>
 <span class="sig-name descname"><span class="pre">get_strain_cross_for_mode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extraction_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#mayawaves.radiation.RadiationBundle.get_strain_cross_for_mode" title="Link to this definition"></a></dt>
 <dd><p>Cross component of <span class="math notranslate nohighlight">\(rh\)</span> for a given mode and extraction radius.</p>
 <p>Returns the cross component of strain for a given mode and extraction radius. The strain is the second time
-integral of <span class="math notranslate nohighlight">\(\Psi_4\)</span>. If the extraction radius is 0, the data is extrapolated to infinite radius.</p>
+integral of <span class="math notranslate nohighlight">\(\Psi_4\)</span> computed using fixed-frequency integration. If the extraction radius is 0, the data
+is extrapolated to infinite radius.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -519,7 +526,8 @@ provided.</p></li>
 <span class="sig-name descname"><span class="pre">get_strain_phase_for_mode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extraction_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#mayawaves.radiation.RadiationBundle.get_strain_phase_for_mode" title="Link to this definition"></a></dt>
 <dd><p>Phase of <span class="math notranslate nohighlight">\(rh\)</span> for a given mode and extraction radius.</p>
 <p>Returns the phase of strain for a given mode and extraction radius. The strain is the second time
-integral of <span class="math notranslate nohighlight">\(\Psi_4\)</span>. If the extraction radius is 0, the data is extrapolated to infinite radius.</p>
+integral of <span class="math notranslate nohighlight">\(\Psi_4\)</span> computed using fixed-frequency integration. If the extraction radius is 0, the data
+is extrapolated to infinite radius.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -543,7 +551,8 @@ provided.</p></li>
 <span class="sig-name descname"><span class="pre">get_strain_plus_for_mode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extraction_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#mayawaves.radiation.RadiationBundle.get_strain_plus_for_mode" title="Link to this definition"></a></dt>
 <dd><p>Plus component of <span class="math notranslate nohighlight">\(rh\)</span> for a given mode and extraction radius.</p>
 <p>Returns the plus component of strain for a given mode and extraction radius. The strain is the second time
-integral of <span class="math notranslate nohighlight">\(\Psi_4\)</span>. If the extraction radius is 0, the data is extrapolated to infinite radius.</p>
+integral of <span class="math notranslate nohighlight">\(\Psi_4\)</span> computed using fixed-frequency integration. If the extraction radius is 0, the data
+is extrapolated to infinite radius.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -607,7 +616,7 @@ provided.</p></li>
 <dl class="py property">
 <dt class="sig sig-object py" id="mayawaves.radiation.RadiationBundle.included_modes">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">included_modes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#mayawaves.radiation.RadiationBundle.included_modes" title="Link to this definition"></a></dt>
-<dd><p><span class="math notranslate nohighlight">\(\Psi_4\)</span> is decomposed into spherical harmonics labeled by (l, m). This provides a list of all (l,m)
+<dd><p><span class="math notranslate nohighlight">\(\Psi_4\)</span> is decomposed using spherical harmonics labeled by (l, m). This provides a list of all (l,m)
 modes included.</p>
 </dd></dl>
 
@@ -697,7 +706,8 @@ to false.</p></li>
 <dt class="sig sig-object py" id="mayawaves.radiation.RadiationSphere.get_dEnergy_dt_radiated">
 <span class="sig-name descname"><span class="pre">get_dEnergy_dt_radiated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#mayawaves.radiation.RadiationSphere.get_dEnergy_dt_radiated" title="Link to this definition"></a></dt>
 <dd><p>Rate at which energy is radiated, <span class="math notranslate nohighlight">\(dE/dt\)</span></p>
-<p>If no lmin, lmax, l, or m are provided, it computes the total sum of all modes.</p>
+<p>Uses the method described in <a class="reference external" href="https://arxiv.org/abs/0707.4654">https://arxiv.org/abs/0707.4654</a>. If no lmin, lmax, l, or m are provided, it
+computes the total sum of all modes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>**kwargs</strong> – <p>parameters to specify the modes you would like to sum over</p>
@@ -721,8 +731,8 @@ to false.</p></li>
 <dt class="sig sig-object py" id="mayawaves.radiation.RadiationSphere.get_dP_dt_radiated">
 <span class="sig-name descname"><span class="pre">get_dP_dt_radiated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#mayawaves.radiation.RadiationSphere.get_dP_dt_radiated" title="Link to this definition"></a></dt>
 <dd><p>Rate at which linear momentum is radiated</p>
-<p>Rate at which linear momentum is radiated through gravitational waves. If no lmin, lmax, l, or m are provided,
-it computes the total sum of all modes.</p>
+<p>Rate at which linear momentum is radiated through gravitational waves, computed using the method described in
+<a class="reference external" href="https://arxiv.org/abs/0707.4654">https://arxiv.org/abs/0707.4654</a>. If no lmin, lmax, l, or m are provided, it computes the total sum of all modes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>**kwargs</strong> – <p>parameters to specify the modes you would like to sum over</p>
@@ -746,7 +756,8 @@ it computes the total sum of all modes.</p>
 <dt class="sig sig-object py" id="mayawaves.radiation.RadiationSphere.get_energy_radiated">
 <span class="sig-name descname"><span class="pre">get_energy_radiated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#mayawaves.radiation.RadiationSphere.get_energy_radiated" title="Link to this definition"></a></dt>
 <dd><p>Cumulative radiated energy <span class="math notranslate nohighlight">\(E\)</span></p>
-<p>If no lmin, lmax, l, or m are provided, it computes the total sum of all modes.</p>
+<p>Uses the method described in <a class="reference external" href="https://arxiv.org/abs/0707.4654">https://arxiv.org/abs/0707.4654</a>. If no lmin, lmax, l, or m are provided, it
+computes the total sum of all modes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>**kwargs</strong> – <p>parameters to specify the modes you would like to sum over</p>
@@ -771,7 +782,8 @@ it computes the total sum of all modes.</p>
 <span class="sig-name descname"><span class="pre">get_extrapolated_sphere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mayawaves.radiation.RadiationSphere.get_extrapolated_sphere" title="Link to this definition"></a></dt>
 <dd><p>RadiationSphere object extrapolated from this RadiationSphere to infinite radius.</p>
 <p>Extrapolate the <span class="math notranslate nohighlight">\(\Psi_4\)</span> of all RadiationModes in this RadiationSphere to infinite radius and create and
-return a new RadiationSphere with those extrapolated RadiationModes.</p>
+return a new RadiationSphere with those extrapolated RadiationModes. Uses the method described in
+<a class="reference external" href="https://arxiv.org/abs/1008.4360">https://arxiv.org/abs/1008.4360</a> and <a class="reference external" href="https://arxiv.org/abs/1108.4421">https://arxiv.org/abs/1108.4421</a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>order</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional) – the extrapolation order. Defaults to 1.</p>
@@ -790,8 +802,8 @@ to infinite radius.</p>
 <dt class="sig sig-object py" id="mayawaves.radiation.RadiationSphere.get_linear_momentum_radiated">
 <span class="sig-name descname"><span class="pre">get_linear_momentum_radiated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#mayawaves.radiation.RadiationSphere.get_linear_momentum_radiated" title="Link to this definition"></a></dt>
 <dd><p>Linear momentum radiated</p>
-<p>Linear momentum radiated through gravitational waves. If no lmin, lmax, l, or m are provided, it computes the
-total sum of all modes.</p>
+<p>Linear momentum radiated through gravitational waves computed using the method described in
+<a class="reference external" href="https://arxiv.org/abs/0707.4654">https://arxiv.org/abs/0707.4654</a>. If no lmin, lmax, l, or m are provided, it computes the total sum of all modes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>**kwargs</strong> – <p>parameters to specify the modes you would like to sum over</p>
@@ -938,7 +950,7 @@ mode.</p>
 <dt class="sig sig-object py" id="mayawaves.radiation.RadiationSphere.get_strain_amplitude_for_mode">
 <span class="sig-name descname"><span class="pre">get_strain_amplitude_for_mode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#mayawaves.radiation.RadiationSphere.get_strain_amplitude_for_mode" title="Link to this definition"></a></dt>
 <dd><p>Amplitude of <span class="math notranslate nohighlight">\(rh\)</span> for a given mode.</p>
-<p>The strain is the second time integral of <span class="math notranslate nohighlight">\(\Psi_4\)</span>.</p>
+<p>The strain is the second time integral of <span class="math notranslate nohighlight">\(\Psi_4\)</span> computed using fixed-frequency integration.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -959,7 +971,7 @@ mode.</p>
 <dt class="sig sig-object py" id="mayawaves.radiation.RadiationSphere.get_strain_cross_for_mode">
 <span class="sig-name descname"><span class="pre">get_strain_cross_for_mode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#mayawaves.radiation.RadiationSphere.get_strain_cross_for_mode" title="Link to this definition"></a></dt>
 <dd><p>Cross component of <span class="math notranslate nohighlight">\(rh\)</span> for a given mode.</p>
-<p>The strain is the second time integral of <span class="math notranslate nohighlight">\(\Psi_4\)</span>.</p>
+<p>The strain is the second time integral of <span class="math notranslate nohighlight">\(\Psi_4\)</span> computed using fixed-frequency integration.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -980,7 +992,7 @@ mode.</p>
 <dt class="sig sig-object py" id="mayawaves.radiation.RadiationSphere.get_strain_phase_for_mode">
 <span class="sig-name descname"><span class="pre">get_strain_phase_for_mode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#mayawaves.radiation.RadiationSphere.get_strain_phase_for_mode" title="Link to this definition"></a></dt>
 <dd><p>Phase of <span class="math notranslate nohighlight">\(rh\)</span> for a given mode.</p>
-<p>The strain is the second time integral of <span class="math notranslate nohighlight">\(\Psi_4\)</span>.</p>
+<p>The strain is the second time integral of <span class="math notranslate nohighlight">\(\Psi_4\)</span> computed using fixed-frequency integration.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -1001,7 +1013,7 @@ mode.</p>
 <dt class="sig sig-object py" id="mayawaves.radiation.RadiationSphere.get_strain_plus_for_mode">
 <span class="sig-name descname"><span class="pre">get_strain_plus_for_mode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#mayawaves.radiation.RadiationSphere.get_strain_plus_for_mode" title="Link to this definition"></a></dt>
 <dd><p>Plus component of <span class="math notranslate nohighlight">\(rh\)</span> for a given mode.</p>
-<p>The strain is the second time integral of <span class="math notranslate nohighlight">\(\Psi_4\)</span>.</p>
+<p>The strain is the second time integral of <span class="math notranslate nohighlight">\(\Psi_4\)</span> computed using fixed-frequency integration.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -1106,7 +1118,8 @@ spherical harmonics.</p>
 <dt class="sig sig-object py" id="mayawaves.radiation.RadiationMode.compute_and_store_strain">
 <span class="sig-name descname"><span class="pre">compute_and_store_strain</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mayawaves.radiation.RadiationMode.compute_and_store_strain" title="Link to this definition"></a></dt>
 <dd><p>Computes and stores the strain data from the <span class="math notranslate nohighlight">\(\Psi_4\)</span> data.</p>
-<p>Computes the strain using the fourier transform method to compute the double time integral of <span class="math notranslate nohighlight">\(\Psi_4\)</span>.</p>
+<p>Computes the strain using the fixed-frequency integration method to compute the double time integral of
+<span class="math notranslate nohighlight">\(\Psi_4\)</span> using the fourier transform.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1197,7 +1210,8 @@ eq 3.8</p>
 <span class="sig-name descname"><span class="pre">get_mode_with_extrapolated_radius</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mayawaves.radiation.RadiationMode.get_mode_with_extrapolated_radius" title="Link to this definition"></a></dt>
 <dd><p>RadiationMode object extrapolated from this RadiationMode to infinite radius.</p>
 <p>Extrapolate the <span class="math notranslate nohighlight">\(\Psi_4\)</span> of this RadiationMode to infinite radius and create and return a new
-RadiationMode with that <span class="math notranslate nohighlight">\(\Psi_4\)</span> data.</p>
+RadiationMode with that <span class="math notranslate nohighlight">\(\Psi_4\)</span> data. Uses the method described in
+<a class="reference external" href="https://arxiv.org/abs/1008.4360">https://arxiv.org/abs/1008.4360</a> and <a class="reference external" href="https://arxiv.org/abs/1108.4421">https://arxiv.org/abs/1108.4421</a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>order</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional) – the extrapolation order. Defaults to 1.</p>
@@ -1255,7 +1269,8 @@ eqs 3.14, 3.15</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="mayawaves.radiation.RadiationMode.omega_start">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">omega_start</span></span><a class="headerlink" href="#mayawaves.radiation.RadiationMode.omega_start" title="Link to this definition"></a></dt>
-<dd><p>The starting frequency of <span class="math notranslate nohighlight">\(\Psi_4\)</span>.</p>
+<dd><p>The starting frequency of <span class="math notranslate nohighlight">\(\Psi_4\)</span> where the frequency is computed as the time derivative of the
+phase.</p>
 </dd></dl>
 
 <dl class="py property">
@@ -1280,7 +1295,7 @@ parts as <span class="math notranslate nohighlight">\(\sqrt{\mathcal{Re}(\Psi_4)
 <dl class="py property">
 <dt class="sig sig-object py" id="mayawaves.radiation.RadiationMode.psi4_omega">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">psi4_omega</span></span><a class="headerlink" href="#mayawaves.radiation.RadiationMode.psi4_omega" title="Link to this definition"></a></dt>
-<dd><p>The frequency of <span class="math notranslate nohighlight">\(\Psi_4\)</span>.</p>
+<dd><p>The frequency of <span class="math notranslate nohighlight">\(\Psi_4\)</span> computed as the time derivative of the phase.</p>
 </dd></dl>
 
 <dl class="py property">
@@ -1312,28 +1327,30 @@ parts as <span class="math notranslate nohighlight">\(\sqrt{\mathcal{Re}(\Psi_4)
 <dt class="sig sig-object py" id="mayawaves.radiation.RadiationMode.strain_amplitude">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">strain_amplitude</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#mayawaves.radiation.RadiationMode.strain_amplitude" title="Link to this definition"></a></dt>
 <dd><p>The amplitude of <span class="math notranslate nohighlight">\(rh\)</span> as a timeseries, computed from the real and imaginary parts as
-<span class="math notranslate nohighlight">\(\sqrt{\mathcal{Re}(rh)^2 + \mathcal{Im}(rh)^2}\)</span>.</p>
+<span class="math notranslate nohighlight">\(\sqrt{\mathcal{Re}(rh)^2 + \mathcal{Im}(rh)^2}\)</span>. The strain is the second time integral of
+<span class="math notranslate nohighlight">\(\Psi_4\)</span> computed using fixed-frequency integration.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="mayawaves.radiation.RadiationMode.strain_cross">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">strain_cross</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#mayawaves.radiation.RadiationMode.strain_cross" title="Link to this definition"></a></dt>
-<dd><p>The cross component of <span class="math notranslate nohighlight">\(rh\)</span> as a timeseries. The strain is computed as the second time integral of
-<span class="math notranslate nohighlight">\(\Psi_4\)</span>.</p>
+<dd><p>The cross component of <span class="math notranslate nohighlight">\(rh\)</span> as a timeseries. The strain is the second time integral of
+<span class="math notranslate nohighlight">\(\Psi_4\)</span> computed using fixed-frequency integration.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="mayawaves.radiation.RadiationMode.strain_phase">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">strain_phase</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#mayawaves.radiation.RadiationMode.strain_phase" title="Link to this definition"></a></dt>
 <dd><p>The phase of <span class="math notranslate nohighlight">\(rh\)</span> as a timeseries, computed from the real and imaginary parts as
-<span class="math notranslate nohighlight">\(\textrm{tan}^{-1}( \mathcal{Im}(rh) / \mathcal{Re}(rh) )\)</span>.</p>
+<span class="math notranslate nohighlight">\(\textrm{tan}^{-1}( \mathcal{Im}(rh) / \mathcal{Re}(rh) )\)</span>. The strain is the second time integral of
+<span class="math notranslate nohighlight">\(\Psi_4\)</span> computed using fixed-frequency integration.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="mayawaves.radiation.RadiationMode.strain_plus">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">strain_plus</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#mayawaves.radiation.RadiationMode.strain_plus" title="Link to this definition"></a></dt>
-<dd><p>The plus component of <span class="math notranslate nohighlight">\(rh\)</span> as a timeseries. The strain is computed as the second time integral of
-<span class="math notranslate nohighlight">\(\Psi_4\)</span>.</p>
+<dd><p>The plus component of <span class="math notranslate nohighlight">\(rh\)</span> as a timeseries. The strain is the second time integral of
+<span class="math notranslate nohighlight">\(\Psi_4\)</span> computed using fixed-frequency integration.</p>
 </dd></dl>
 
 <dl class="py property">

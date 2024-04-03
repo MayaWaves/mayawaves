@@ -182,8 +182,8 @@ class Coalescence:
     def orbital_angular_momentum_unit_vector(self) -> tuple:
         """Time and orbital angular momentum unit vector over time.
 
-        Unit vector for the orbital angular momentum computed from the positions of the primary and secondary compact
-        objects.
+        Unit vector for the orbital angular momentum computed from the coordinate positions of the primary and secondary
+        compact objects.
         """
         time, separation_vector = self.separation_vector
 
@@ -199,7 +199,7 @@ class Coalescence:
 
     @property
     def orbital_phase_in_xy_plane(self) -> tuple:
-        """Time and orbital phase over time in the xy plane."""
+        """Time and orbital phase over time in the xy plane computed from the coordinate positions."""
         time, separation_vector = self.separation_vector
 
         phase = np.unwrap(np.arctan2(separation_vector[:, 1], separation_vector[:, 0]))
@@ -210,8 +210,8 @@ class Coalescence:
     def orbital_frequency(self) -> tuple:
         """Time and orbital frequency over time.
 
-        Compute and return the orbital frequency as a function of time, calculated from the separation between the
-        primary and secondary compact objects.
+        Compute and return the orbital frequency as a function of time, calculated from the coordinate separation
+        between the primary and secondary compact objects.
         """
         time, separation_vector = self.separation_vector
 
@@ -274,7 +274,7 @@ class Coalescence:
 
     @property
     def merge_time(self) -> float:
-        """Time at which the separation goes below 1e-2"""
+        """Time at which the coordinate separation goes below 1e-2"""
         time, separation_vector = self.separation_vector
         separation_mag = np.linalg.norm(separation_vector, axis=1)
         return time[np.argmax(separation_mag < 1e-2)]
@@ -381,7 +381,7 @@ class Coalescence:
     def recoil_velocity(self, km_per_sec: bool = False) -> np.ndarray:
         """Kick vector of the final object
 
-        Computed from the momentum radiated in gravitational waves
+        Computed from the momentum radiated in gravitational waves.
 
         Args:
             km_per_sec (:obj:`bool`, optional): whether to report the velocity in km/s. Defaults to reporting as a fraction of c.
@@ -405,7 +405,9 @@ class Coalescence:
         return kick_vector
 
     def recoil_speed(self, km_per_sec: bool = False) -> float:
-        """Magnitude of the recoil of the final object
+        """Magnitude of the recoil of the final object.
+
+        Computed from the momentum radiated in gravitational waves.
 
         Args:
             km_per_sec (:obj:`bool`, optional): whether to report the speed in km/s. Defaults to reporting as a fraction of c.
@@ -436,7 +438,7 @@ class Coalescence:
         """Separation at a given time.
 
             Computes and returns the coordinate separation between the primary and secondary compact object centers at
-            the desired time.
+            the desired time. Points from the primary object to the secondary object.
 
             Args:
                  desired_time (float): time at which to return the separation
@@ -458,8 +460,8 @@ class Coalescence:
     def orbital_frequency_at_time(self, desired_time: float) -> float:
         """Orbital frequency at given time.
 
-        Compute and return the orbital frequency at the desired time, calculated from the separation between the
-        primary and secondary compact objects.
+        Compute and return the orbital frequency at the desired time, calculated from the coordinate separation between
+        the primary and secondary compact objects.
 
         Args:
             desired_time (float): time at which to return the orbital separation
@@ -481,8 +483,8 @@ class Coalescence:
     def orbital_angular_momentum_unit_vector_at_time(self, desired_time: float) -> np.ndarray:
         """Orbital angular momentum unit vector at desired time.
 
-        Unit vector for the orbital angular momentum computed from the positions of the primary and secondary compact
-        objects.
+        Unit vector for the orbital angular momentum computed from the coordinate positions of the primary and secondary
+        compact objects.
 
         Args:
             desired_time (float): time at which to return the orbital separation
@@ -506,8 +508,8 @@ class Coalescence:
     def separation_unit_vector_at_time(self, desired_time: float) -> np.ndarray:
         """Separation unit vector at desired time.
 
-        Unit vector for the separation computed from the positions of the primary and secondary compact objects.
-        Points from the primary object to the secondary object.
+        Unit vector for the separation computed from the coordinate positions of the primary and secondary compact
+        objects. Points from the primary object to the secondary object.
 
         Args:
             desired_time (float): time at which to return the separation unit vector
@@ -527,9 +529,11 @@ class Coalescence:
 
     def _crop_to_three_or_four_orbits(self, start_time: float, time: np.ndarray, orbital_phase: np.ndarray,
                                       separation_magnitude: np.ndarray, data: np.ndarray) -> tuple:
-        """Crop a given timeseries to four orbits
+        """Crop a given timeseries to three or four orbits, preferring four.
 
-        Compute and return four orbits worth of a given timeseries, beginning at the specified start time. If there are not four orbits, it crops to three orbits. If there aren't three orbits, it returns None.
+        Compute and return four orbits worth of a given timeseries, beginning at the specified start time. If there are
+        not four orbits, it crops to three orbits. If there aren't three orbits, it returns None. The number of orbits
+        is determined by the orbital phase.
 
         Args:
             start_time (float): time at which to begin crop
@@ -576,7 +580,7 @@ class Coalescence:
 
         Compute and return the mean anomaly at the desired time using
         :math:`2 \pi * \frac{t - T_{prev}}{T_{next} - T_{prev}}` where :math:`T_{next}' and :math:`T_{prev}' are
-        periabsis times.
+        periapsis times.
 
         Args:
             periapsis_times (numpy.ndarray): times of periapsis
@@ -635,8 +639,10 @@ class Coalescence:
         """Eccentricity and mean anomaly at desired time.
 
         Compute the eccentricity and the mean anomaly using the orbital frequency as described in https://arxiv.org/abs/1810.00036.
-        Computes the eccentricity averaged over four orbits. If it is unable to fit four orbits of data succesfully, it returns
-        an estimate of the eccentricity based on the initial momentum.
+        Computes the eccentricity averaged over four orbits. If it is unable to fit four orbits of data successfully, it returns
+        an estimate of the eccentricity based on the initial momentum. Mean anomaly is defined as
+        :math:`2 \pi * \frac{t - T_{prev}}{T_{next} - T_{prev}}` where :math:`T_{next}' and :math:`T_{prev}' are
+        periapsis times.
 
         Args:
             start_time (float): time from which to begin fitting eccentricity
@@ -855,7 +861,8 @@ class Coalescence:
     def extrapolate_psi4_to_infinite_radius(self, order: int = 1, extraction_radius: float = None):
         """Calculate :math:`\Psi_4` at infinite radius by extrapolation.
 
-        Extrapolates from a finite radius to obtain :math:`\Psi_4` at infinite radius.
+        Extrapolates from a finite radius to obtain :math:`\Psi_4` at infinite radius using the method described in
+        https://arxiv.org/abs/1008.4360 and https://arxiv.org/abs/1108.4421.
 
         Args:
             order (:obj:`int`, optional): order of extraction. Defaults to 1.
@@ -910,8 +917,9 @@ class Coalescence:
     def strain_for_mode(self, l: int, m: int, extraction_radius: float = 0) -> tuple:
         """Real and imaginary components of strain for a given mode.
 
-        Returns the time and the plus and cross components of :math:`rh` for a given mode and extraction radius, where r is the extraction radiys. The
-        strain is the second time integral of :math:`\Psi_4`.
+        Returns the time and the plus and cross components of :math:`rh` for a given mode and extraction radius,
+        where r is the extraction radiys. The strain is the second time integral of :math:`\Psi_4` computed using
+        fixed-frequency integration.
 
         Args:
             l (int): l value of mode
@@ -952,7 +960,7 @@ class Coalescence:
         """Amplitude and phase of strain for a given mode.
 
         Returns the time and amplitude and phase of the strain for a given mode and extraction radius. The
-        strain is the second time integral of :math:`\Psi_4`.
+        strain is the second time integral of :math:`\Psi_4` computed using fixed-frequency integration.
 
         Args:
             l (int): l value of mode
@@ -990,7 +998,8 @@ class Coalescence:
                             extraction_radius: float = None) -> tuple:
         """Rate at which energy is radiated in gravitational waves
 
-        If no lmin, lmax, l, or m are provided, it computes the total sum of all modes.
+        Computed using the method described in https://arxiv.org/abs/0707.4654. If no lmin, lmax, l, or m are provided,
+        it computes the total sum of all modes.
 
         Args:
             lmin (:obj:`int`, optional): minumum value of l range
@@ -1025,7 +1034,8 @@ class Coalescence:
                         extraction_radius: float = None) -> tuple:
         """Cummulative nergy radiated in gravitational waves.
 
-        Returns the cumulative energy radiated. If no lmin, lmax, l, or m are provided, it computes the total sum of all modes.
+        Returns the cumulative energy radiated computed using the method described in https://arxiv.org/abs/0707.4654.
+        If no lmin, lmax, l, or m are provided, it computes the total sum of all modes.
 
         Args:
             lmin (:obj:`int`, optional): minumum value of l range
@@ -1060,7 +1070,8 @@ class Coalescence:
                        extraction_radius: float = None) -> tuple:
         """Derivative of linear momentum radiated.
 
-        The rate of linear momentum being radiated through gravitational waves. If no lmin, lmax, l, or m are provided, it computes the total sum of all modes.
+        The rate of linear momentum being radiated through gravitational waves, computed using the method described in
+        https://arxiv.org/abs/0707.4654. If no lmin, lmax, l, or m are provided, it computes the total sum of all modes.
 
         Args:
             lmin (:obj:`int`, optional): minumum value of l range
@@ -1094,8 +1105,8 @@ class Coalescence:
                                  extraction_radius: float = None) -> tuple:
         """Cummulative inear momentum radiated.
 
-        Cummulative linear momentum radiated through gravitational waves. If no lmin, lmax, l, or m are provided, it
-        computes the total sum of all modes.
+        Cummulative linear momentum radiated through gravitational waves, computed using the method described in
+        https://arxiv.org/abs/0707.4654. If no lmin, lmax, l, or m are provided, it computes the total sum of all modes.
 
         Args:
             lmin (:obj:`int`, optional): minumum value of l range
