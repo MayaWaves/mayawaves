@@ -1048,7 +1048,7 @@ def _simulation_name(raw_directory: str) -> str:
 def _get_parameter_file_name_and_content(raw_directory: str) -> tuple:
     """Store the parameter file in the h5 file
 
-    Search for a .rpar file (or a .par file if there is no .rpar file) and store it in a dictionary
+    Search for .rpar and .par files and store in a dictionary
 
     Args:
         raw_directory (str): the directory that contains all simulation data
@@ -1466,7 +1466,7 @@ def _get_data_from_columns(full_dataset: np.ndarray, header: list, column_names:
 
 
 def _get_dimensional_spin_from_parfile(parfile_group: h5py.Group) -> tuple:
-    """Provides the dimensional spin vectors from the parameter file.
+    """Provides the dimensional spin vectors (:math:`\pmb{S}` or :math:`\pmb{J}`) from the parameter file.
 
     Parses through the parameter file and returns the dimensional spin of both the primary and secondary compact
     objects.
@@ -1547,7 +1547,7 @@ def _get_dimensional_spin_from_parfile(parfile_group: h5py.Group) -> tuple:
 
 
 def _get_initial_dimensional_spins(h5_file: h5py.File) -> tuple:
-    """Initial dimensional spins.
+    """Initial dimensional spins (:math:`\pmb{S}` or :math:`\pmb{J}`).
 
     Tries to get the initial dimensional spins from the compact object data. Otherwise, returns the spins set in the
     parameter file.
@@ -1594,7 +1594,7 @@ def _get_initial_dimensional_spins(h5_file: h5py.File) -> tuple:
 
 def _get_initial_dimensionless_spins(dimensional_spin_0: list, dimensional_spin_1: list,
                                      horizon_mass_0: float, horizon_mass_1: float):
-    """Initial dimensionless spins.
+    """Initial dimensionless spins (:math:`\pmb{a}` or :math:`\pmb{\chi} = \pmb{J}/M^2`).
 
     Computes and returns the dimensionless spins given the dimensional spins and the horizon masses.
 
@@ -1648,7 +1648,8 @@ def _get_spin_configuration(dimensionless_spin_0: list, dimensionless_spin_1: li
 def _irreducible_mass_to_horizon_mass(irreducible_mass: float, dimensional_spin: list) -> float:
     """Convert the irreducible mass to the horizon mass.
 
-    Provided the irreducible mass and the dimensional spin, compute and return the horizon mass.
+    Provided the irreducible mass and the dimensional spin, compute and return the horizon mass as
+    :math:`M_{horizon} = sqrt(M_{irr}^2 + \frac{S^2}{4M_{irr}^2})`
 
     Args:
         irreducible_mass (float): the irreducible mass of the object
@@ -1668,7 +1669,8 @@ def _irreducible_mass_to_horizon_mass(irreducible_mass: float, dimensional_spin:
 def _horizon_mass_to_irreducible_mass(horizon_mass: float, dimensional_spin: list):
     """Convert the horizon mass to the irreducible mass.
 
-    Provided the horizon mass and the dimensional spin, compute and return the irreducible mass.
+    Provided the horizon mass and the dimensional spin, compute and return the irreducible mass as
+    :math:`M_{irr} = sqrt((M_{horizon}^2 + sqrt(M_{horizon}^4 - S^2))/2)`
 
     Args:
         horizon_mass (float): the horizon mass of the object
@@ -1772,7 +1774,7 @@ def _get_initial_masses(h5_file: h5py.File, dimensional_spin0: list, dimensional
 def _get_initial_separation_from_parfile(parfile_group: h5py.Group) -> float:
     """Obtain the initial separation from the parameter file
 
-    Find the initial separation from the .rpar or .par file
+    Find the initial coordinate separation from the .rpar or .par file
 
     Args:
         parfile_group (h5py.Group): parameter file for the simulation
@@ -1800,7 +1802,8 @@ def _get_initial_separation_from_parfile(parfile_group: h5py.Group) -> float:
 def _get_initial_separation(h5_file: h5py.File) -> float:
     """Initial separation for the simulation.
 
-    Obtain the initial separation of the simulation either from the compact object data or from the parameter file.
+    Obtain the initial coordinate separation of the simulation either from the coordinate trajectories of the black
+    holes or from the parameter file.
 
     Args:
         h5_file (h5py.File): h5 file containing all the data about the simulation
@@ -1861,7 +1864,8 @@ def _get_initial_separation(h5_file: h5py.File) -> float:
 def _get_initial_orbital_frequency(h5_file: h5py.File) -> float:
     """Initial orbital frequency for the simulation.
 
-    Obtain the initial orbital frequency of the simulation from the compact object data.
+    Obtain the initial orbital frequency of the simulation from the coordinate separation vector of the black holes.
+    Waits 75M for junk radiation to settle.
 
     Args:
         h5_file (h5py.File): h5 file containing all the data about the simulation
@@ -2599,7 +2603,7 @@ def _get_max_time_all_strain_modes(strain_modes: dict) -> float:
 def _get_omega_at_time(time: np.ndarray, phase: np.ndarray, initial_time: float) -> float:
     """Frequency at a given time.
 
-    Returns the frequency, the derivative of the phase with respect to time.
+    Returns the frequency, the derivative of the provided phase with respect to time.
 
     Args:
         time (numpy.ndarray): time array
@@ -2619,7 +2623,7 @@ def _get_omega_at_time(time: np.ndarray, phase: np.ndarray, initial_time: float)
 def _export_ascii_file(filename: str, data: np.ndarray, coalescence_directory: str, header: str = None):
     """Export specified data array to ascii.
 
-    Export specified data array to an ascii file of the given name with the necessary header.
+    Export specified data array to an ascii file of the given name with the provided header.
 
     Args:
         filename (str): the filename to be exported to
@@ -2746,7 +2750,7 @@ def _put_data_in_lal_compatible_format(coalescence: Coalescence, lal_h5_file_nam
 
 
 def low_pass_filter(time: np.ndarray, data: np.ndarray, low_pass_freq_cutoff: float) -> np.ndarray:
-    """Filter out high frequency noise
+    """Filter out high frequency noise using a butter filter.
 
     Args:
         time (numpy.ndarray): time stamps associated with data
@@ -2769,7 +2773,8 @@ def low_pass_filter(time: np.ndarray, data: np.ndarray, low_pass_freq_cutoff: fl
 
 
 def determine_lvc_format(coalescence: Coalescence, initial_horizon_time: float) -> int:
-    """Determine the LVC format number based upon the data available from the simulation
+    """Determine the LVC format number based upon the data available from the simulation and the definitions in
+    https://arxiv.org/abs/1703.01076
 
     Args:
         coalescence (Coalescence): the Coalescence object being exported

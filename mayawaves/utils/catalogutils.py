@@ -101,7 +101,7 @@ class Catalog:
 
     @property
     def aligned_spin_simulations(self):
-        """List of all simulations/waveforms with aligned spin."""
+        """List of all simulations/waveforms with spins aligned or anti-aligned with the orbital angular momentum."""
         aligned_spin_simulations = self.df[(np.abs(self.df[Parameter.DIMENSIONLESS_SPIN_X_1.value]) < 1e-3) &
                                            (np.abs(self.df[Parameter.DIMENSIONLESS_SPIN_Y_1.value]) < 1e-3) &
                                            (np.abs(self.df[Parameter.DIMENSIONLESS_SPIN_X_2.value]) < 1e-3) &
@@ -112,7 +112,8 @@ class Catalog:
 
     @property
     def precessing_simulations(self):
-        """List of all simulations/waveforms with precessing spin."""
+        """List of all simulations/waveforms with precessing spins (spins not aligned with the orbital angular
+        momentum)."""
         precessing_spin_simulations = self.df[(np.abs(self.df[Parameter.DIMENSIONLESS_SPIN_X_1.value]) >= 1e-3) |
                                               (np.abs(self.df[Parameter.DIMENSIONLESS_SPIN_Y_1.value]) >= 1e-3) |
                                               (np.abs(self.df[Parameter.DIMENSIONLESS_SPIN_X_2.value]) >= 1e-3) |
@@ -196,7 +197,8 @@ class Catalog:
                 print('{0:20}  {1}'.format(param.value, format(self.df.loc[catalog_id][param.value], "0.4f")))
 
     def spin_magnitudes_for_simulation(self, name: str) -> tuple:
-        """Calculates spin magnitude for each object in the binary system and returns a tuple with individual spin magnitudes.
+        """Calculates spin magnitude for each object in the binary system and returns a tuple with individual spin
+        magnitudes.
 
         Args:
             name (str): simulation/waveform name
@@ -210,7 +212,7 @@ class Catalog:
         return simulation[Parameter.DIMENSIONLESS_SPIN_1.value], simulation[Parameter.DIMENSIONLESS_SPIN_2.value]
 
     def get_simulations_with_parameters(self, params: list, values: list, tol: list = None) -> list:
-        """This function takes in a list of parameters, their correspnding values and tolerances (optional, 0.0001
+        """Takes in a list of parameters, their corresponding values and tolerances (optional, 0.0001
         if not provided) and returns all the waveforms with those values within those tolerances.
 
         Args:
@@ -390,7 +392,7 @@ class Catalog:
             print(*Parameter, sep="\n")
 
     def download_waveforms(self, waveforms: list, save_wf_path, safety: bool = True, lvcnr_format: bool = False):
-        """Downloads a list of waveform ids from the MAYA Catalog. By default, they are downloaded in the
+        """Downloads waveforms from the MAYA Catalog given a list of waveform ids. By default, they are downloaded in the
         MAYA format, but they can also be downloaded in the lvc-nr format (https://arxiv.org/abs/1703.01076).
 
         Args:

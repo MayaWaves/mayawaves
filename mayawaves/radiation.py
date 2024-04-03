@@ -93,7 +93,7 @@ class RadiationBundle:
     @property
     def extrapolated_sphere(self):
         """The RadiationSphere with extrapolated radius. All :math:`\Psi_4` data has been extrapolated to infinite
-        radius."""
+        radius using the method described in https://arxiv.org/abs/1008.4360 and https://arxiv.org/abs/1108.4421."""
         if self.__extrapolated_sphere is None:
             self.create_extrapolated_sphere()
         return self.__extrapolated_sphere
@@ -136,7 +136,7 @@ class RadiationBundle:
 
     @property
     def included_modes(self) -> list:
-        """:math:`\Psi_4` is decomposed into spherical harmonics labeled by (l, m). This provides a list of all (l,m)
+        """:math:`\Psi_4` is decomposed using spherical harmonics labeled by (l, m). This provides a list of all (l,m)
         modes included."""
         return sorted(list({mode for sphere in self.radiation_spheres.values() for mode in sphere.included_modes}))
 
@@ -274,7 +274,8 @@ class RadiationBundle:
         """Plus component of :math:`rh` for a given mode and extraction radius.
 
         Returns the plus component of strain for a given mode and extraction radius. The strain is the second time
-        integral of :math:`\Psi_4`. If the extraction radius is 0, the data is extrapolated to infinite radius.
+        integral of :math:`\Psi_4` computed using fixed-frequency integration. If the extraction radius is 0, the data
+        is extrapolated to infinite radius.
 
         Args:
             l (int): l value of mode
@@ -300,7 +301,8 @@ class RadiationBundle:
         """Cross component of :math:`rh` for a given mode and extraction radius.
 
         Returns the cross component of strain for a given mode and extraction radius. The strain is the second time
-        integral of :math:`\Psi_4`. If the extraction radius is 0, the data is extrapolated to infinite radius.
+        integral of :math:`\Psi_4` computed using fixed-frequency integration. If the extraction radius is 0, the data
+        is extrapolated to infinite radius.
 
         Args:
             l (int): l value of mode
@@ -353,7 +355,8 @@ class RadiationBundle:
         """Amplitude of :math:`rh` for a given mode and extraction radius.
 
         Returns the amplitude of strain for a given mode and extraction radius. The strain is the second time
-        integral of :math:`\Psi_4`. If the extraction radius is 0, the data is extrapolated to infinite radius.
+        integral of :math:`\Psi_4` computed using fixed-frequency integration. If the extraction radius is 0, the data
+        is extrapolated to infinite radius.
 
         Args:
             l (int): l value of mode
@@ -379,7 +382,8 @@ class RadiationBundle:
         """Phase of :math:`rh` for a given mode and extraction radius.
 
         Returns the phase of strain for a given mode and extraction radius. The strain is the second time
-        integral of :math:`\Psi_4`. If the extraction radius is 0, the data is extrapolated to infinite radius.
+        integral of :math:`\Psi_4` computed using fixed-frequency integration. If the extraction radius is 0, the data
+        is extrapolated to infinite radius.
 
 
         Args:
@@ -430,7 +434,8 @@ class RadiationBundle:
     def get_dEnergy_dt_radiated(self, extraction_radius: float = None, **kwargs) -> tuple:
         """Rate at which energy is radiated, :math:`dE/dt`
 
-        If no lmin, lmax, l, or m are provided, it computes the total sum of all modes.
+        Uses the method described in https://arxiv.org/abs/0707.4654. If no lmin, lmax, l, or m are provided, it
+        computes the total sum of all modes.
 
         Args:
             extraction_radius (:obj:`float`, optional): radius for gravitational wave extraction. If not provided,
@@ -468,7 +473,8 @@ class RadiationBundle:
     def get_energy_radiated(self, extraction_radius: float = None, **kwargs) -> tuple:
         """Cumulative radiated energy :math:`E`
 
-        If no lmin, lmax, l, or m are provided, it computes the total sum of all modes.
+        Uses the method described in https://arxiv.org/abs/0707.4654. If no lmin, lmax, l, or m are provided, it
+        computes the total sum of all modes.
 
         Args:
             extraction_radius (:obj:`float`, optional): radius for gravitational wave extraction. If not provided,
@@ -506,7 +512,8 @@ class RadiationBundle:
     def get_dP_dt_radiated(self, extraction_radius: float = None, **kwargs) -> tuple:
         """Rate at which linear momentum is radiated
 
-        Rate at which linear momentum is radiated through gravitational waves. If no lmin, lmax, l, or m are provided,
+        Rate at which linear momentum is radiated through gravitational waves, computed using the method described in
+        https://arxiv.org/abs/0707.4654. If no lmin, lmax, l, or m are provided,
         it computes the total sum of all modes.
 
         Args:
@@ -545,7 +552,8 @@ class RadiationBundle:
     def get_linear_momentum_radiated(self, extraction_radius: float = None, **kwargs) -> tuple:
         """Linear momentum radiated
 
-        Cummulative linear momentum radiated through gravitational waves. If no lmin, lmax, l, or m are provided, it
+        Cummulative linear momentum radiated through gravitational waves, computed using the method described in
+        https://arxiv.org/abs/0707.4654. If no lmin, lmax, l, or m are provided, it
         computes the total sum of all modes.
 
         Args:
@@ -586,7 +594,8 @@ class RadiationBundle:
         extrapolation.
 
         Extrapolate the :math:`\Psi_4` of all RadiationModes in the RadiationSphere at the set radius for extrapolation
-        to infinite radius and create and store a new RadiationSphere with those extrapolated RadiationModes.
+        to infinite radius and create and store a new RadiationSphere with those extrapolated RadiationModes. Uses
+        the extrapolation method described in https://arxiv.org/abs/1008.4360 and https://arxiv.org/abs/1108.4421.
 
         Args:
             order (:obj:`int`, optional): the extrapolation order. Defaults to 1.
@@ -827,7 +836,7 @@ class RadiationSphere:
     def get_strain_plus_for_mode(self, l: int, m: int) -> np.ndarray:
         """Plus component of :math:`rh` for a given mode.
 
-        The strain is the second time integral of :math:`\Psi_4`.
+        The strain is the second time integral of :math:`\Psi_4` computed using fixed-frequency integration.
 
         Args:
             l (int): l value of mode
@@ -846,7 +855,7 @@ class RadiationSphere:
     def get_strain_cross_for_mode(self, l: int, m: int) -> np.ndarray:
         """Cross component of :math:`rh` for a given mode.
 
-        The strain is the second time integral of :math:`\Psi_4`.
+        The strain is the second time integral of :math:`\Psi_4` computed using fixed-frequency integration.
 
         Args:
             l (int): l value of mode
@@ -865,7 +874,7 @@ class RadiationSphere:
     def get_strain_amplitude_for_mode(self, l: int, m: int) -> np.ndarray:
         """Amplitude of :math:`rh` for a given mode.
 
-        The strain is the second time integral of :math:`\Psi_4`.
+        The strain is the second time integral of :math:`\Psi_4` computed using fixed-frequency integration.
 
         Args:
             l (int): l value of mode
@@ -884,7 +893,7 @@ class RadiationSphere:
     def get_strain_phase_for_mode(self, l: int, m: int) -> np.ndarray:
         """Phase of :math:`rh` for a given mode.
 
-        The strain is the second time integral of :math:`\Psi_4`.
+        The strain is the second time integral of :math:`\Psi_4` computed using fixed-frequency integration.
 
         Args:
             l (int): l value of mode
@@ -955,7 +964,8 @@ class RadiationSphere:
     def get_dEnergy_dt_radiated(self, **kwargs) -> tuple:
         """Rate at which energy is radiated, :math:`dE/dt`
 
-        If no lmin, lmax, l, or m are provided, it computes the total sum of all modes.
+        Uses the method described in https://arxiv.org/abs/0707.4654. If no lmin, lmax, l, or m are provided, it
+        computes the total sum of all modes.
 
         Args:
             **kwargs : parameters to specify the modes you would like to sum over
@@ -1019,7 +1029,8 @@ class RadiationSphere:
     def get_energy_radiated(self, **kwargs) -> tuple:
         """Cumulative radiated energy :math:`E`
 
-        If no lmin, lmax, l, or m are provided, it computes the total sum of all modes.
+        Uses the method described in https://arxiv.org/abs/0707.4654. If no lmin, lmax, l, or m are provided, it
+        computes the total sum of all modes.
 
         Args:
             **kwargs : parameters to specify the modes you would like to sum over
@@ -1083,8 +1094,8 @@ class RadiationSphere:
     def get_dP_dt_radiated(self, **kwargs) -> tuple:
         """Rate at which linear momentum is radiated
 
-        Rate at which linear momentum is radiated through gravitational waves. If no lmin, lmax, l, or m are provided,
-        it computes the total sum of all modes.
+        Rate at which linear momentum is radiated through gravitational waves, computed using the method described in
+        https://arxiv.org/abs/0707.4654. If no lmin, lmax, l, or m are provided, it computes the total sum of all modes.
 
         Args:
             **kwargs : parameters to specify the modes you would like to sum over
@@ -1141,8 +1152,8 @@ class RadiationSphere:
     def get_linear_momentum_radiated(self, **kwargs) -> tuple:
         """Linear momentum radiated
 
-        Linear momentum radiated through gravitational waves. If no lmin, lmax, l, or m are provided, it computes the
-        total sum of all modes.
+        Linear momentum radiated through gravitational waves computed using the method described in
+        https://arxiv.org/abs/0707.4654. If no lmin, lmax, l, or m are provided, it computes the total sum of all modes.
 
         Args:
             **kwargs : parameters to specify the modes you would like to sum over
@@ -1203,7 +1214,8 @@ class RadiationSphere:
         """RadiationSphere object extrapolated from this RadiationSphere to infinite radius.
 
         Extrapolate the :math:`\Psi_4` of all RadiationModes in this RadiationSphere to infinite radius and create and
-        return a new RadiationSphere with those extrapolated RadiationModes.
+        return a new RadiationSphere with those extrapolated RadiationModes. Uses the method described in
+        https://arxiv.org/abs/1008.4360 and https://arxiv.org/abs/1108.4421.
 
         Args:
             order (:obj:`int`, optional): the extrapolation order. Defaults to 1.
@@ -1233,6 +1245,8 @@ class RadiationSphere:
 
     def _scri_waveform_modes_object(self) -> scri.WaveformModes:
         """Create and return a Scri WaveformModes object containing the data for this extraction sphere.
+
+        For more information on scri objects, refer to https://scri.readthedocs.io.
 
         Returns: A Scri WaveformModes object
 
@@ -1300,7 +1314,7 @@ class RadiationSphere:
     def _generate_com_corrected_modes(self):
         """Create a dictionary of RadiationModes in a frame which has corrected for center of mass drift.
 
-        Uses scri to perform the transformation.
+        Uses scri to perform the transformation. For more information on scri, refer to https://scri.readthedocs.io.
         """
         scri_waveform_object = self._scri_waveform_modes_object()
         if scri_waveform_object is None:
@@ -1464,16 +1478,16 @@ class RadiationMode:
 
     @property
     def strain_plus(self) -> np.ndarray:
-        """The plus component of :math:`rh` as a timeseries. The strain is computed as the second time integral of
-        :math:`\Psi_4`."""
+        """The plus component of :math:`rh` as a timeseries. The strain is the second time integral of
+        :math:`\Psi_4` computed using fixed-frequency integration."""
         if self.__strain_plus is None:
             self.compute_and_store_strain()
         return self.__strain_plus
 
     @property
     def strain_cross(self) -> np.ndarray:
-        """The cross component of :math:`rh` as a timeseries. The strain is computed as the second time integral of
-        :math:`\Psi_4`."""
+        """The cross component of :math:`rh` as a timeseries. The strain is the second time integral of
+        :math:`\Psi_4` computed using fixed-frequency integration."""
         if self.__strain_cross is None:
             self.compute_and_store_strain()
         return self.__strain_cross
@@ -1481,7 +1495,8 @@ class RadiationMode:
     @property
     def strain_amplitude(self) -> np.ndarray:
         """The amplitude of :math:`rh` as a timeseries, computed from the real and imaginary parts as
-        :math:`\sqrt{\mathcal{Re}(rh)^2 + \mathcal{Im}(rh)^2}`."""
+        :math:`\sqrt{\mathcal{Re}(rh)^2 + \mathcal{Im}(rh)^2}`. The strain is the second time integral of
+        :math:`\Psi_4` computed using fixed-frequency integration."""
         if self.__strain_amplitude is None:
             self.__strain_amplitude = np.sqrt(np.power(self.strain_plus, 2) + np.power(self.strain_cross, 2))
         return self.__strain_amplitude
@@ -1489,7 +1504,8 @@ class RadiationMode:
     @property
     def strain_phase(self) -> np.ndarray:
         """The phase of :math:`rh` as a timeseries, computed from the real and imaginary parts as
-        :math:`\\textrm{tan}^{-1}( \mathcal{Im}(rh) / \mathcal{Re}(rh) )`."""
+        :math:`\\textrm{tan}^{-1}( \mathcal{Im}(rh) / \mathcal{Re}(rh) )`. The strain is the second time integral of
+        :math:`\Psi_4` computed using fixed-frequency integration."""
         if self.__strain_phase is None:
             self.__strain_phase = -1 * np.unwrap(np.arctan2(self.strain_cross, self.strain_plus))
         return self.__strain_phase
@@ -1506,12 +1522,13 @@ class RadiationMode:
 
     @property
     def psi4_omega(self):
-        """The frequency of :math:`\Psi_4`."""
+        """The frequency of :math:`\Psi_4` computed as the time derivative of the phase."""
         return np.gradient(self.psi4_phase, self.time)
 
     @property
     def omega_start(self):
-        """The starting frequency of :math:`\Psi_4`."""
+        """The starting frequency of :math:`\Psi_4` where the frequency is computed as the time derivative of the
+        phase."""
         start_time = self.time[0]
         end_time = start_time + 30
         if end_time > self.time[-1]:
@@ -1647,7 +1664,8 @@ class RadiationMode:
     def compute_and_store_strain(self):
         """Computes and stores the strain data from the :math:`\Psi_4` data.
 
-        Computes the strain using the fourier transform method to compute the double time integral of :math:`\Psi_4`.
+        Computes the strain using the fixed-frequency integration method to compute the double time integral of
+        :math:`\Psi_4` using the fourier transform.
 
         """
         if self.l_value != 2 or self.m_value != 2:
@@ -1759,7 +1777,8 @@ class RadiationMode:
         """RadiationMode object extrapolated from this RadiationMode to infinite radius.
 
         Extrapolate the :math:`\Psi_4` of this RadiationMode to infinite radius and create and return a new
-        RadiationMode with that :math:`\Psi_4` data.
+        RadiationMode with that :math:`\Psi_4` data. Uses the method described in
+        https://arxiv.org/abs/1008.4360 and https://arxiv.org/abs/1108.4421.
 
         Args:
             order (:obj:`int`, optional): the extrapolation order. Defaults to 1.

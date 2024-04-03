@@ -382,7 +382,7 @@ class CompactObject:
 
     @property
     def apparent_horizon_mean_curvature(self) -> tuple:
-        """The time and mean curvature over time."""
+        """The time and mean curvature of the apparent horizon over time."""
         data = self.get_data_from_columns([self.Column.TIME, self.Column.MEAN_CURVATURE])
 
         if data is None:
@@ -421,7 +421,7 @@ class CompactObject:
 
     @property
     def apparent_horizon_inner_expansion_theta_n(self) -> tuple:
-        """The time and the inner expansion Theta_(n) over time."""
+        """The time and the inner expansion Theta_(n) on the apparent horizon over time."""
         data = self.get_data_from_columns([self.Column.TIME, self.Column.INNER_EXPANSION_THETA_N])
 
         if data is None:
@@ -448,7 +448,7 @@ class CompactObject:
 
     @property
     def apparent_horizon_maximum_radius(self) -> tuple:
-        """The time and maximum horizon radius over time."""
+        """The time and maximum apparent horizon radius over time."""
         data = self.get_data_from_columns([self.Column.TIME, self.Column.MAX_RADIUS])
 
         if data is None:
@@ -479,7 +479,7 @@ class CompactObject:
 
     @property
     def apparent_horizon_mean_radius(self) -> tuple:
-        """The time and mean horizon radius overtime."""
+        """The time and mean apparent horizon radius over time."""
         data = self.get_data_from_columns([self.Column.TIME, self.Column.MEAN_RADIUS])
 
         if data is None:
