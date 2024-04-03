@@ -225,6 +225,9 @@ class Coalescence:
     @property
     def average_run_speed(self) -> float:
         """Average speed of the simulation in M/hr."""
+        if "runstats" not in self.__h5_file:
+            warnings.warn('Runstats information is not available for this coalescence.')
+            return None
         speed_column = self.__h5_file["runstats"].attrs["header"].tolist().index("speed (hours^-1)")
         return float(np.mean(self.__h5_file["runstats"][:, speed_column], axis=0))
 
