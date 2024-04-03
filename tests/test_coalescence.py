@@ -566,6 +566,13 @@ class TestCoalescence(TestCase):
     def test_average_run_speed(self):
         self.assertTrue(np.isclose(TestCoalescence.coalescence.average_run_speed, 54.5613306725, atol=1e-4))
 
+        #runstats not available
+        temp_coalescence = Coalescence(os.path.join(TestCoalescence.CURR_DIR,
+                                                    "resources/sample_etk_simulations/GW150914.h5"))
+        runspeed = temp_coalescence.average_run_speed
+        temp_coalescence.close()
+        self.assertIsNone(runspeed)
+
     def test_l_max(self):
         self.assertEqual(TestCoalescence.coalescence.l_max, 4)
 
