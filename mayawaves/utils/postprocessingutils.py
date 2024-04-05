@@ -2667,10 +2667,12 @@ def _put_data_in_lal_compatible_format(coalescence: Coalescence, lal_h5_file_nam
         center_of_mass_correction (:obj:'bool', optional): whether to correct for center of mass drift. Default False.
 
     """
+    from mayawaves.radiation import Frame
     if center_of_mass_correction:
         coalescence.set_radiation_frame(center_of_mass_corrected=True)
     else:
-        coalescence.set_radiation_frame()
+        if not coalescence.radiation_frame == Frame.RAW:
+            coalescence.set_radiation_frame()
 
     initial_time_horizon = 75
     if extraction_radius != 0:
@@ -2737,15 +2739,18 @@ def _put_data_in_lal_compatible_format(coalescence: Coalescence, lal_h5_file_nam
         _store_compact_object_timeseries_data(coalescence, lal_h5_file, lvc_format, time_shift, initial_time_horizon)
 
         lal_h5_file.close()
-        coalescence.set_radiation_frame()
+        if coalescence.radiation_frame != Frame.RAW:
+            coalescence.set_radiation_frame()
 
     except Exception as e:
         lal_h5_file.close()
-        coalescence.set_radiation_frame()
+        if coalescence.radiation_frame != Frame.RAW:
+            coalescence.set_radiation_frame()
         raise e
 
     if raise_mode_error:
-        coalescence.set_radiation_frame()
+        if coalescence.radiation_frame != Frame.RAW:
+            coalescence.set_radiation_frame()
         raise IOError(f"Data is missing for one of the included modes")
 
 

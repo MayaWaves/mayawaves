@@ -136,9 +136,14 @@
 </section>
 <section id="requirements">
 <h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading"></a></h2>
-<p>Due to its dependencies, this package requires 3.9 <span class="math notranslate nohighlight">\(\leq\)</span> python <span class="math notranslate nohighlight">\(\leq\)</span> 3.10.</p>
+<p>For most usecases, this package requires 3.9 <span class="math notranslate nohighlight">\(\leq\)</span> python.</p>
 <p>It also relies upon the following python packages which are automatically installed from pip when you install mayawaves:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">numpy</span><span class="p">,</span> <span class="n">scipy</span><span class="p">,</span> <span class="n">pandas</span><span class="p">,</span> <span class="n">romspline</span><span class="p">,</span> <span class="n">wget</span><span class="p">,</span> <span class="n">matplotlib</span><span class="p">,</span> <span class="n">mock</span><span class="p">,</span> <span class="n">numba</span><span class="p">,</span> <span class="n">scri</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">numpy</span><span class="p">,</span> <span class="n">scipy</span><span class="p">,</span> <span class="n">pandas</span><span class="p">,</span> <span class="n">romspline</span><span class="p">,</span> <span class="n">wget</span><span class="p">,</span> <span class="n">matplotlib</span><span class="p">,</span> <span class="n">mock</span>
+</pre></div>
+</div>
+<p>However, if you want to use the ability to switch to a center-of-mass frame for the gravitational radiation, that has
+additional dependencies that require python <span class="math notranslate nohighlight">\(\leq\)</span> 3.10 as well as the following dependencies:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">numba</span><span class="p">,</span> <span class="n">scri</span>
 </pre></div>
 </div>
 <p>This package has been tested with Einstein Toolkit Release Meitner (released on December 6th, 2023).
