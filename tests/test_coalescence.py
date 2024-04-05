@@ -622,31 +622,65 @@ class TestCoalescence(TestCase):
 
         # center of mass
         #  center of mass data is None
-        with patch.object(RadiationBundle, 'set_frame') as mock_set_frame:
-            with patch.object(Coalescence, 'center_of_mass', new_callable=PropertyMock,
-                              return_value=(None, None)) as mock_center_of_mass:
-                TestCoalescence.coalescence.set_radiation_frame(center_of_mass_corrected=True)
+        import sys
+        if sys.version_info.major == 3 and sys.version_info.minor > 10:
+            with patch.object(RadiationBundle, 'set_frame') as mock_set_frame:
+                with patch.object(Coalescence, 'center_of_mass', new_callable=PropertyMock,
+                                  return_value=(None, None)) as mock_center_of_mass:
+                    try:
+                        TestCoalescence.coalescence.set_radiation_frame(center_of_mass_corrected=True)
+                        self.fail()
+                    except ImportError:
+                        mock_center_of_mass.assert_not_called()
+                        mock_set_frame.assert_not_called()
 
-                mock_center_of_mass.assert_called_once()
-                mock_set_frame.assert_not_called()
-        #  center of mass data is not None
-        with patch.object(RadiationBundle, 'set_frame') as mock_set_frame:
-            with patch.object(Coalescence, 'center_of_mass', new_callable=PropertyMock,
-                              return_value=(
-                              np.array([1, 2, 3]), np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]]))) as mock_center_of_mass:
-                TestCoalescence.coalescence.set_radiation_frame(center_of_mass_corrected=True)
+            #  center of mass data is not None
+            with patch.object(RadiationBundle, 'set_frame') as mock_set_frame:
+                with patch.object(Coalescence, 'center_of_mass', new_callable=PropertyMock,
+                                  return_value=(
+                                  np.array([1, 2, 3]), np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]]))) as mock_center_of_mass:
+                    try:
+                        TestCoalescence.coalescence.set_radiation_frame(center_of_mass_corrected=True)
+                        self.fail()
+                    except ImportError:
+                        mock_center_of_mass.assert_not_called()
 
-                mock_center_of_mass.assert_called_once()
-                self.assertEqual(Frame.COM_CORRECTED, mock_set_frame.call_args[0][0])
-                self.assertEqual(2, len(mock_set_frame.call_args[1]))
-                self.assertTrue(np.all(np.array([1, 2, 3]) == mock_set_frame.call_args[1]['time']))
-                self.assertTrue(np.all(
-                    np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]]) == mock_set_frame.call_args[1]['center_of_mass']))
+            # resetting to raw frame
+            with patch.object(RadiationBundle, 'set_frame') as mock_set_frame:
+                try:
+                    TestCoalescence.coalescence.set_radiation_frame()
+                    self.fail()
+                except ImportError:
+                    mock_set_frame.assert_not_called()
 
-        # resetting to raw frame
-        with patch.object(RadiationBundle, 'set_frame') as mock_set_frame:
-            TestCoalescence.coalescence.set_radiation_frame()
-            mock_set_frame.assert_called_once_with(Frame.RAW)
+        else:
+            with patch.object(RadiationBundle, 'set_frame') as mock_set_frame:
+                with patch.object(Coalescence, 'center_of_mass', new_callable=PropertyMock,
+                                  return_value=(None, None)) as mock_center_of_mass:
+                    TestCoalescence.coalescence.set_radiation_frame(center_of_mass_corrected=True)
+
+                    mock_center_of_mass.assert_called_once()
+                    mock_set_frame.assert_not_called()
+
+            #  center of mass data is not None
+            with patch.object(RadiationBundle, 'set_frame') as mock_set_frame:
+                with patch.object(Coalescence, 'center_of_mass', new_callable=PropertyMock,
+                                  return_value=(
+                                  np.array([1, 2, 3]),
+                                  np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]]))) as mock_center_of_mass:
+                    TestCoalescence.coalescence.set_radiation_frame(center_of_mass_corrected=True)
+
+                    mock_center_of_mass.assert_called_once()
+                    self.assertEqual(Frame.COM_CORRECTED, mock_set_frame.call_args[0][0])
+                    self.assertEqual(2, len(mock_set_frame.call_args[1]))
+                    self.assertTrue(np.all(np.array([1, 2, 3]) == mock_set_frame.call_args[1]['time']))
+                    self.assertTrue(np.all(
+                        np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]]) == mock_set_frame.call_args[1]['center_of_mass']))
+
+            # resetting to raw frame
+            with patch.object(RadiationBundle, 'set_frame') as mock_set_frame:
+                TestCoalescence.coalescence.set_radiation_frame()
+                mock_set_frame.assert_called_once_with(Frame.RAW)
 
     @mock.patch("mayawaves.compactobject.CompactObject.initial_horizon_mass", new_callable=PropertyMock)
     @mock.patch("mayawaves.compactobject.CompactObject.horizon_mass", new_callable=PropertyMock)

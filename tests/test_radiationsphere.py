@@ -98,39 +98,102 @@ class TestRadiationSphere(TestCase):
     def test_set_frame(self):
         from mayawaves.radiation import Frame
 
-        # invalid frame
-        self.radiation_sphere.set_frame('coprecessing')
-        self.assertEqual(Frame.RAW, self.radiation_sphere._RadiationSphere__frame)
+        import sys
+        if sys.version_info.major == 3 and sys.version_info.minor > 10:
+            # invalid frame
+            try:
+                self.radiation_sphere.set_frame('coprecessing')
+                self.fail()
+            except ImportError:
+                self.assertEqual(Frame.RAW, self.radiation_sphere._RadiationSphere__frame)
 
-        self.radiation_sphere._RadiationSphere__frame = Frame.COM_CORRECTED
-        self.radiation_sphere.set_frame('coprecessing')
-        self.assertEqual(Frame.COM_CORRECTED, self.radiation_sphere._RadiationSphere__frame)
+            self.radiation_sphere._RadiationSphere__frame = Frame.COM_CORRECTED
+            try:
+                self.radiation_sphere.set_frame('coprecessing')
+                self.fail()
+            except ImportError:
+                self.assertEqual(Frame.COM_CORRECTED, self.radiation_sphere._RadiationSphere__frame)
 
-        # raw
-        self.radiation_sphere.set_frame(Frame.RAW)
-        self.assertEqual(Frame.RAW, self.radiation_sphere._RadiationSphere__frame)
+            # raw
+            try:
+                self.radiation_sphere.set_frame(Frame.RAW)
+                self.fail()
+            except ImportError:
+                self.assertEqual(Frame.COM_CORRECTED, self.radiation_sphere._RadiationSphere__frame)
 
-        # com
-        self.radiation_sphere.set_frame(Frame.COM_CORRECTED)
-        self.assertEqual(Frame.COM_CORRECTED, self.radiation_sphere._RadiationSphere__frame)
+            # com
+            self.radiation_sphere._RadiationSphere__frame = Frame.RAW
+            try:
+                self.radiation_sphere.set_frame(Frame.COM_CORRECTED)
+                self.fail()
+            except ImportError:
+                self.assertEqual(Frame.RAW, self.radiation_sphere._RadiationSphere__frame)
 
-        # test with time, com
-        self.radiation_sphere.set_frame(Frame.RAW)
-        time = np.array([1, 2, 3, 4])
-        com = np.array([5, 6, 7, 8])
-        with patch.object(RadiationSphere, '_set_alpha_beta_for_com_transformation') as mock_set_alpha_beta:
-            self.radiation_sphere.set_frame(Frame.COM_CORRECTED, time=time, center_of_mass=com)
-            mock_set_alpha_beta.assert_called_once_with(time, com)
+            # test with time, com
+            try:
+                self.radiation_sphere.set_frame(Frame.RAW)
+                self.fail()
+            except:
+                pass
+            time = np.array([1, 2, 3, 4])
+            com = np.array([5, 6, 7, 8])
+            with patch.object(RadiationSphere, '_set_alpha_beta_for_com_transformation') as mock_set_alpha_beta:
+                try:
+                    self.radiation_sphere.set_frame(Frame.COM_CORRECTED, time=time, center_of_mass=com)
+                    self.fail()
+                except ImportError:
+                    mock_set_alpha_beta.assert_not_called()
+                    self.assertEqual(Frame.RAW, self.radiation_sphere._RadiationSphere__frame)
 
-        # test setting alpha, beta directly
-        self.radiation_sphere.set_frame(Frame.RAW)
-        alpha = np.array([1, 2, 3])
-        beta = np.array([5, 6, 7])
-        with patch.object(RadiationSphere, '_set_alpha_beta_for_com_transformation') as mock_set_alpha_beta:
-            self.radiation_sphere.set_frame(Frame.COM_CORRECTED, alpha=alpha, beta=beta)
-            mock_set_alpha_beta.assert_not_called()
-            self.assertTrue(np.all(alpha == self.radiation_sphere._RadiationSphere__alpha))
-            self.assertTrue(np.all(beta == self.radiation_sphere._RadiationSphere__beta))
+            # test setting alpha, beta directly
+            try:
+                self.radiation_sphere.set_frame(Frame.RAW)
+                self.fail()
+            except:
+                pass
+            alpha = np.array([1, 2, 3])
+            beta = np.array([5, 6, 7])
+            with patch.object(RadiationSphere, '_set_alpha_beta_for_com_transformation') as mock_set_alpha_beta:
+                try:
+                    self.radiation_sphere.set_frame(Frame.COM_CORRECTED, alpha=alpha, beta=beta)
+                    self.fail()
+                except ImportError:
+                    mock_set_alpha_beta.assert_not_called()
+
+        else:
+            # invalid frame
+            self.radiation_sphere.set_frame('coprecessing')
+            self.assertEqual(Frame.RAW, self.radiation_sphere._RadiationSphere__frame)
+
+            self.radiation_sphere._RadiationSphere__frame = Frame.COM_CORRECTED
+            self.radiation_sphere.set_frame('coprecessing')
+            self.assertEqual(Frame.COM_CORRECTED, self.radiation_sphere._RadiationSphere__frame)
+
+            # raw
+            self.radiation_sphere.set_frame(Frame.RAW)
+            self.assertEqual(Frame.RAW, self.radiation_sphere._RadiationSphere__frame)
+
+            # com
+            self.radiation_sphere.set_frame(Frame.COM_CORRECTED)
+            self.assertEqual(Frame.COM_CORRECTED, self.radiation_sphere._RadiationSphere__frame)
+
+            # test with time, com
+            self.radiation_sphere.set_frame(Frame.RAW)
+            time = np.array([1, 2, 3, 4])
+            com = np.array([5, 6, 7, 8])
+            with patch.object(RadiationSphere, '_set_alpha_beta_for_com_transformation') as mock_set_alpha_beta:
+                self.radiation_sphere.set_frame(Frame.COM_CORRECTED, time=time, center_of_mass=com)
+                mock_set_alpha_beta.assert_called_once_with(time, com)
+
+            # test setting alpha, beta directly
+            self.radiation_sphere.set_frame(Frame.RAW)
+            alpha = np.array([1, 2, 3])
+            beta = np.array([5, 6, 7])
+            with patch.object(RadiationSphere, '_set_alpha_beta_for_com_transformation') as mock_set_alpha_beta:
+                self.radiation_sphere.set_frame(Frame.COM_CORRECTED, alpha=alpha, beta=beta)
+                mock_set_alpha_beta.assert_not_called()
+                self.assertTrue(np.all(alpha == self.radiation_sphere._RadiationSphere__alpha))
+                self.assertTrue(np.all(beta == self.radiation_sphere._RadiationSphere__beta))
 
     def test_modes(self):
         example_radiation_mode = RadiationMode(l=2, m=2, rad=75, time=TestRadiationSphere.time,
@@ -151,7 +214,16 @@ class TestRadiationSphere(TestCase):
         # test that it returns correctly based on frame
         from mayawaves.radiation import Frame
         self.radiation_sphere._RadiationSphere__frame = Frame.COM_CORRECTED
-        self.assertTrue(self.radiation_sphere._RadiationSphere__com_corrected_modes == self.radiation_sphere.modes)
+        import sys
+        if sys.version_info.major == 3 and sys.version_info.minor > 10:
+            try:
+                com_modes = self.radiation_sphere.modes
+                self.fail()
+            except ImportError:
+                pass
+        else:
+            self.assertTrue(self.radiation_sphere._RadiationSphere__com_corrected_modes == self.radiation_sphere.modes)
+
 
     def test_raw_modes(self):
         example_radiation_mode = RadiationMode(l=2, m=2, rad=75, time=TestRadiationSphere.time,
@@ -194,7 +266,15 @@ class TestRadiationSphere(TestCase):
         # check when using other frames
         from mayawaves.radiation import Frame
         self.radiation_sphere._RadiationSphere__frame = Frame.COM_CORRECTED
-        self.assertTrue(np.all(com_time == self.radiation_sphere.time))
+        import sys
+        if sys.version_info.major == 3 and sys.version_info.minor > 10:
+            try:
+                time = self.radiation_sphere.time
+                self.fail()
+            except ImportError:
+                pass
+        else:
+            self.assertTrue(np.all(com_time == self.radiation_sphere.time))
 
     def test_radius(self):
         self.radiation_sphere._RadiationSphere__radius = 80
@@ -1111,126 +1191,180 @@ class TestRadiationSphere(TestCase):
             self.assertEqual(Frame.RAW, extrapolated_radiation_sphere.frame)
 
         # test frame
-        self.radiation_sphere._RadiationSphere__extrapolated = False
-        self.radiation_sphere.set_frame(Frame.COM_CORRECTED, alpha=np.array([0.1, 0.1, 0.1]),
-                                        beta=np.array([0.2, 0.2, 0.2]))
-        with patch.object(RadiationMode, 'get_mode_with_extrapolated_radius',
-                          return_value=extrapolated_example_mode) as mock_get_mode_with_extrapolated_radius:
-            extrapolated_radiation_sphere = self.radiation_sphere.get_extrapolated_sphere()
-            self.assertTrue(isinstance(extrapolated_radiation_sphere, RadiationSphere))
-            self.assertTrue(extrapolated_radiation_sphere._RadiationSphere__extrapolated)
 
-            expected_included_modes = [(2, 2), (3, 1), (3, 3)]
-            generated_included_modes = sorted(list(extrapolated_radiation_sphere._RadiationSphere__raw_modes.keys()))
-            self.assertTrue(expected_included_modes == generated_included_modes)
-            for mode in generated_included_modes:
-                self.assertTrue(
-                    isinstance(extrapolated_radiation_sphere._RadiationSphere__raw_modes[mode], RadiationMode))
-                self.assertTrue(
-                    extrapolated_radiation_sphere._RadiationSphere__raw_modes[mode]._RadiationMode__extrapolated)
-            self.assertEqual(Frame.COM_CORRECTED, extrapolated_radiation_sphere.frame)
-            self.assertTrue(np.all(np.array([0.1, 0.1, 0.1]) == extrapolated_radiation_sphere._RadiationSphere__alpha))
-            self.assertTrue(np.all(np.array([0.2, 0.2, 0.2]) == extrapolated_radiation_sphere._RadiationSphere__beta))
+        import sys
+        if sys.version_info.major == 3 and sys.version_info.minor > 10:
+            self.radiation_sphere._RadiationSphere__extrapolated = False
+            try:
+                self.radiation_sphere.set_frame(Frame.COM_CORRECTED, alpha=np.array([0.1, 0.1, 0.1]),
+                                                beta=np.array([0.2, 0.2, 0.2]))
+                self.fail()
+            except ImportError:
+                pass
+
+        else:
+            self.radiation_sphere._RadiationSphere__extrapolated = False
+            self.radiation_sphere.set_frame(Frame.COM_CORRECTED, alpha=np.array([0.1, 0.1, 0.1]),
+                                            beta=np.array([0.2, 0.2, 0.2]))
+            with patch.object(RadiationMode, 'get_mode_with_extrapolated_radius',
+                              return_value=extrapolated_example_mode) as mock_get_mode_with_extrapolated_radius:
+                extrapolated_radiation_sphere = self.radiation_sphere.get_extrapolated_sphere()
+                self.assertTrue(isinstance(extrapolated_radiation_sphere, RadiationSphere))
+                self.assertTrue(extrapolated_radiation_sphere._RadiationSphere__extrapolated)
+
+                expected_included_modes = [(2, 2), (3, 1), (3, 3)]
+                generated_included_modes = sorted(list(extrapolated_radiation_sphere._RadiationSphere__raw_modes.keys()))
+                self.assertTrue(expected_included_modes == generated_included_modes)
+                for mode in generated_included_modes:
+                    self.assertTrue(
+                        isinstance(extrapolated_radiation_sphere._RadiationSphere__raw_modes[mode], RadiationMode))
+                    self.assertTrue(extrapolated_radiation_sphere._RadiationSphere__raw_modes[mode]._RadiationMode__extrapolated)
+                self.assertEqual(Frame.COM_CORRECTED, extrapolated_radiation_sphere.frame)
+                self.assertTrue(np.all(np.array([0.1, 0.1, 0.1]) == extrapolated_radiation_sphere._RadiationSphere__alpha))
+                self.assertTrue(np.all(np.array([0.2, 0.2, 0.2]) == extrapolated_radiation_sphere._RadiationSphere__beta))
 
     def test__scri_waveform_modes_object(self):
-        from spherical_functions import LM_index
-        coalescence = Coalescence(os.path.join(TestRadiationSphere.CURR_DIR,
+        import sys
+        if sys.version_info.major == 3 and sys.version_info.minor > 10:
+            coalescence = Coalescence(os.path.join(TestRadiationSphere.CURR_DIR,
+                                                   'resources/radiative_quantities_resources/D11_q2_a1_0.0_0.0_0.4_a2_0.0_0.0_0.4_m282.35.h5'))
+            test_radiation_sphere = coalescence.radiationbundle.radiation_spheres[75]
+
+            try:
+                scri_waveform_modes_object = test_radiation_sphere._scri_waveform_modes_object()
+                self.fail()
+            except ImportError:
+                self.assertTrue(True)
+
+        else:
+            from spherical_functions import LM_index
+            coalescence = Coalescence(os.path.join(TestRadiationSphere.CURR_DIR,
                                                'resources/radiative_quantities_resources/D11_q2_a1_0.0_0.0_0.4_a2_0.0_0.0_0.4_m282.35.h5'))
-        test_radiation_sphere = coalescence.radiationbundle.radiation_spheres[75]
+            test_radiation_sphere = coalescence.radiationbundle.radiation_spheres[75]
 
-        scri_waveform_modes_object = test_radiation_sphere._scri_waveform_modes_object()
+            scri_waveform_modes_object = test_radiation_sphere._scri_waveform_modes_object()
 
-        # go through each mode and see if it has the same data
-        for l in range(2, coalescence.l_max + 1):
-            for m in range(-l, l + 1):
-                data_lm = scri_waveform_modes_object.data[:, LM_index(l, m, scri_waveform_modes_object.ell_min)]
-                scri_time = scri_waveform_modes_object.t
-                scri_strain_plus = np.real(data_lm)
-                scri_strain_cross = -1 * np.imag(data_lm)
-                raw_time, raw_strain_plus, raw_strain_cross = coalescence.strain_for_mode(l=l, m=m,
-                                                                                          extraction_radius=75)
-                cut_index = np.argmax(raw_time > 150)
-                maya_time = raw_time[cut_index:]
-                maya_strain_plus = raw_strain_plus[cut_index:]
-                maya_strain_cross = raw_strain_cross[cut_index:]
-                self.assertTrue(np.allclose(maya_time, scri_time, rtol=1e-6))
-                self.assertTrue(np.allclose(maya_strain_plus, scri_strain_plus, rtol=1e-6))
-                self.assertTrue(np.allclose(maya_strain_cross, scri_strain_cross, rtol=1e-6))
+            # go through each mode and see if it has the same data
+            for l in range(2, coalescence.l_max + 1):
+                for m in range(-l, l + 1):
+                    data_lm = scri_waveform_modes_object.data[:, LM_index(l, m, scri_waveform_modes_object.ell_min)]
+                    scri_time = scri_waveform_modes_object.t
+                    scri_strain_plus = np.real(data_lm)
+                    scri_strain_cross = -1 * np.imag(data_lm)
+                    raw_time, raw_strain_plus, raw_strain_cross = coalescence.strain_for_mode(l=l, m=m,
+                                                                                              extraction_radius=75)
+                    cut_index = np.argmax(raw_time > 150)
+                    maya_time = raw_time[cut_index:]
+                    maya_strain_plus = raw_strain_plus[cut_index:]
+                    maya_strain_cross = raw_strain_cross[cut_index:]
+                    self.assertTrue(np.allclose(maya_time, scri_time, rtol=1e-6))
+                    self.assertTrue(np.allclose(maya_strain_plus, scri_strain_plus, rtol=1e-6))
+                    self.assertTrue(np.allclose(maya_strain_cross, scri_strain_cross, rtol=1e-6))
 
     def test__set_alpha_beta_for_com_transformation(self):
         # check if alpha and beta minimize eq 5 of https://arxiv.org/abs/1904.04842
-        coalescence = Coalescence(os.path.join(TestRadiationSphere.CURR_DIR,
+        import sys
+        if sys.version_info.major == 3 and sys.version_info.minor > 10:
+            coalescence = Coalescence(os.path.join(TestRadiationSphere.CURR_DIR,
                                                'resources/radiative_quantities_resources/D11_q2_a1_0.0_0.0_0.4_a2_0.0_0.0_0.4_m282.35.h5'))
-        time, com = coalescence.center_of_mass
-        coalescence.radiationbundle.radiation_spheres[75]._set_alpha_beta_for_com_transformation(time, com)
-        computed_alpha = coalescence.radiationbundle.radiation_spheres[75]._RadiationSphere__alpha
-        computed_beta = coalescence.radiationbundle.radiation_spheres[75]._RadiationSphere__beta
+            time, com = coalescence.center_of_mass
+            try:
+                coalescence.radiationbundle.radiation_spheres[75]._set_alpha_beta_for_com_transformation(time, com)
+                self.fail()
+            except ImportError:
+                pass
 
-        time = time + 75
-        t_max = np.max(time)
-        ti = 0.1 * t_max
-        tf = 0.9 * t_max
-        ti_iter = np.argmax(time > ti)
-        tf_iter = np.argmax(time > tf)
-        time = time[ti_iter: tf_iter]
-        com = com[ti_iter: tf_iter]
+        else:
+            coalescence = Coalescence(os.path.join(TestRadiationSphere.CURR_DIR,
+                                                   'resources/radiative_quantities_resources/D11_q2_a1_0.0_0.0_0.4_a2_0.0_0.0_0.4_m282.35.h5'))
+            time, com = coalescence.center_of_mass
+            coalescence.radiationbundle.radiation_spheres[75]._set_alpha_beta_for_com_transformation(time, com)
+            computed_alpha = coalescence.radiationbundle.radiation_spheres[75]._RadiationSphere__alpha
+            computed_beta = coalescence.radiationbundle.radiation_spheres[75]._RadiationSphere__beta
 
-        def func_of_alpha_beta(x):
-            ax, ay, az, bx, by, bz = x
-            alpha = np.array([ax, ay, az])
-            beta = np.array([bx, by, bz])
-            alpha_plus_beta_t = alpha.reshape(1, 3) + beta.reshape(1, 3) * time.reshape(len(time), 1)
-            alpha_plus_beta_t = alpha_plus_beta_t.reshape(len(alpha_plus_beta_t), 3)
-            integrand = np.linalg.norm(com - alpha_plus_beta_t, axis=1) ** 2
-            return np.trapz(integrand, time)
+            time = time + 75
+            t_max = np.max(time)
+            ti = 0.1 * t_max
+            tf = 0.9 * t_max
+            ti_iter = np.argmax(time > ti)
+            tf_iter = np.argmax(time > tf)
+            time = time[ti_iter: tf_iter]
+            com = com[ti_iter: tf_iter]
 
-        result = scipy.optimize.minimize(func_of_alpha_beta, x0=(0, 0, 0, 0, 0, 0), method='Nelder-Mead')
-        minimized_alpha = result.x[:3]
-        minimized_beta = result.x[3:]
-        self.assertTrue(np.allclose(minimized_alpha, computed_alpha, atol=5e-3))
-        self.assertTrue(np.allclose(minimized_beta, computed_beta, atol=1e-3))
+            def func_of_alpha_beta(x):
+                ax, ay, az, bx, by, bz = x
+                alpha = np.array([ax, ay, az])
+                beta = np.array([bx, by, bz])
+                alpha_plus_beta_t = alpha.reshape(1, 3) + beta.reshape(1, 3) * time.reshape(len(time), 1)
+                alpha_plus_beta_t = alpha_plus_beta_t.reshape(len(alpha_plus_beta_t), 3)
+                integrand = np.linalg.norm(com - alpha_plus_beta_t, axis=1) ** 2
+                return np.trapz(integrand, time)
+
+            result = scipy.optimize.minimize(func_of_alpha_beta, x0=(0, 0, 0, 0, 0, 0), method='Nelder-Mead')
+            minimized_alpha = result.x[:3]
+            minimized_beta = result.x[3:]
+            self.assertTrue(np.allclose(minimized_alpha, computed_alpha, atol=5e-3))
+            self.assertTrue(np.allclose(minimized_beta, computed_beta, atol=1e-3))
 
     def test__generate_com_corrected_modes(self):
-        coalescence = Coalescence(os.path.join(TestRadiationSphere.CURR_DIR,
-                                               'resources/radiative_quantities_resources/D11_q2_a1_0.0_0.0_0.4_a2_0.0_0.0_0.4_m282.35.h5'))
-        incl_modes = coalescence.included_modes
-        test_radiation_sphere = coalescence.radiationbundle.radiation_spheres[75]
-        time, center_of_mass = coalescence.center_of_mass
-        test_radiation_sphere._set_alpha_beta_for_com_transformation(time, center_of_mass)
-        test_radiation_sphere._generate_com_corrected_modes()
+        import sys
+        if sys.version_info.major == 3 and sys.version_info.minor > 10:
+            coalescence = Coalescence(os.path.join(TestRadiationSphere.CURR_DIR,
+                                                   'resources/radiative_quantities_resources/D11_q2_a1_0.0_0.0_0.4_a2_0.0_0.0_0.4_m282.35.h5'))
+            incl_modes = coalescence.included_modes
+            test_radiation_sphere = coalescence.radiationbundle.radiation_spheres[75]
+            time, center_of_mass = coalescence.center_of_mass
+            try:
+                test_radiation_sphere._set_alpha_beta_for_com_transformation(time, center_of_mass)
+                self.fail()
+            except ImportError:
+                pass
+            try:
+                test_radiation_sphere._generate_com_corrected_modes()
+                self.fail()
+            except ImportError:
+                pass
 
-        # com corrected time set and starts close to but greater than 75
-        generated_com_corrected_time = test_radiation_sphere._RadiationSphere__com_corrected_time
-        self.assertIsNotNone(generated_com_corrected_time)
-        self.assertTrue(generated_com_corrected_time[0] >= 150)
-        self.assertTrue(np.isclose(generated_com_corrected_time[0], 150, atol=1))
+        else:
+            coalescence = Coalescence(os.path.join(TestRadiationSphere.CURR_DIR, 'resources/radiative_quantities_resources/D11_q2_a1_0.0_0.0_0.4_a2_0.0_0.0_0.4_m282.35.h5'))
+            incl_modes = coalescence.included_modes
+            test_radiation_sphere = coalescence.radiationbundle.radiation_spheres[75]
+            time, center_of_mass = coalescence.center_of_mass
+            test_radiation_sphere._set_alpha_beta_for_com_transformation(time, center_of_mass)
+            test_radiation_sphere._generate_com_corrected_modes()
 
-        # com corrected modes set
-        com_corrected_modes = test_radiation_sphere._RadiationSphere__com_corrected_modes
-        self.assertIsNotNone(com_corrected_modes)
+            # com corrected time set and starts close to but greater than 75
+            generated_com_corrected_time = test_radiation_sphere._RadiationSphere__com_corrected_time
+            self.assertIsNotNone(generated_com_corrected_time)
+            self.assertTrue(generated_com_corrected_time[0] >= 150)
+            self.assertTrue(np.isclose(generated_com_corrected_time[0], 150, atol=1))
 
-        # all the modes from raw are represented
-        self.assertEqual(sorted(incl_modes), sorted(list(com_corrected_modes.keys())))
+            # com corrected modes set
+            com_corrected_modes = test_radiation_sphere._RadiationSphere__com_corrected_modes
+            self.assertIsNotNone(com_corrected_modes)
 
-        max_22_amp = max(test_radiation_sphere._RadiationSphere__raw_modes[(2, 2)].strain_amplitude)
+            # all the modes from raw are represented
+            self.assertEqual(sorted(incl_modes), sorted(list(com_corrected_modes.keys())))
 
-        # strains are within ~10 percent of each other but not identical
-        for mode_key in incl_modes:
-            raw_mode = test_radiation_sphere._RadiationSphere__raw_modes[mode_key]
-            com_corrected_mode = com_corrected_modes[mode_key]
-            raw_time = raw_mode.time
-            raw_strain_plus = raw_mode.strain_plus
-            com_time = com_corrected_mode.time
-            com_strain_plus = com_corrected_mode.strain_plus
+            max_22_amp = max(test_radiation_sphere._RadiationSphere__raw_modes[(2, 2)].strain_amplitude)
 
-            time_array = np.linspace(max(raw_time[0], com_time[0]), min(raw_time[-1], com_time[-1]), 1000)
+            # strains are within ~10 percent of each other but not identical
+            for mode_key in incl_modes:
+                raw_mode = test_radiation_sphere._RadiationSphere__raw_modes[mode_key]
+                com_corrected_mode = com_corrected_modes[mode_key]
+                raw_time = raw_mode.time
+                raw_strain_plus = raw_mode.strain_plus
+                com_time = com_corrected_mode.time
+                com_strain_plus = com_corrected_mode.strain_plus
 
-            interpolated_raw_strain_plus = np.interp(time_array, raw_time, raw_strain_plus)
-            interpolated_com_strain_plus = np.interp(time_array, com_time, com_strain_plus)
+                time_array = np.linspace(max(raw_time[0], com_time[0]), min(raw_time[-1], com_time[-1]), 1000)
 
-            self.assertFalse(np.all(interpolated_raw_strain_plus == interpolated_com_strain_plus))
+                interpolated_raw_strain_plus = np.interp(time_array, raw_time, raw_strain_plus)
+                interpolated_com_strain_plus = np.interp(time_array, com_time, com_strain_plus)
 
-            max_amp = max(raw_mode.strain_amplitude)
-            if max_amp > 1e-2 * max_22_amp:
-                tol = 0.1 * max_amp
-                self.assertTrue(np.allclose(interpolated_raw_strain_plus, interpolated_com_strain_plus, atol=tol))
+                self.assertFalse(np.all(interpolated_raw_strain_plus == interpolated_com_strain_plus))
+
+                max_amp = max(raw_mode.strain_amplitude)
+                if max_amp > 1e-2 * max_22_amp:
+                    tol = 0.1 * max_amp
+                    self.assertTrue(np.allclose(interpolated_raw_strain_plus, interpolated_com_strain_plus, atol=tol))

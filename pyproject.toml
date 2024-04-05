@@ -22,7 +22,7 @@ authors = [
 description = "A python package for interacting with Einstein Toolkit simulations and the MAYA Catalog of NR Waveforms"
 readme = "README.md"
 license = { file="LICENSE" }
-requires-python = ">=3.8,<3.11"
+requires-python = ">=3.8"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
@@ -35,8 +35,8 @@ dependencies = ["numpy",
     "wget",
     "matplotlib",
     "mock",
-    "numba",
-    "scri"
+    "numba; python_version < '3.11'",
+    "scri; python_version < '3.11'"
 ]
 
 [project.urls]

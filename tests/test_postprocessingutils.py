@@ -3123,58 +3123,60 @@ IO::out_fileinfo                     = "all"
 
         # test setting frame
         # com corrected frame
-        h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR,
-                                   "resources/temp/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
-        coalescence = Coalescence(h5_filename)
+        import sys
+        if sys.version_info.major == 3 and sys.version_info.minor <= 10:
+            h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                       "resources/temp/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
+            coalescence = Coalescence(h5_filename)
 
-        temp_h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5")
-        temp_lal_h5 = h5py.File(temp_h5_filename, 'w')
-        name = "D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"
-        alternative_names = []
-        initial_time_horizon = 75
-        omega_22_nr = 0.2
+            temp_h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5")
+            temp_lal_h5 = h5py.File(temp_h5_filename, 'w')
+            name = "D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"
+            alternative_names = []
+            initial_time_horizon = 75
+            omega_22_nr = 0.2
 
-        lvc_format = 1
+            lvc_format = 1
 
-        coalescence.set_radiation_frame(center_of_mass_corrected=True)
-
-        _store_lal_metadata(coalescence, temp_lal_h5, name, alternative_names,
-                            initial_time_horizon, omega_22_nr, lvc_format, NR_group='UT Austin', NR_code='MAYA',
-                            bibtex_keys='Jani:2016wkt', contact_email='deirdre.shoemaker@austin.utexas.edu')
-
-        self.assertTrue('frame' in temp_lal_h5['auxiliary-info'].attrs)
-        self.assertEqual('Center of mass drift corrected', temp_lal_h5['auxiliary-info'].attrs['frame'])
-
-        coalescence.close()
-        temp_lal_h5.close()
-        os.remove(temp_h5_filename)
-
-        # failed com corrected frame
-        h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR,
-                                   "resources/temp/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
-        coalescence = Coalescence(h5_filename)
-
-        temp_h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5")
-        temp_lal_h5 = h5py.File(temp_h5_filename, 'w')
-        name = "D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"
-        alternative_names = []
-        initial_time_horizon = 75
-        omega_22_nr = 0.2
-
-        lvc_format = 1
-
-        with patch.object(Coalescence, 'center_of_mass', new_callable=PropertyMock,
-                          return_value=(None, None)) as mock_center_of_mass:
             coalescence.set_radiation_frame(center_of_mass_corrected=True)
+
             _store_lal_metadata(coalescence, temp_lal_h5, name, alternative_names,
                                 initial_time_horizon, omega_22_nr, lvc_format, NR_group='UT Austin', NR_code='MAYA',
-                                bibtex_keys='Jani:2016wkt', contact_email='deirdre.shoemaker@austin.utexas.edu', )
+                                bibtex_keys='Jani:2016wkt', contact_email='deirdre.shoemaker@austin.utexas.edu')
 
-        self.assertTrue('frame' not in temp_lal_h5['auxiliary-info'].attrs)
+            self.assertTrue('frame' in temp_lal_h5['auxiliary-info'].attrs)
+            self.assertEqual('Center of mass drift corrected', temp_lal_h5['auxiliary-info'].attrs['frame'])
 
-        coalescence.close()
-        temp_lal_h5.close()
-        os.remove(temp_h5_filename)
+            coalescence.close()
+            temp_lal_h5.close()
+            os.remove(temp_h5_filename)
+
+            # failed com corrected frame
+            h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                       "resources/temp/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
+            coalescence = Coalescence(h5_filename)
+
+            temp_h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5")
+            temp_lal_h5 = h5py.File(temp_h5_filename, 'w')
+            name = "D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"
+            alternative_names = []
+            initial_time_horizon = 75
+            omega_22_nr = 0.2
+
+            lvc_format = 1
+
+            with patch.object(Coalescence, 'center_of_mass', new_callable=PropertyMock,
+                              return_value=(None, None)) as mock_center_of_mass:
+                coalescence.set_radiation_frame(center_of_mass_corrected=True)
+                _store_lal_metadata(coalescence, temp_lal_h5, name, alternative_names,
+                                    initial_time_horizon, omega_22_nr, lvc_format, NR_group='UT Austin', NR_code='MAYA',
+                                    bibtex_keys='Jani:2016wkt', contact_email='deirdre.shoemaker@austin.utexas.edu', )
+
+            self.assertTrue('frame' not in temp_lal_h5['auxiliary-info'].attrs)
+
+            coalescence.close()
+            temp_lal_h5.close()
+            os.remove(temp_h5_filename)
 
         # change metadata
 
@@ -3431,49 +3433,93 @@ IO::out_fileinfo                     = "all"
         os.remove(temp_lal_h5_file_name)
 
         # com corrected case
-        h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR,
-                                   "resources/temp/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
-        coalescence = Coalescence(h5_filename)
+        import sys
+        if sys.version_info.major == 3 and sys.version_info.minor > 10:
+            h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                       "resources/temp/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
+            coalescence = Coalescence(h5_filename)
 
-        temp_lal_h5_file_name = os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5")
-        name = "D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"
-        alternative_names = []
-        extraction_radius = 70
-        _put_data_in_lal_compatible_format(coalescence, temp_lal_h5_file_name, name, alternative_names,
-                                           extraction_radius, center_of_mass_correction=True, NR_group='UT Austin',
-                                           NR_code='MAYA', bibtex_keys='Jani:2016wkt',
-                                           contact_email='deirdre.shoemaker@austin.utexas.edu')
+            temp_lal_h5_file_name = os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5")
+            name = "D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"
+            alternative_names = []
+            extraction_radius = 70
+            try:
+                _put_data_in_lal_compatible_format(coalescence, temp_lal_h5_file_name, name, alternative_names,
+                                                   extraction_radius, center_of_mass_correction=True,
+                                                   NR_group='UT Austin', NR_code='MAYA', bibtex_keys='Jani:2016wkt',
+                                                   contact_email='deirdre.shoemaker@austin.utexas.edu')
+                self.fail()
+            except ImportError:
+                pass
+            coalescence.close()
 
-        temp_lal_h5 = h5py.File(temp_lal_h5_file_name, 'r')
-        self.assertTrue('frame' in temp_lal_h5['auxiliary-info'].attrs)
-        self.assertEqual('Center of mass drift corrected', temp_lal_h5['auxiliary-info'].attrs['frame'])
+        else:
+            h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                       "resources/temp/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
+            coalescence = Coalescence(h5_filename)
 
-        coalescence.close()
-        temp_lal_h5.close()
-        os.remove(temp_lal_h5_file_name)
-
-        # failed com corrected case
-        h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR,
-                                   "resources/temp/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
-        coalescence = Coalescence(h5_filename)
-
-        temp_lal_h5_file_name = os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5")
-        name = "D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"
-        alternative_names = []
-        extraction_radius = 70
-        with patch.object(Coalescence, 'center_of_mass', new_callable=PropertyMock,
-                          return_value=(None, None)) as mock_center_of_mass:
+            temp_lal_h5_file_name = os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5")
+            name = "D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"
+            alternative_names = []
+            extraction_radius = 70
             _put_data_in_lal_compatible_format(coalescence, temp_lal_h5_file_name, name, alternative_names,
                                                extraction_radius, center_of_mass_correction=True, NR_group='UT Austin',
                                                NR_code='MAYA', bibtex_keys='Jani:2016wkt',
                                                contact_email='deirdre.shoemaker@austin.utexas.edu')
 
-        temp_lal_h5 = h5py.File(temp_lal_h5_file_name, 'r')
-        self.assertTrue('frame' not in temp_lal_h5['auxiliary-info'].attrs)
+            temp_lal_h5 = h5py.File(temp_lal_h5_file_name, 'r')
+            self.assertTrue('frame' in temp_lal_h5['auxiliary-info'].attrs)
+            self.assertEqual('Center of mass drift corrected', temp_lal_h5['auxiliary-info'].attrs['frame'])
 
-        coalescence.close()
-        temp_lal_h5.close()
-        os.remove(temp_lal_h5_file_name)
+            coalescence.close()
+            temp_lal_h5.close()
+            os.remove(temp_lal_h5_file_name)
+
+        # failed com corrected case
+        import sys
+        if sys.version_info.major == 3 and sys.version_info.minor > 10:
+            h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                       "resources/temp/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
+            coalescence = Coalescence(h5_filename)
+
+            temp_lal_h5_file_name = os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5")
+            name = "D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"
+            alternative_names = []
+            extraction_radius = 70
+            with patch.object(Coalescence, 'center_of_mass', new_callable=PropertyMock,
+                              return_value=(None, None)) as mock_center_of_mass:
+                try:
+                    _put_data_in_lal_compatible_format(coalescence, temp_lal_h5_file_name, name, alternative_names,
+                                                       extraction_radius, center_of_mass_correction=True,
+                                                       NR_group='UT Austin', NR_code='MAYA', bibtex_keys='Jani:2016wkt',
+                                                       contact_email='deirdre.shoemaker@austin.utexas.edu')
+                    self.fail()
+                except ImportError:
+                    pass
+            coalescence.close()
+
+        else:
+            h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                       "resources/temp/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
+            coalescence = Coalescence(h5_filename)
+
+            temp_lal_h5_file_name = os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5")
+            name = "D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"
+            alternative_names = []
+            extraction_radius = 70
+            with patch.object(Coalescence, 'center_of_mass', new_callable=PropertyMock,
+                              return_value=(None, None)) as mock_center_of_mass:
+                _put_data_in_lal_compatible_format(coalescence, temp_lal_h5_file_name, name, alternative_names,
+                                                   extraction_radius, center_of_mass_correction=True,
+                                                   NR_group='UT Austin', NR_code='MAYA', bibtex_keys='Jani:2016wkt',
+                                                   contact_email='deirdre.shoemaker@austin.utexas.edu')
+
+            temp_lal_h5 = h5py.File(temp_lal_h5_file_name, 'r')
+            self.assertTrue('frame' not in temp_lal_h5['auxiliary-info'].attrs)
+
+            coalescence.close()
+            temp_lal_h5.close()
+            os.remove(temp_lal_h5_file_name)
 
     def test_export_to_ascii(self):
         h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR,
@@ -3638,12 +3684,13 @@ IO::out_fileinfo                     = "all"
 
     @mock.patch("mayawaves.coalescence.Coalescence.spin_configuration", new_callable=PropertyMock)
     def test_export_to_lvcnr_catalog(self, mock_coalescence_spin_configuration):
+        from mayawaves.radiation import Frame
         mock_coalescence_spin_configuration.return_value = "non-spinning"
         output_directory = os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/test_output")
         h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR,
                                    "resources/temp/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
         coalescence = Coalescence(h5_filename)
-
+        coalescence.radiationbundle._RadiationBundle__frame = Frame.RAW
         pputils.export_to_lvcnr_catalog(coalescence, output_directory, NR_group='UT Austin', NR_code='MAYA',
                                         bibtex_keys='Jani:2016wkt',
                                         contact_email='deirdre.shoemaker@austin.utexas.edu')
@@ -3691,46 +3738,79 @@ IO::out_fileinfo                     = "all"
         os.remove(lal_h5_filepath)
 
         # com corrected case
-        output_directory = os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/test_output")
-        h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR,
-                                   "resources/temp/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
-        coalescence = Coalescence(h5_filename)
-        pputils.export_to_lvcnr_catalog(coalescence, output_directory, center_of_mass_correction=True,
-                                        NR_group='UT Austin', NR_code='MAYA', bibtex_keys='Jani:2016wkt',
-                                        contact_email='deirdre.shoemaker@austin.utexas.edu')
+        import sys
+        if sys.version_info.major == 3 and sys.version_info.minor > 10:
+            output_directory = os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/test_output")
+            h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                       "resources/temp/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
+            coalescence = Coalescence(h5_filename)
+            try:
+                pputils.export_to_lvcnr_catalog(coalescence, output_directory, center_of_mass_correction=True,
+                                                NR_group='UT Austin', NR_code='MAYA', bibtex_keys='Jani:2016wkt',
+                                                contact_email='deirdre.shoemaker@austin.utexas.edu')
+                self.fail()
+            except ImportError:
+                pass
 
-        lal_h5_filepath = os.path.join(TestPostprocessingUtils.CURR_DIR,
-                                       "resources/test_output/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
-        self.assertTrue(os.path.exists(lal_h5_filepath))
+            coalescence.close()
 
-        temp_lal_h5 = h5py.File(lal_h5_filepath, 'r')
-        self.assertTrue('frame' in temp_lal_h5['auxiliary-info'].attrs)
-        self.assertEqual('Center of mass drift corrected', temp_lal_h5['auxiliary-info'].attrs['frame'])
-
-        coalescence.close()
-        temp_lal_h5.close()
-        os.remove(lal_h5_filepath)
-
-        # failed com corrected case
-        h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR,
-                                   "resources/temp/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
-        coalescence = Coalescence(h5_filename)
-        with patch.object(Coalescence, 'center_of_mass', new_callable=PropertyMock,
-                          return_value=(None, None)) as mock_center_of_mass:
+        else:
+            output_directory = os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/test_output")
+            h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                       "resources/temp/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
+            coalescence = Coalescence(h5_filename)
             pputils.export_to_lvcnr_catalog(coalescence, output_directory, center_of_mass_correction=True,
                                             NR_group='UT Austin', NR_code='MAYA', bibtex_keys='Jani:2016wkt',
                                             contact_email='deirdre.shoemaker@austin.utexas.edu')
 
-        lal_h5_filepath = os.path.join(TestPostprocessingUtils.CURR_DIR,
-                                       "resources/test_output/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
-        self.assertTrue(os.path.exists(lal_h5_filepath))
+            lal_h5_filepath = os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/test_output/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
+            self.assertTrue(os.path.exists(lal_h5_filepath))
 
-        temp_lal_h5 = h5py.File(lal_h5_filepath, 'r')
-        self.assertTrue('frame' not in temp_lal_h5['auxiliary-info'].attrs)
+            temp_lal_h5 = h5py.File(lal_h5_filepath, 'r')
+            self.assertTrue('frame' in temp_lal_h5['auxiliary-info'].attrs)
+            self.assertEqual('Center of mass drift corrected', temp_lal_h5['auxiliary-info'].attrs['frame'])
 
-        coalescence.close()
-        temp_lal_h5.close()
-        os.remove(lal_h5_filepath)
+            coalescence.close()
+            temp_lal_h5.close()
+            os.remove(lal_h5_filepath)
+
+        # failed com corrected case
+        import sys
+        if sys.version_info.major == 3 and sys.version_info.minor > 10:
+            h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                       "resources/temp/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
+            coalescence = Coalescence(h5_filename)
+            with patch.object(Coalescence, 'center_of_mass', new_callable=PropertyMock,
+                              return_value=(None, None)) as mock_center_of_mass:
+                try:
+                    pputils.export_to_lvcnr_catalog(coalescence, output_directory, center_of_mass_correction=True,
+                                                NR_group='UT Austin', NR_code='MAYA', bibtex_keys='Jani:2016wkt',
+                                                contact_email='deirdre.shoemaker@austin.utexas.edu')
+                    self.fail()
+                except ImportError:
+                    pass
+                coalescence.close()
+
+        else:
+            h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                       "resources/temp/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
+            coalescence = Coalescence(h5_filename)
+            with patch.object(Coalescence, 'center_of_mass', new_callable=PropertyMock,
+                              return_value=(None, None)) as mock_center_of_mass:
+                pputils.export_to_lvcnr_catalog(coalescence, output_directory, center_of_mass_correction=True,
+                                                NR_group='UT Austin', NR_code='MAYA', bibtex_keys='Jani:2016wkt',
+                                                contact_email='deirdre.shoemaker@austin.utexas.edu')
+
+            lal_h5_filepath = os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                           "resources/test_output/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
+            self.assertTrue(os.path.exists(lal_h5_filepath))
+
+            temp_lal_h5 = h5py.File(lal_h5_filepath, 'r')
+            self.assertTrue('frame' not in temp_lal_h5['auxiliary-info'].attrs)
+
+            coalescence.close()
+            temp_lal_h5.close()
+            os.remove(lal_h5_filepath)
 
         # if precessing without enough spin data, this should fail
         coalescence = Coalescence(h5_filename)
@@ -3797,48 +3877,85 @@ IO::out_fileinfo                     = "all"
         os.remove(lal_h5_filepath)
 
         # com corrected case
-        output_directory = os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/test_output")
-        h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR,
-                                   "resources/temp/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
-        coalescence = Coalescence(h5_filename)
-        pputils.export_to_lal_compatible_format(coalescence, output_directory, extraction_radius=70,
-                                                center_of_mass_correction=True, NR_group='UT Austin',
-                                                NR_code='MAYA', bibtex_keys='Jani:2016wkt',
-                                                contact_email='deirdre.shoemaker@austin.utexas.edu',)
+        import sys
+        if sys.version_info.major == 3 and sys.version_info.minor > 10:
+            output_directory = os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/test_output")
+            h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                       "resources/temp/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
+            coalescence = Coalescence(h5_filename)
+            try:
+                pputils.export_to_lal_compatible_format(coalescence, output_directory, extraction_radius=70,
+                                                        center_of_mass_correction=True, NR_group='UT Austin',
+                                                        NR_code='MAYA', bibtex_keys='Jani:2016wkt',
+                                                        contact_email='deirdre.shoemaker@austin.utexas.edu')
+                self.fail()
+            except ImportError:
+                pass
 
-        lal_h5_filepath = os.path.join(TestPostprocessingUtils.CURR_DIR,
-                                       "resources/test_output/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
-        self.assertTrue(os.path.exists(lal_h5_filepath))
+            coalescence.close()
 
-        temp_lal_h5 = h5py.File(lal_h5_filepath, 'r')
-        self.assertTrue('frame' in temp_lal_h5['auxiliary-info'].attrs)
-        self.assertEqual('Center of mass drift corrected', temp_lal_h5['auxiliary-info'].attrs['frame'])
-
-        coalescence.close()
-        temp_lal_h5.close()
-        os.remove(lal_h5_filepath)
-
-        # failed com corrected case
-        h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR,
-                                   "resources/temp/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
-        coalescence = Coalescence(h5_filename)
-        with patch.object(Coalescence, 'center_of_mass', new_callable=PropertyMock,
-                          return_value=(None, None)) as mock_center_of_mass:
+        else:
+            output_directory = os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/test_output")
+            h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                       "resources/temp/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
+            coalescence = Coalescence(h5_filename)
             pputils.export_to_lal_compatible_format(coalescence, output_directory, extraction_radius=70,
                                                     center_of_mass_correction=True, NR_group='UT Austin',
                                                     NR_code='MAYA', bibtex_keys='Jani:2016wkt',
-                                                    contact_email='deirdre.shoemaker@austin.utexas.edu',)
+                                                    contact_email='deirdre.shoemaker@austin.utexas.edu')
 
-        lal_h5_filepath = os.path.join(TestPostprocessingUtils.CURR_DIR,
-                                       "resources/test_output/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
-        self.assertTrue(os.path.exists(lal_h5_filepath))
+            lal_h5_filepath = os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                           "resources/test_output/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
+            self.assertTrue(os.path.exists(lal_h5_filepath))
 
-        temp_lal_h5 = h5py.File(lal_h5_filepath, 'r')
-        self.assertTrue('frame' not in temp_lal_h5['auxiliary-info'].attrs)
+            temp_lal_h5 = h5py.File(lal_h5_filepath, 'r')
+            self.assertTrue('frame' in temp_lal_h5['auxiliary-info'].attrs)
+            self.assertEqual('Center of mass drift corrected', temp_lal_h5['auxiliary-info'].attrs['frame'])
 
-        coalescence.close()
-        temp_lal_h5.close()
-        os.remove(lal_h5_filepath)
+            coalescence.close()
+            temp_lal_h5.close()
+            os.remove(lal_h5_filepath)
+
+        # failed com corrected case
+        import sys
+        if sys.version_info.major == 3 and sys.version_info.minor > 10:
+            h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                       "resources/temp/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
+            coalescence = Coalescence(h5_filename)
+            with patch.object(Coalescence, 'center_of_mass', new_callable=PropertyMock,
+                              return_value=(None, None)) as mock_center_of_mass:
+                try:
+                    pputils.export_to_lal_compatible_format(coalescence, output_directory, extraction_radius=70,
+                                                            center_of_mass_correction=True, NR_group='UT Austin',
+                                                            NR_code='MAYA', bibtex_keys='Jani:2016wkt',
+                                                            contact_email='deirdre.shoemaker@austin.utexas.edu')
+                    self.fail()
+                except ImportError:
+                    pass
+
+                coalescence.close()
+
+        else:
+            h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                       "resources/temp/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
+            coalescence = Coalescence(h5_filename)
+            with patch.object(Coalescence, 'center_of_mass', new_callable=PropertyMock,
+                              return_value=(None, None)) as mock_center_of_mass:
+                pputils.export_to_lal_compatible_format(coalescence, output_directory, extraction_radius=70,
+                                                        center_of_mass_correction=True, NR_group='UT Austin',
+                                                        NR_code='MAYA', bibtex_keys='Jani:2016wkt',
+                                                        contact_email='deirdre.shoemaker@austin.utexas.edu')
+
+            lal_h5_filepath = os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                           "resources/test_output/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
+            self.assertTrue(os.path.exists(lal_h5_filepath))
+
+            temp_lal_h5 = h5py.File(lal_h5_filepath, 'r')
+            self.assertTrue('frame' not in temp_lal_h5['auxiliary-info'].attrs)
+
+            coalescence.close()
+            temp_lal_h5.close()
+            os.remove(lal_h5_filepath)
 
         # if precessing without enough spin data, this should just warn
         coalescence = Coalescence(h5_filename)

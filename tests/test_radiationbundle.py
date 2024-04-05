@@ -102,29 +102,62 @@ class TestRadiationBundle(TestCase):
     def test_set_frame(self):
         from mayawaves.radiation import Frame
 
-        # invalid frame
-        self.radiation_bundle.set_frame('test')
-        self.assertEqual(Frame.RAW, self.radiation_bundle._RadiationBundle__frame)
+        import sys
+        if sys.version_info.major == 3 and sys.version_info.minor > 10:
+            # invalid frame
+            try:
+                self.radiation_bundle.set_frame('test')
+                self.fail()
+            except ImportError:
+                self.assertEqual(Frame.RAW, self.radiation_bundle._RadiationBundle__frame)
 
-        self.radiation_bundle._RadiationBundle__frame = Frame.COM_CORRECTED
-        self.radiation_bundle.set_frame('test')
-        self.assertEqual(Frame.COM_CORRECTED, self.radiation_bundle._RadiationBundle__frame)
+            self.radiation_bundle._RadiationBundle__frame = Frame.COM_CORRECTED
+            try:
+                self.radiation_bundle.set_frame('test')
+                self.fail()
+            except ImportError:
+                self.assertEqual(Frame.COM_CORRECTED, self.radiation_bundle._RadiationBundle__frame)
 
-        # raw
-        self.radiation_bundle.set_frame(Frame.RAW)
-        self.assertEqual(Frame.RAW, self.radiation_bundle._RadiationBundle__frame)
-        # check that it set the frame for all the spheres
-        for sphere in self.radiation_bundle.radiation_spheres.values():
-            self.assertEqual(Frame.RAW, sphere.frame)
+            # raw
+            self.radiation_bundle._RadiationBundle__frame = Frame.RAW
+            try:
+                self.radiation_bundle.set_frame(Frame.RAW)
+                self.fail()
+            except ImportError:
+                self.assertEqual(Frame.RAW, self.radiation_bundle._RadiationBundle__frame)
 
-        # com
-        self.__extrapolated_sphere = self.radiation_bundle.radiation_spheres[70]
-        self.radiation_bundle.set_frame(Frame.COM_CORRECTED)
-        self.assertEqual(Frame.COM_CORRECTED, self.radiation_bundle._RadiationBundle__frame)
-        # check that it set the frame for all the spheres
-        for sphere in self.radiation_bundle.radiation_spheres.values():
-            self.assertEqual(Frame.COM_CORRECTED, sphere.frame)
-        self.assertEqual(Frame.COM_CORRECTED, self.__extrapolated_sphere.frame)
+            # com
+            self.__extrapolated_sphere = self.radiation_bundle.radiation_spheres[70]
+            try:
+                self.radiation_bundle.set_frame(Frame.COM_CORRECTED)
+                self.fail()
+            except ImportError:
+                self.assertEqual(Frame.RAW, self.radiation_bundle._RadiationBundle__frame)
+
+        else:
+            # invalid frame
+            self.radiation_bundle.set_frame('test')
+            self.assertEqual(Frame.RAW, self.radiation_bundle._RadiationBundle__frame)
+
+            self.radiation_bundle._RadiationBundle__frame = Frame.COM_CORRECTED
+            self.radiation_bundle.set_frame('test')
+            self.assertEqual(Frame.COM_CORRECTED, self.radiation_bundle._RadiationBundle__frame)
+
+            # raw
+            self.radiation_bundle.set_frame(Frame.RAW)
+            self.assertEqual(Frame.RAW, self.radiation_bundle._RadiationBundle__frame)
+            # check that it set the frame for all the spheres
+            for sphere in self.radiation_bundle.radiation_spheres.values():
+                self.assertEqual(Frame.RAW, sphere.frame)
+
+            # com
+            self.__extrapolated_sphere = self.radiation_bundle.radiation_spheres[70]
+            self.radiation_bundle.set_frame(Frame.COM_CORRECTED)
+            self.assertEqual(Frame.COM_CORRECTED, self.radiation_bundle._RadiationBundle__frame)
+            # check that it set the frame for all the spheres
+            for sphere in self.radiation_bundle.radiation_spheres.values():
+                self.assertEqual(Frame.COM_CORRECTED, sphere.frame)
+            self.assertEqual(Frame.COM_CORRECTED, self.__extrapolated_sphere.frame)
 
     def test_radiation_spheres(self):
         self.assertTrue(

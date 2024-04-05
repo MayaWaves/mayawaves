@@ -3,12 +3,10 @@ from enum import Enum
 import h5py
 import numpy as np
 import scipy.integrate
-import scri
 from scipy.ndimage import uniform_filter1d
 from scipy.signal import butter, filtfilt
 from scipy.signal.windows import blackmanharris
 import math
-from spherical_functions import LM_index
 
 
 class Frame(Enum):
@@ -76,6 +74,10 @@ class RadiationBundle:
             center_of_mass (:obj:`numpy.ndarray`, optional): Time series of center of mass. Only necessary if moving to center of mass corrected frame.
 
         """
+        import sys
+        if sys.version_info.major == 3 and sys.version_info.minor > 10:
+            raise ImportError('Unable to change the radiation frame. Python version too recent to be compatible with Scri package. If you would like the ability to move to center-of-mass corrected frame, use python <= 3.10.')
+
         if type(new_frame) != Frame:
             warnings.warn("You must provide the frame as a Frame enum value")
             return
@@ -685,6 +687,11 @@ class RadiationSphere:
             alpha (:obj:`numpy.ndarray`, optional): Offset for center of mass correction. Only necessary if moving to center of mass corrected frame and not providing the center of mass timeseries.
             beta (:obj:`numpy.ndarray`, optional): Boost for center of mass correction. Only necessary if moving to center of mass corrected frame and not providing the center of mass timeseries.
         """
+        import sys
+        if sys.version_info.major == 3 and sys.version_info.minor > 10:
+            raise ImportError(
+                'Unable to change the radiation frame. Python version too recent to be compatible with Scri package. If you would like the ability to move to center-of-mass corrected frame, use python <= 3.10.')
+
         if type(new_frame) != Frame:
             warnings.warn('You must provide the new frame as a Frame enum')
             return
@@ -704,6 +711,11 @@ class RadiationSphere:
         if self.frame == Frame.RAW:
             return self.raw_modes
         if self.frame == Frame.COM_CORRECTED:
+            import sys
+            if sys.version_info.major == 3 and sys.version_info.minor > 10:
+                raise ImportError(
+                    'Unable to return modes in center-of-mass corrected frame. Python version too recent to be compatible with Scri package. If you would like the ability to move to center-of-mass corrected frame, use python <= 3.10.')
+
             if self.__com_corrected_modes is None:
                 self.__frame = Frame.RAW
                 self._generate_com_corrected_modes()
@@ -736,6 +748,11 @@ class RadiationSphere:
     def time(self) -> np.ndarray:
         """Time array associated with all timeseries provided by this RadiationSphere."""
         if self.frame == Frame.COM_CORRECTED:
+            import sys
+            if sys.version_info.major == 3 and sys.version_info.minor > 10:
+                raise ImportError(
+                    'Unable to return time in center-of-mass corrected frame. Python version too recent to be compatible with Scri package. If you would like the ability to move to center-of-mass corrected frame, use python <= 3.10.')
+
             return self.__com_corrected_time
         return self.__time
 
@@ -1239,11 +1256,16 @@ class RadiationSphere:
         extrapolated_sphere = RadiationSphere(mode_dict=temp_modes, time=np.array(self.__time), radius=self.radius,
                                               extrapolated=True)
         if self.frame != Frame.RAW:
+            import sys
+            if sys.version_info.major == 3 and sys.version_info.minor > 10:
+                raise ImportError(
+                    'Unable to set center-of-mass corrected frame. Python version too recent to be compatible with Scri package. If you would like the ability to move to center-of-mass corrected frame, use python <= 3.10.')
+
             extrapolated_sphere.set_frame(self.frame, alpha=self.__alpha, beta=self.__beta)
 
         return extrapolated_sphere
 
-    def _scri_waveform_modes_object(self) -> scri.WaveformModes:
+    def _scri_waveform_modes_object(self):
         """Create and return a Scri WaveformModes object containing the data for this extraction sphere.
 
         For more information on scri objects, refer to https://scri.readthedocs.io.
@@ -1251,6 +1273,11 @@ class RadiationSphere:
         Returns: A Scri WaveformModes object
 
         """
+        import sys
+        if sys.version_info.major == 3 and sys.version_info.minor > 10:
+            raise ImportError(
+                'Unable to create scri waveform modes object. Python version too recent to be compatible with Scri package. If you would like the ability to move to center-of-mass corrected frame, use python <= 3.10.')
+
         from scri import WaveformModes
         from scri import h as scri_h
         from scri import Inertial
@@ -1292,6 +1319,11 @@ class RadiationSphere:
             center_of_mass (np.ndarray): timeseries of center of mass
 
         """
+        import sys
+        if sys.version_info.major == 3 and sys.version_info.minor > 10:
+            raise ImportError(
+                'Unable to convert to center-of-mass corrected frame. Python version too recent to be compatible with Scri package. If you would like the ability to move to center-of-mass corrected frame, use python <= 3.10.')
+
         com_time = com_time + self.radius
         t_max = np.max(com_time)
         ti = 0.1 * t_max
@@ -1316,6 +1348,13 @@ class RadiationSphere:
 
         Uses scri to perform the transformation. For more information on scri, refer to https://scri.readthedocs.io.
         """
+        import sys
+        if sys.version_info.major == 3 and sys.version_info.minor > 10:
+            raise ImportError(
+                'Unable to return modes in center-of-mass corrected frame. Python version too recent to be compatible with Scri package. If you would like the ability to move to center-of-mass corrected frame, use python <= 3.10.')
+
+        from spherical_functions import LM_index
+
         scri_waveform_object = self._scri_waveform_modes_object()
         if scri_waveform_object is None:
             return
