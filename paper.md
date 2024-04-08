@@ -9,7 +9,7 @@ authors:
   - name: Deborah Ferguson
     orcid: 0000-0002-4406-591X
     corresponding: true
-    affiliation: 1
+    affiliation: 1, 2
   - name: Surendra Anne
     affiliation: 1
   - name: Miguel Gracia-Linares
@@ -39,6 +39,8 @@ authors:
 affiliations:
   - name: University of Texas at Austin, Austin TX, USA
     index: 1
+  - name: University of Illinois Urbana-Champaign, Urbana IL, USA
+    index: 2
 date: \today
 bibliography: paper.bib
 ---
@@ -113,7 +115,7 @@ This module includes functions for accessing and plotting the metadata for the e
 
 # Acknowledgements
 
-The authors thank Deirdre Shoemaker and Pablo Laguna for their support throughout the duration of this code development.
+The authors thank Deirdre Shoemaker, Pablo Laguna, and Helvi Witek for their support throughout the duration of this code development.
 The work presented in this paper was possible due to grants NASA 80NSSC21K0900, NSF 2207780 and NSF 2114582.
 This work was done by members of the Weinberg Institute and has an identifier of UTW1-33-2023.
 
