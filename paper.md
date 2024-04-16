@@ -56,7 +56,7 @@ Extracting these signals from noise and using them to infer the parameters of co
 While analytic solutions exist for the simplest cases within GR, e.g. single BHs, merging BBHs have no analytic solution.
 Approximate methods can be used when the BHs are far apart or have highly unequal masses, but the coalescence of BHs of comparable mass must be solved computationally.
 Numerical relativity (NR) simulations accomplish this by evolving a BBH space-time on supercomputers, enabling us to study the dymanics of BBH systems as well as predict the GWs they emit.
-The Einstein Toolkit (ETK) is a set of tools created to perform these NR simulations [@Loffler:2011ay], and `MAYA` is a branch of ETK used by the MAYA collaboration [@Herrmann_2007; @Jani:2016wkt; @Vaishnav:2007nm; @Healy:2009zm; @Pekowsky:2013ska].
+The Einstein Toolkit (ETK) is a set of tools created to perform these NR simulations [@Loffler:2011ay], and `MAYA` is a branch of ETK used by the MAYA collaboration [@Herrmann_2007; @Jani:2016wkt; @Vaishnav:2007nm; @Healy:2009zm; @Pekowsky:2013ska; @Ferguson:2023vta].
 The Einstein Toolkit is a finite-differencing code, evolved using the BSSN formulation [@Baumgarte:1998te; @PhysRevD.52.5428].
 It is built upon the Cactus infrastructure [@Goodale2002a] with Carpet mesh refinement [@Schnetter:2003rb].
 
@@ -105,10 +105,10 @@ All radiative information is stored within the `RadiationBundle` class.
 Each `Coalescence` object contains a `RadiationBundle` and uses it to compute gravitational wave strain, energy radiated, etc.
 
 A number of utility modules are included to create effortless workflows that can move from raw simulations to community standard formats.
-A typical workflow would involve using the `PostProcessingUtils` functions to create the h5 file from the raw simulation data, using the `Coalescence` class to read that h5 file and analyze the simulation, and finally exporting the `Coalescence` object to another format such as that required by the LVK catalog [@Schmidt:2017btt].
+A typical workflow would be to use the `PostProcessingUtils` functions to create the h5 file from the raw simulation data, use the `Coalescence` class to read that h5 file and analyze the simulation, and finally export the `Coalescence` object to another format such as that required by the LVK catalog [@Schmidt:2017btt].
 
-`Mayawaves` is also the primary way to interact with the MAYA Public Catalog of NR waveforms hosted at https://cgp.ph.utexas.edu/waveform.
-The simulations are stored in the `Mayawaves` h5 file structure, and can be read using the `Coalescence` class.
+`Mayawaves` is also the primary way to interact with the MAYA Public Catalog of NR waveforms [@Ferguson:2023vta] hosted at https://cgp.ph.utexas.edu/waveform.
+The simulations are stored in the `Mayawaves` h5 file format, and can be read using the `Coalescence` class.
 `Mayawaves` has a `CatalogUtils` module for interacting with the MAYA waveform catalog.
 This module includes functions for accessing and plotting the metadata for the entire catalog as well as functions to download simulations from the catalog.
 
