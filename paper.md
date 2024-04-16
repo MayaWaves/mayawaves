@@ -50,13 +50,13 @@ bibliography: paper.bib
 
 Einstein's Theory of General Relativity (GR) dictates how matter responds to the curvature of space-time and how space-time curves due to matter.
 From GR came the prediction that orbiting massive objects would create ripples in space-time called gravitational waves (GW).
-In 2015, the Laser Interferometer Gravitational-Wave Observatory (LIGO) [@LIGOScientific:2014pky] detected the first such GW signal from merging binary black holes (BBHs) [@LIGOScientific:2016aoc], and in the years since, the LIGO, Virgo, and KAGRA Collaborations (LVK) have accumulated 90 detections of merging compact objects [@VIRGO:2014yos; @KAGRA:2020cvd; @LIGOScientific:2018mvr; @LIGOScientific:2020ibl; @LIGOScientific:2021djp].
-Extracting these signals from noise and using them to infer the parameters of coalescing black holes (BHs) relies upon having vast template banks that accurately predict the expected GWs [@LIGOScientific:2017vwq; @LIGOScientific:2020aai; @Shibata:2017xdx; @Hannam:2013oca; @Bohe:2016gbl; @Khan:2015jqa; @Blackman:2017pcm; @Husa:2015iqa; @LIGOScientific:2016fbo; @Lange:2017wki; @Schmidt:2017btt].
+In 2015, the Laser Interferometer Gravitational-Wave Observatory (LIGO) [@LIGOScientific:2014pky] detected the first such GW signal from merging binary black holes (BBHs) [@LIGOScientific:2016aoc], and in the years since, the LIGO, Virgo, and KAGRA Collaborations (LVK) have accumulated 90 detections of merging compact objects [@Acernese_2014; @kagracollaboration2020overview; @LIGOScientific:2018mvr; @LIGOScientific:2020ibl; @LIGOScientific:2021djp].
+Extracting these signals from noise and using them to infer the parameters of coalescing black holes (BHs) relies upon having vast template banks that accurately predict the expected GWs [@LIGOScientific:2017vwq; @LIGOScientific:2020aai; @Shibata:2017xdx; @Hannam:2013oca; @Boh__2017; @Khan:2015jqa; @Blackman:2017pcm; @Husa:2015iqa; @LIGOScientific:2016fbo; @Lange_2017; @Schmidt:2017btt].
 
 While analytic solutions exist for the simplest cases within GR, e.g. single BHs, merging BBHs have no analytic solution.
 Approximate methods can be used when the BHs are far apart or have highly unequal masses, but the coalescence of BHs of comparable mass must be solved computationally.
 Numerical relativity (NR) simulations accomplish this by evolving a BBH space-time on supercomputers, enabling us to study the dymanics of BBH systems as well as predict the GWs they emit.
-The Einstein Toolkit (ETK) is a set of tools created to perform these NR simulations [@Loffler:2011ay], and `MAYA` is a branch of ETK used by the MAYA collaboration [@Herrmann_2007; @Jani:2016wkt; @Vaishnav:2007nm; @Healy:2009zm; @Pekowsky:2013ska; @Ferguson:2023vta].
+The Einstein Toolkit (ETK) is a set of tools created to perform these NR simulations [@L_ffler_2012], and `MAYA` is a branch of ETK used by the MAYA collaboration [@Herrmann_2007; @Jani:2016wkt; @Vaishnav:2007nm; @Healy:2009zm; @Pekowsky:2013ska; @ferguson2023second].
 The Einstein Toolkit is a finite-differencing code, evolved using the BSSN formulation [@Baumgarte:1998te; @PhysRevD.52.5428].
 It is built upon the Cactus infrastructure [@Goodale2002a] with Carpet mesh refinement [@Schnetter:2003rb].
 
@@ -107,10 +107,12 @@ Each `Coalescence` object contains a `RadiationBundle` and uses it to compute gr
 A number of utility modules are included to create effortless workflows that can move from raw simulations to community standard formats.
 A typical workflow would be to use the `PostProcessingUtils` functions to create the h5 file from the raw simulation data, use the `Coalescence` class to read that h5 file and analyze the simulation, and finally export the `Coalescence` object to another format such as that required by the LVK catalog [@Schmidt:2017btt].
 
-`Mayawaves` is also the primary way to interact with the MAYA Public Catalog of NR waveforms [@Ferguson:2023vta] hosted at https://cgp.ph.utexas.edu/waveform.
+`Mayawaves` is also the primary way to interact with the MAYA Public Catalog of NR waveforms [@ferguson2023second] hosted at https://cgp.ph.utexas.edu/waveform.
 The simulations are stored in the `Mayawaves` h5 file format, and can be read using the `Coalescence` class.
 `Mayawaves` has a `CatalogUtils` module for interacting with the MAYA waveform catalog.
 This module includes functions for accessing and plotting the metadata for the entire catalog as well as functions to download simulations from the catalog.
+
+Several papers have already been released using the `Mayawaves` library for their analysis including the Second MAYA Catalog of NR Waveforms [@ferguson2023second], a study of the impact of NR errors on gravitational-wave parameter estimation [@Jan:2023raq], and a study of the impact of neutron star compactness when a neutron star merges with a black hole [@tsao2024black].
 
 `Mayawaves` is open source and is designed to be easily extensible, and we look forward to additional contributions from the ETK community.
 
