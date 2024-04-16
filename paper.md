@@ -76,7 +76,7 @@ While other tools exist to analyze ETK simulations including, but not limited to
 `Mayawaves` builds upon the existing set of tools, creating a new python library designed for convenience and intuition, while still being versatile and powerful enough to perform more complex analyses.
 It interacts effortlessly with the `MAYA` waveform catalog and also easily exports ETK simulations to the LVK catalog of NR waveforms.
 One of the ways in which `Mayawaves` has uniquely improved the NR analysis infrastructure is that it stitches together raw NR simulations and stores them in h5 files, a format that handles numerical data more efficiently than ascii. 
-This significantly reduces the disc space taken by the simulation while still retaining the precision of the raw data.
+This significantly reduces the disc space taken by simulations while still retaining the precision of the raw data.
 It also keeps all the data organized in one place, making it easier to share and distribute simulations.
 The architecture of `Mayawaves` is easily extensible, designed to naturally grow to encompass more types of simulation output.
 
