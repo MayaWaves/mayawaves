@@ -7,6 +7,7 @@ from shutil import copy2
 import os
 from unittest import mock
 from mayawaves.radiation import RadiationSphere, RadiationMode, RadiationBundle
+import shutil
 
 
 class TestCoalescence(TestCase):
@@ -20,6 +21,11 @@ class TestCoalescence(TestCase):
         TestCoalescence.simulation_name = "D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"
         TestCoalescence.h5_file = os.path.join(TestCoalescence.CURR_DIR,
                                                "resources/temp/%s.h5") % TestCoalescence.simulation_name
+
+        if os.path.exists(TestCoalescence.h5_file):
+            os.remove(TestCoalescence.h5_file)
+        if os.path.exists(os.path.join(TestCoalescence.CURR_DIR, "resources/temp")):
+            shutil.rmtree(os.path.join(TestCoalescence.CURR_DIR, "resources/temp"))
 
         h5_file_original = os.path.join(TestCoalescence.CURR_DIR, "resources/%s.h5") % TestCoalescence.simulation_name
         os.mkdir(os.path.join(TestCoalescence.CURR_DIR, "resources/temp"))
@@ -35,7 +41,7 @@ class TestCoalescence(TestCase):
         if os.path.exists(TestCoalescence.h5_file):
             os.remove(TestCoalescence.h5_file)
         if os.path.exists(os.path.join(TestCoalescence.CURR_DIR, "resources/temp")):
-            os.rmdir(os.path.join(TestCoalescence.CURR_DIR, "resources/temp"))
+            shutil.rmtree(os.path.join(TestCoalescence.CURR_DIR, "resources/temp"))
 
     def test_name(self):
         self.assertEqual(TestCoalescence.simulation_name, TestCoalescence.coalescence.name)
@@ -1080,10 +1086,10 @@ class TestCoalescence(TestCase):
                                                                                 usecols=(0, 1, 2), unpack=True)
 
         expected_psi4_real = np.gradient(np.gradient(expected_strain_plus) / np.gradient(expected_time)) / np.gradient(
-            expected_time)
+            expected_time) / 75
         expected_psi4_imag = -1 * np.gradient(
             np.gradient(expected_strain_cross) / np.gradient(expected_time)) / np.gradient(
-            expected_time)
+            expected_time) /75
 
         self.assertTrue(np.all(np.isclose(expected_psi4_real, psi4_real_extrap, atol=2e-3)))
         self.assertTrue(np.all(np.isclose(expected_psi4_imag, psi4_imag_extrap, atol=2e-3)))
@@ -1209,6 +1215,13 @@ class TestCoalescence(TestCase):
 
         expected_strain_time, expected_strain_plus, expected_strain_cross = np.loadtxt(strain_data_filepath,
                                                                                        usecols=(0, 1, 2), unpack=True)
+
+        # crop the beginning since the matlab version windows the beginning
+        cut_index = np.argmax(time > 200)
+        strain_l2_m2_r75_plus = strain_l2_m2_r75_plus[cut_index:]
+        strain_l2_m2_r75_cross = strain_l2_m2_r75_cross[cut_index:]
+        expected_strain_plus = expected_strain_plus[cut_index:]
+        expected_strain_cross = expected_strain_cross[cut_index:]
 
         self.assertTrue(np.all(np.isclose(expected_strain_time, time, atol=1e-4)))
         self.assertTrue(np.all(np.isclose(expected_strain_plus, strain_l2_m2_r75_plus, atol=2e-3)))

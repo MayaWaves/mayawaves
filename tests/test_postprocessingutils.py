@@ -74,9 +74,6 @@ class TestPostprocessingUtils(TestCase):
             os.remove(os.path.join(TestPostprocessingUtils.CURR_DIR,
                                    "resources/main_test_simulation/stitched/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.par"))
 
-        if os.path.exists(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5")):
-            os.remove(os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5"))
-
     def test__simulation_name(self):
         from mayawaves.utils.postprocessingutils import _simulation_name
         expected = "D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"

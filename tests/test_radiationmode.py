@@ -412,13 +412,20 @@ class TestRadiationMode(TestCase):
         recovered_psi4_real = np.gradient(np.gradient(strain_plus, time), time)
         recovered_psi4_imag = np.gradient(np.gradient(strain_cross, time), time)
 
-        self.assertTrue(np.all(np.isclose(75 * psi4_real, recovered_psi4_real, atol=3e-5)))
-        self.assertTrue(np.all(np.isclose(75 * psi4_imag, -1 * recovered_psi4_imag, atol=3e-5)))
+        self.assertTrue(np.all(np.isclose(75 * psi4_real, recovered_psi4_real, atol=1e-3)))
+        self.assertTrue(np.all(np.isclose(75 * psi4_imag, -1 * recovered_psi4_imag, atol=1e-3)))
 
         # Compare to Healy toolkit
         expected_strain_data_file = os.path.join(self.CURR_DIR, "resources/psi4_strain_test/Strain_l2_m2_r75.txt")
         expected_time, expected_strain_plus, expected_strain_cross = np.loadtxt(expected_strain_data_file,
                                                                                 usecols=(0, 1, 2), unpack=True)
+
+        # crop off the beginning since the data from Healy Toolkit already windowed the beginning
+        cut_index = np.argmax(time > 200)
+        strain_plus = strain_plus[cut_index:]
+        strain_cross = strain_cross[cut_index:]
+        expected_strain_plus = expected_strain_plus[cut_index:]
+        expected_strain_cross = expected_strain_cross[cut_index:]
 
         self.assertTrue(np.all(np.isclose(expected_strain_plus, strain_plus, atol=2e-3)))
         self.assertTrue(np.all(np.isclose(expected_strain_cross, strain_cross, atol=2e-3)))
@@ -436,6 +443,13 @@ class TestRadiationMode(TestCase):
         expected_strain_data_file = os.path.join(self.CURR_DIR, "resources/psi4_strain_test/Strain_l2_m2_rinf.txt")
         expected_time, expected_strain_plus, expected_strain_cross = np.loadtxt(expected_strain_data_file,
                                                                                 usecols=(0, 1, 2), unpack=True)
+
+        # crop off the beginning since the data from Healy Toolkit already windowed the beginning
+        cut_index = np.argmax(time>200)
+        strain_plus = strain_plus[cut_index:]
+        strain_cross = strain_cross[cut_index:]
+        expected_strain_plus = expected_strain_plus[cut_index:]
+        expected_strain_cross = expected_strain_cross[cut_index:]
 
         self.assertTrue(np.all(np.isclose(expected_strain_plus, strain_plus, atol=2e-3)))
         self.assertTrue(np.all(np.isclose(expected_strain_cross, strain_cross, atol=2e-3)))

@@ -1042,7 +1042,7 @@ class TestRadiationBundle(TestCase):
                         expected_extrapolated_sphere == self.radiation_bundle._RadiationBundle__extrapolated_sphere)
                     mock_radiation_spheres.assert_called_once()
                     mock_radius_for_extrapolation.assert_called_once()
-                    mock_extrapolated_sphere.assert_called_once_with(order=1)
+                    mock_extrapolated_sphere.assert_called_once_with(order=2)
 
         # arguments provided
         expected_extrapolated_sphere = RadiationSphere(mode_dict={}, time=np.array([]), radius=0, extrapolated=True)
@@ -1052,9 +1052,9 @@ class TestRadiationBundle(TestCase):
                               return_value=70) as mock_radius_for_extrapolation:
                 with patch.object(RadiationSphere, 'get_extrapolated_sphere',
                                   return_value=expected_extrapolated_sphere) as mock_extrapolated_sphere:
-                    self.radiation_bundle.create_extrapolated_sphere(order=2)
+                    self.radiation_bundle.create_extrapolated_sphere(order=1)
                     self.assertTrue(
                         expected_extrapolated_sphere == self.radiation_bundle._RadiationBundle__extrapolated_sphere)
                     mock_radiation_spheres.asssert_called_once()
                     mock_radius_for_extrapolation.assert_called_once()
-                    mock_extrapolated_sphere.assert_called_once_with(order=2)
+                    mock_extrapolated_sphere.assert_called_once_with(order=1)

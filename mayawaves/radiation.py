@@ -591,7 +591,7 @@ class RadiationBundle:
 
         return time, linear_momentum_radiated
 
-    def create_extrapolated_sphere(self, order: int = 1):
+    def create_extrapolated_sphere(self, order: int = 2):
         """Create a RadiationSphere object extrapolated from the RadiationSphere at the provided radius for
         extrapolation.
 
@@ -600,7 +600,7 @@ class RadiationBundle:
         the extrapolation method described in https://arxiv.org/abs/1008.4360 and https://arxiv.org/abs/1108.4421.
 
         Args:
-            order (:obj:`int`, optional): the extrapolation order. Defaults to 1.
+            order (:obj:`int`, optional): the extrapolation order. Defaults to 2.
 
         """
         radiation_sphere = self.radiation_spheres[self.radius_for_extrapolation]
@@ -1761,12 +1761,8 @@ class RadiationMode:
         ht_plus = np.fft.irfft(hf_plus, length)
         ht_cross = np.fft.irfft(hf_cross, length)
 
-        if self.extrapolated:
-            strain_plus = ht_plus
-            strain_cross = ht_cross
-        else:
-            strain_plus = ht_plus * self.radius
-            strain_cross = ht_cross * self.radius
+        strain_plus = ht_plus * self.radius
+        strain_cross = ht_cross * self.radius
 
         # window strain
         window_length_in_time = 30
@@ -1812,7 +1808,7 @@ class RadiationMode:
         self.__strain_plus = strain_plus
         self.__strain_cross = strain_cross
 
-    def get_mode_with_extrapolated_radius(self, order: int = 1):
+    def get_mode_with_extrapolated_radius(self, order: int = 2):
         """RadiationMode object extrapolated from this RadiationMode to infinite radius.
 
         Extrapolate the :math:`\Psi_4` of this RadiationMode to infinite radius and create and return a new
@@ -1820,7 +1816,7 @@ class RadiationMode:
         https://arxiv.org/abs/1008.4360 and https://arxiv.org/abs/1108.4421.
 
         Args:
-            order (:obj:`int`, optional): the extrapolation order. Defaults to 1.
+            order (:obj:`int`, optional): the extrapolation order. Defaults to 2.
 
         Returns:
             RadiationMode: A RadiationMode with the same properties as this one but with :math:`\Psi_4` extrapolated to
@@ -1832,11 +1828,11 @@ class RadiationMode:
 
         M_adm = 1
 
-        # multiple psi4 by radius
+        # multiply psi4 by radius
         psi4_real_times_radius = self.psi4_real * self.radius
         psi4_imaginary_times_radius = self.psi4_imaginary * self.radius
 
-        factor = 1
+        factor = 1 - 2*M_adm/self.radius
 
         psi4_complex = psi4_real_times_radius + 1j * psi4_imaginary_times_radius
         if self.strain_plus is None or self.strain_cross is None:
@@ -1846,18 +1842,17 @@ class RadiationMode:
         strain_complex = self.strain_plus - 1j * self.strain_cross
         hdot_complex = self.h_plus_dot - 1j * self.h_cross_dot
 
-        psi4_inf = self.radius * psi4_complex - (self.l_value - 1) * (self.l_value + 2) / (2 * self.radius) * np.conj(
-            hdot_complex)
+        psi4_inf = psi4_complex - (self.l_value - 1) * (self.l_value + 2) / (2 * self.radius) * hdot_complex
 
         if order == 2:
             psi4_inf = psi4_inf + (self.l_value - 1) * (self.l_value + 2) * (self.l_value ** 2 + self.l_value - 4) / (
-                    8 * self.radius ** 2) * np.conj(strain_complex) - 3 * M_adm / (
-                               2 * self.radius ** 2) * np.conj(hdot_complex)
+                   8 * self.radius ** 2) * strain_complex - 3 * M_adm / (
+                              2 * self.radius ** 2) * hdot_complex
 
         psi4_inf = factor * psi4_inf
 
-        psi4_inf_real = psi4_inf.real / self.radius
-        psi4_inf_imaginary = psi4_inf.imag / self.radius
+        psi4_inf_real = psi4_inf.real/self.radius
+        psi4_inf_imaginary = psi4_inf.imag/self.radius
 
         return RadiationMode(psi4_real=psi4_inf_real, psi4_imaginary=psi4_inf_imaginary, l=self.l_value, m=self.m_value,
                              rad=self.radius, time=np.array(self.time), extrapolated=True)
