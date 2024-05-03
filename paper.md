@@ -72,7 +72,7 @@ Sifting through all this data can be overwhelming for newcomers to the field and
 While it can be important to develop an understanding of these files and their complexities, in many situations, a simpler, more streamlined workflow is beneficial.
 
 `Mayawaves` is an open-source python library for processing, studying, and exporting NR simulations performed using ETK and `MAYA`.
-While other tools exist to analyze ETK simulations including, but not limited to, Kuibit [@Bozzola_kuibit_2021], Power [@Johnson], PyCactus [@2021ascl.soft07017K], and SimulationTools [@Hinder], `Mayawaves` is unique in the way it not only streamlines simulation analysis but also the production of NR catalogs.
+While other tools exist to analyze ETK simulations including, but not limited to, Kuibit [@Bozzola_kuibit_2021], POWER [@Johnson_2018], PyCactus [@2021ascl.soft07017K], and SimulationTools [@Hinder], `Mayawaves` is unique in the way it not only streamlines simulation analysis but also the production of NR catalogs.
 `Mayawaves` builds upon the existing set of tools, creating a new python library designed for convenience and intuition, while still being versatile and powerful enough to perform more complex analyses.
 It interacts effortlessly with the `MAYA` waveform catalog and also easily exports ETK simulations to the LVK catalog of NR waveforms.
 The architecture of `Mayawaves` is easily extensible, designed to naturally grow to encompass more types of simulation output.
