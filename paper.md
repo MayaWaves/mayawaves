@@ -55,7 +55,7 @@ Extracting these signals from noise and using them to infer the parameters of co
 
 While analytic solutions exist for the simplest cases within GR, e.g. single BHs, merging BBHs have no analytic solution.
 Approximate methods can be used when the BHs are far apart or have highly unequal masses, but the coalescence of BHs of comparable mass must be solved computationally.
-Numerical relativity (NR) simulations accomplish this by evolving a BBH space-time on supercomputers, enabling us to study the dymanics of BBH systems as well as predict the GWs they emit.
+Numerical relativity (NR) simulations accomplish this by evolving a BBH space-time on supercomputers, enabling us to study the dynamics of BBH systems as well as predict the GWs they emit.
 The Einstein Toolkit (ETK) is a set of tools created to perform these NR simulations [@L_ffler_2012], and `MAYA` is a branch of ETK used by the MAYA collaboration [@Herrmann_2007; @Jani:2016wkt; @Vaishnav:2007nm; @Healy:2009zm; @Pekowsky:2013ska; @ferguson2023second].
 The Einstein Toolkit is a finite-differencing code, evolved using the BSSN formulation [@Baumgarte:1998te; @PhysRevD.52.5428].
 It is built upon the Cactus infrastructure [@Goodale2002a] with Carpet mesh refinement [@Schnetter:2003rb].
@@ -71,12 +71,12 @@ Additionally, given the complexity of these simulations, they are typically perf
 Sifting through all this data can be overwhelming for newcomers to the field and is cumbersome for even the most experienced numerical relativists.
 While it can be important to develop an understanding of these files and their complexities, in many situations, a simpler, more streamlined workflow is beneficial.
 
-`Mayawaves` is an open-source python library for processing, studying, and exporting NR simulations performed using ETK and `MAYA`.
+`Mayawaves` is an open-source Python library for processing, studying, and exporting NR simulations performed using ETK and `MAYA`.
 While other tools exist to analyze ETK simulations including, but not limited to, Kuibit [@Bozzola_kuibit_2021], POWER [@Johnson_2018], PyCactus [@2021ascl.soft07017K], and SimulationTools [@Hinder], `Mayawaves` is unique in the way it not only streamlines simulation analysis but also the production of NR catalogs.
-`Mayawaves` builds upon the existing set of tools, creating a new python library designed for convenience and intuition, while still being versatile and powerful enough to perform more complex analyses.
+`Mayawaves` builds upon the existing set of tools, creating a new Python library designed for convenience and intuition, while still being versatile and powerful enough to perform more complex analyses.
 It interacts effortlessly with the `MAYA` waveform catalog and also easily exports ETK simulations to the LVK catalog of NR waveforms.
 The architecture of `Mayawaves` is easily extensible, designed to naturally grow to encompass more types of simulation output.
-One of the ways in which `Mayawaves` has uniquely improved the NR analysis infrastructure is that it stitches together raw NR simulations and stores them in h5 files, a format that handles numerical data more efficiently than ascii. 
+One of the ways in which `Mayawaves` has uniquely improved the NR analysis infrastructure is that it stitches together raw NR simulations and stores them in HDF5 files, a format that handles numerical data more efficiently than ASCII. 
 This significantly reduces the disc space taken by simulations while still retaining the precision of the raw data.
 By preprocessing the simulations into this format, the library also reduces computational time for future analysis, as the data only has to be stitched once.
 It also keeps all the data organized in one place, making it easier to share and distribute simulations.
@@ -85,34 +85,34 @@ When using the library to interact with a simulation, the  user does not need to
 This dramatically reduces the barrier to entry for the field of NR.
 Some of the key functionalities of this library are as follows:
 
-* read and stitch raw numerical relativity data
-* store numerical relativity data in a more efficient format
-* track properties of the black holes (trajectories, spins, masses, horizon information, etc.)
+* read and stitch raw NR data
+* store NR data in a more efficient format
+* track properties of the BHs (trajectories, spins, masses, horizon information, etc.)
 * compute information about the binary orbit (eccentricity, separation, orbital frequency, kick, etc.)
 * compute quantities pertaining to the gravitational radiation ($\Psi_4$, strain, extrapolated strain, energy radiated, etc.)
-* export numerical relativity data to the format required for LIGO analyses
+* export NR data to the format required for LIGO analyses
 * analyze the MAYA waveform catalog
 
 
 The `Coalescence` class is the fundamental basis for `Mayawaves`.
 It represents the entirety of the BBH coalescence and serves as the interface between the user and the simulation data.
-The main data format used with `mayawaves` is an h5 file constructed from the raw simulation data.
-With this h5 file in hand, the user need only create a `Coalescence` object and then proceed with analyzing the data.
+The main data format used with `mayawaves` is an HDF5 file constructed from the raw simulation data.
+With this HDF5 file in hand, the user need only create a `Coalescence` object and then proceed with analyzing the data.
 
 Each `Coalescence` object contains `CompactObjects` associated with each of the merging bodies as well as any remnant object.
 Through these `CompactObjects`, the user can track the objects' positions, spins, masses, etc.
 All radiative information is stored within the `RadiationBundle` class.
-Each `Coalescence` object contains a `RadiationBundle` and uses it to compute gravitational wave strain, energy radiated, etc.
+Each `Coalescence` object contains a `RadiationBundle` and uses it to compute GW strain, energy radiated, etc.
 
 A number of utility modules are included to create effortless workflows that can move from raw simulations to community standard formats.
-A typical workflow would be to use the `PostProcessingUtils` functions to create the h5 file from the raw simulation data, use the `Coalescence` class to read that h5 file and analyze the simulation, and finally export the `Coalescence` object to another format such as that required by the LVK catalog [@Schmidt:2017btt].
+A typical workflow would be to use the `PostProcessingUtils` functions to create the HDF5 file from the raw simulation data, use the `Coalescence` class to read that HDF5 file and analyze the simulation, and finally export the `Coalescence` object to another format such as that required by the LVK catalog [@Schmidt:2017btt].
 
 `Mayawaves` is also the primary way to interact with the MAYA Public Catalog of NR waveforms [@ferguson2023second] hosted at https://cgp.ph.utexas.edu/waveform.
-The simulations are stored in the `Mayawaves` h5 file format, and can be read using the `Coalescence` class.
+The simulations are stored in the `Mayawaves` HDF5 file format, and can be read using the `Coalescence` class.
 `Mayawaves` has a `CatalogUtils` module for interacting with the MAYA waveform catalog.
 This module includes functions for accessing and plotting the metadata for the entire catalog as well as functions to download simulations from the catalog.
 
-Several papers have already been released using the `Mayawaves` library for their analysis including the Second MAYA Catalog of NR Waveforms [@ferguson2023second], a study of the impact of NR errors on gravitational-wave parameter estimation [@Jan:2023raq], and a study of the impact of neutron star compactness when a neutron star merges with a black hole [@tsao2024black].
+Several papers have already been released using the `Mayawaves` library for their analysis including the Second MAYA Catalog of NR Waveforms [@ferguson2023second], a study of the impact of NR errors on GW parameter estimation [@Jan:2023raq], and a study of the impact of neutron star compactness when a neutron star merges with a BH [@tsao2024black].
 
 `Mayawaves` is open source and is designed to be easily extensible, and we look forward to additional contributions from the ETK community.
 
