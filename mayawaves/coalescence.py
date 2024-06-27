@@ -7,6 +7,7 @@ from mayawaves.compactobject import CompactObject
 from mayawaves.radiation import RadiationBundle
 from mayawaves.utils import postnewtonianutils as pn
 import pandas as pd
+import re
 
 class Coalescence:
     """Fundamental class for interacting with all data about a simulation of a compact object coalescence."""
@@ -53,6 +54,7 @@ class Coalescence:
 
         if 'radiative' in self.__h5_file:
             self.__radiation_mode_bundle = RadiationBundle.create_radiation_bundle(self.__h5_file["radiative"])
+            self._set_default_radius_for_extrapolation()
 
     @property
     def name(self) -> str:
@@ -370,10 +372,12 @@ class Coalescence:
     @property
     def radius_for_extrapolation(self):
         """Radius to use when extrapolating data to infinite radius."""
+        if self.radiationbundle.radius_for_extrapolation is None:
+            self._set_default_radius_for_extrapolation()
         return self.radiationbundle.radius_for_extrapolation
 
     @radius_for_extrapolation.setter
-    def radius_for_extrapolation(self, extraction_radius: float):
+    def set_radius_for_extrapolation(self, extraction_radius: float):
         """Set the extraction radius to use when extrapolating to infinite radius
 
         Args:
@@ -383,6 +387,119 @@ class Coalescence:
         """
         self.radiationbundle.radius_for_extrapolation = extraction_radius
 
+    def _set_default_radius_for_extrapolation(self):
+        included_radii = np.array(sorted(self.included_extraction_radii))
+
+        # for initial separation of 6.2, a radius of 75 was good. Scale accordingly for first guess.
+        initial_separation = self.initial_separation
+        radius_guess = 75*(initial_separation/6.2)
+        # first radius larger than or within 2M of radius_guess
+        radius_index = np.argmax(included_radii >= radius_guess)
+        if abs(radius_guess - included_radii[radius_index - 1]) < 2:
+            radius = included_radii[radius_index-1]
+        else:
+            radius = included_radii[radius_index]
+
+        # check the resolution of the grid at that radius
+        # if dx>???? at that radius, throw an error
+        dx_cutoff = 2
+
+        grid_structure_dict = self.grid_structure
+        if grid_structure_dict is None:
+            warnings.warn("Unable to find a good default extraction radius for extrapolation. Please set one manually with set_radius_for_extrapolation.")
+            return
+
+        dx = None
+        # find grid centered at 0
+        for grid_num in grid_structure_dict["grids"].keys():
+            grid = grid_structure_dict["grids"][grid_num]
+            if grid["center"] != [0, 0, 0]:
+                continue
+            # find dx for radius
+            levels = sorted(list(grid["levels"].keys()), reverse=True)
+            for level in levels:
+                if grid["levels"][level]["radius"] > radius:
+                    dx = grid["levels"][level]["dx"]
+                    break
+        if dx is None:
+            warnings.warn("Unable to find a good default extraction radius for extrapolation. Please set one manually with set_radius_for_extrapolation.")
+            return
+
+        if dx>dx_cutoff:
+            warnings.warn(f"The grid spacing at r={radius}, the recommended extraction radius for extrapolation based on the separation, is dx={dx} which is too large (>2). Unable to find a good default extraction radius for extrapolation. Please set one manually with set_radius_for_extrapolation.")
+            return
+
+        self.radiationbundle.radius_for_extrapolation = radius
+
+    @property
+    def grid_structure(self):
+        parameter_files = self.parameter_files
+        if 'par' in parameter_files:
+            parameter_file = parameter_files['par']
+            grid_structure = {}
+            result = re.search('(?:CarpetRegrid2::num_centres|RegridBoxes::number_of_centres)\s*=\s*(\d+)\s*\n', parameter_file)
+            if result is None:
+                return None
+            num_centers = int(result.group(1))
+
+            result = re.search(f'CoordBase::dx\s*=\s*([-+]?\d+(\.\d+)?)\s*\n', parameter_file)
+            if result is None:
+                return None
+            largest_dx = float(result.group(1))
+
+            # zeroth level is separate
+            grid_structure['largest_grid'] = {}
+            result = re.search(f'CoordBase::xmax\s*=\s*([-+]?\d+(\.\d+)?)\s*\n', parameter_file)
+            if result is None:
+                return None
+            radius = float(result.group(1))
+            grid_structure['largest_grid']['radius'] = radius
+            grid_structure['largest_grid']['dx'] = largest_dx
+
+            grid_structure["grids"] = {}
+            
+            for i in range(1,num_centers+1):
+                grid_structure["grids"][i] = {}
+                result = re.search(f'(?:CarpetRegrid2::position_x_{i}|RegridBoxes::centre_x\s*\[{i-1}\])\s*=\s*([-+]?\d+(\.\d+)?)\s*\n', parameter_file)
+                if result is None:
+                    center_x = 0
+                else:
+                    center_x = float(result.group(1))
+                result = re.search(f'(?:CarpetRegrid2::position_y_{i}|RegridBoxes::centre_y\s*\[{i-1}\])\s*=\s*([-+]?\d+(\.\d+)?)\s*\n', parameter_file)
+                if result is None:
+                    center_y = 0
+                else:
+                    center_y = float(result.group(1))
+                result = re.search(f'(?:CarpetRegrid2::position_z_{i}|RegridBoxes::centre_z\s*\[{i-1}\])\s*=\s*([-+]?\d+(\.\d+)?)\s*\n', parameter_file)
+                if result is None:
+                    center_z = 0
+                else:
+                    center_z = float(result.group(1))
+                grid_structure["grids"][i]['center'] = [center_x, center_y, center_z]
+                
+                result = re.search(f'(?:CarpetRegrid2::num_levels_{i}|RegridBoxes::refinement_levels\s*\[{i-1}\])\s*=\s*(\d+)\s*\n', parameter_file)
+                if result is None:
+                    return None
+                num_levels = int(result.group(1))
+
+                grid_structure["grids"][i]["levels"] = {}
+                # the rest of the levels
+                for level in range(1, num_levels):
+                    result = re.search(f'(?:CarpetRegrid2::radius_{i}|RegridBoxes::centre_{i-1}_radius)\s*\[{level}\]\s*=\s*([-+]?\d+(\.\d+)?)\s*\n', parameter_file)
+                    if result is None:
+                        continue
+                    grid_structure["grids"][i]["levels"][level] = {}
+                    radius = float(result.group(1))
+                    grid_structure["grids"][i]["levels"][level]['radius'] = radius
+                    grid_structure["grids"][i]["levels"][level]['dx'] = largest_dx/(2**level)
+            return grid_structure
+        else:
+            return None
+        
+        
+    def reset_radius_for_extrapolation(self):
+        self._set_default_radius_for_extrapolation()
+        
     def recoil_velocity(self, km_per_sec: bool = False) -> np.ndarray:
         """Kick vector of the final object
 
