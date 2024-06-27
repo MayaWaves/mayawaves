@@ -2402,7 +2402,7 @@ def _store_compact_object_timeseries_data(coalescence: Coalescence, lal_h5_file:
 
 def _store_lal_metadata(coalescence: Coalescence, lal_h5_file, name: str, alternative_names: list,
                         initial_time_horizon: float, omega_22_nr: float, lvc_format: int, NR_group: str, NR_code: str,
-                        bibtex_keys: str, contact_email: str, license_type: str = 'LVC-internal', nr_techniques: str = None,
+                        bibtex_keys: str, contact_email: str, lmax: int, license_type: str = 'LVC-internal', nr_techniques: str = None,
                         comparable_simulation: str = None, files_in_error_series: str = '', production_run: bool = True):
     """Store the metadata in the provided h5 file.
 
@@ -2441,7 +2441,7 @@ def _store_lal_metadata(coalescence: Coalescence, lal_h5_file, name: str, altern
     lal_h5_file.attrs["simulation-type"] = coalescence.spin_configuration
     lal_h5_file.attrs["INSPIRE-bibtex-keys"] = bibtex_keys
     lal_h5_file.attrs["license"] = license_type
-    lal_h5_file.attrs["Lmax"] = coalescence.l_max
+    lal_h5_file.attrs["Lmax"] = lmax
     if nr_techniques is None:
         nr_techniques = 'Puncture-ID, BSSN, Psi4-integrated, Extrapolated-Waveform, ApproxKillingVector-Spin, ' \
                         'Christodoulou-Mass'
@@ -2643,7 +2643,7 @@ def _put_data_in_lal_compatible_format(coalescence: Coalescence, lal_h5_file_nam
                                        NR_group: str, NR_code: str, bibtex_keys: str, contact_email: str,
                                        license_type = 'LVC-internal', nr_techniques: str = None,
                                        comparable_simulation: str = None, files_in_error_series: str = '',
-                                       production_run: bool = True, center_of_mass_correction: bool = False):
+                                       production_run: bool = True, center_of_mass_correction: bool = False, lmax: int = None):
     """Exports the Coalescence object to a format compatible with LALSuite.
 
     Exports the Coalescence object into the format required by https://arxiv.org/abs/1703.01076 in order to be
@@ -2665,6 +2665,7 @@ def _put_data_in_lal_compatible_format(coalescence: Coalescence, lal_h5_file_nam
         files_in_error_series (:obj:`str`, optional): other simulations in the same error series
         production_run (:obj:`bool`, optional): whether this is a production run. Default True.
         center_of_mass_correction (:obj:'bool', optional): whether to correct for center of mass drift. Default False.
+        lmax (:obj:'int', optional): the maximum l value to include modes for
 
     """
     from mayawaves.radiation import Frame
@@ -2690,6 +2691,8 @@ def _put_data_in_lal_compatible_format(coalescence: Coalescence, lal_h5_file_nam
     for mode in included_modes:
         l = int(mode[0])
         m = int(mode[1])
+        if l > lmax:
+            continue
         if l < 2:
             continue
         time_raw, amp_raw, phase_raw = coalescence.strain_amp_phase_for_mode(l, m, extraction_radius)
@@ -2731,7 +2734,7 @@ def _put_data_in_lal_compatible_format(coalescence: Coalescence, lal_h5_file_nam
         lvc_format = determine_lvc_format(coalescence, initial_horizon_time=initial_time_horizon)
 
         _store_lal_metadata(coalescence, lal_h5_file, name, alternative_names, initial_time_horizon, omega_22_nr,
-                            lvc_format, NR_group, NR_code, bibtex_keys, contact_email, license_type, nr_techniques,
+                            lvc_format, NR_group, NR_code, bibtex_keys, contact_email, lmax, license_type, nr_techniques,
                             comparable_simulation, files_in_error_series, production_run)
 
         time_shift = max_time - (
@@ -2849,7 +2852,7 @@ def export_to_lvcnr_catalog(coalescence: Coalescence, output_directory: str,
                             NR_group: str, NR_code: str, bibtex_keys: str, contact_email: str,
                             name: str = None, license_type='LVC-internal', nr_techniques: str = None,
                             comparable_simulation: str = None, files_in_error_series: str = '',
-                            production_run: bool = True, center_of_mass_correction: bool = False):
+                            production_run: bool = True, center_of_mass_correction: bool = False, lmax: int = None):
     """Exports the Coalescence object to the format required by LIGO to be included in the LVC-NR catalog.
 
     Exports the Coalescence object into the format required by https://arxiv.org/abs/1703.01076 in order to be
@@ -2893,7 +2896,7 @@ def export_to_lvcnr_catalog(coalescence: Coalescence, output_directory: str,
                                            contact_email=contact_email, license_type=license_type,
                                            nr_techniques=nr_techniques, comparable_simulation=comparable_simulation,
                                            files_in_error_series=files_in_error_series, production_run=production_run,
-                                           center_of_mass_correction=center_of_mass_correction)
+                                           center_of_mass_correction=center_of_mass_correction, lmax=lmax)
 
     except IOError as e:
         print(e)
@@ -2907,7 +2910,7 @@ def export_to_lal_compatible_format(coalescence: Coalescence, output_directory,
                                     extraction_radius: float = 0, name=None, license_type='LVC-internal',
                                     nr_techniques: str = None,
                                     comparable_simulation: str = None, files_in_error_series: str = '',
-                                    production_run: bool = True, center_of_mass_correction: bool = False):
+                                    production_run: bool = True, center_of_mass_correction: bool = False, lmax: int = None):
     """Exports the Coalescence object to a format compatible with LALSuite.
 
     Exports the Coalescence object into the format required by https://arxiv.org/abs/1703.01076 in order to be
@@ -2944,7 +2947,7 @@ def export_to_lal_compatible_format(coalescence: Coalescence, output_directory,
                                            license_type=license_type, nr_techniques=nr_techniques,
                                            comparable_simulation=comparable_simulation,
                                            files_in_error_series=files_in_error_series, production_run=production_run,
-                                           center_of_mass_correction=center_of_mass_correction)
+                                           center_of_mass_correction=center_of_mass_correction, lmax=lmax)
     except IOError as e:
         print(e)
         warnings.warn(

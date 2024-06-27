@@ -104,10 +104,11 @@ class RadiationBundle:
     def radius_for_extrapolation(self) -> float:
         """The radius from which extrapolation to infinite radius will be computed."""
         if self.__radius_for_extrapolation is None:
-            included_radii = self.included_radii
-            # find closest to 75, pick lower over higher if equal
-            difference_from_75 = [abs(radius - 75) for radius in included_radii]
-            self.__radius_for_extrapolation = included_radii[np.argmin(difference_from_75)]
+            included_radii = np.array(sorted(self.included_radii))
+            # find first larger than or equal to 125 or take the largest if it's less than 125
+            if included_radii[-1] < 125:
+                self.__radius_for_extrapolation = included_radii[-1]
+            self.__radius_for_extrapolation = included_radii[np.argmax(included_radii>=125)]
             warnings.warn(
                 "Using data extrapolated from {radius}M for radius extrapolation. You can set this manually by "
                 "setting radius_for_extrapolation".format(
