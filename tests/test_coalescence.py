@@ -989,23 +989,57 @@ class TestCoalescence(TestCase):
         self.assertIsNone(generated_time)
         self.assertIsNone(generated_com)
 
-    def test_radius_for_extrapolation(self):
+    @mock.patch("mayawaves.radiation.RadiationBundle.radius_for_extrapolation", new_callable=PropertyMock)
+    @mock.patch("mayawaves.coalescence.Coalescence._set_default_radius_for_extrapolation", new_callable=PropertyMock)
+    def test_radius_for_extrapolation(self, mock_Coalescence_set_default_radius_for_extrapolation, mock_RadiationBundle_radius_for_extrapolation):
+        # getter
+        # is already set
+        mock_RadiationBundle_radius_for_extrapolation.return_value = 100
+        mock_RadiationBundle_radius_for_extrapolation.reset_mock()
         extrap_radius = TestCoalescence.coalescence.radius_for_extrapolation
-        self.assertEqual(TestCoalescence.coalescence.radiationbundle.radius_for_extrapolation, extrap_radius)
+        mock_Coalescence_set_default_radius_for_extrapolation.assert_not_called()
+        self.assertEqual(2, mock_RadiationBundle_radius_for_extrapolation.call_count)
+        self.assertEqual(100, extrap_radius)
 
-        # invalid radius
-        self.coalescence.radius_for_extrapolation = 5
-        self.assertEqual(70, self.coalescence.radiationbundle.radius_for_extrapolation)
-
+        # is not already set
+        mock_RadiationBundle_radius_for_extrapolation.return_value = None
+        mock_RadiationBundle_radius_for_extrapolation.reset_mock()
+        mock_Coalescence_set_default_radius_for_extrapolation.reset_mock()        
+        extrap_radius = TestCoalescence.coalescence.radius_for_extrapolation
+        mock_Coalescence_set_default_radius_for_extrapolation.assert_called_once()
+        self.assertEqual(2, mock_RadiationBundle_radius_for_extrapolation.call_count)
+                
+        # setter
+        mock_RadiationBundle_radius_for_extrapolation.reset_mock()
+        mock_Coalescence_set_default_radius_for_extrapolation.reset_mock()
+        TestCoalescence.coalescence.radius_for_extrapolation = 5
+        mock_Coalescence_set_default_radius_for_extrapolation.assert_not_called()
+        mock_RadiationBundle_radius_for_extrapolation.assert_called_once_with(5)
+        # # invalid radius, raise value error
+        # try:
+        #     self.coalescence.radius_for_extrapolation = 5
+        #     self.fail()
+        # except ValueError:
+        #     pass
+        
         # valid radius
-        self.coalescence.radius_for_extrapolation = 40
-        self.assertEqual(40, self.coalescence.radiationbundle.radius_for_extrapolation)
-
-        self.fail()
+        mock_RadiationBundle_radius_for_extrapolation.reset_mock()
+        mock_Coalescence_set_default_radius_for_extrapolation.reset_mock()
+        TestCoalescence.coalescence.radius_for_extrapolation = 40
+        mock_RadiationBundle_radius_for_extrapolation.assert_called_once_with(40)
+#        self.assertEqual(40, self.coalescence.radiationbundle.radius_for_extrapolation)
 
     def test__set_default_radius_for_extrapolation(self):
         self.fail()
 
+
+    def test_reset_radius_for_extrapolation_to_default(self):
+        TestCoalescence.coalescence.radiationbundle._RadiationBundle__radius_for_extrapolation = 120
+        with patch.object(Coalescence, '_set_default_radius_for_extrapolation') as mock_set_default_radius_for_extrapolation:
+            TesteCoalescence.coalescence.reset_radius_for_extrapolation()
+            self.assertIsNone(TestCoalescence.coalescence.radiationbundle._RadiationBundle__radius_for_extrapolation)
+            mock_set_default_radius_for_extrapolation.assert_called_once()
+        
     def test_grid_structure(self):
         # equal mass simulation
         generated_grid_structure = TestCoalescence.coalescence.grid_structure
@@ -1244,80 +1278,9 @@ class TestCoalescence(TestCase):
         coalescence = Coalescence(os.path.join(TestCoalescence.CURR_DIR,
                                                "resources/sample_etk_simulations/GW150914.h5"))
         generated_grid_structure = coalescence.grid_structure
-        expected_grid_structure = {
-            1:{
-                'center': [4.461538461538462, 0, 0],
-                'levels':{
-                    0:{
-                        'dx': 1.2237362637362637,
-                        'radius': 51.39692307692307
-                    },
-                    1:{
-                        'dx': 0.61186813186813185,
-                        'radius': 21.267692
-                    },
-                    2:{
-                        'dx': 0.305934065934065925,
-                        'radius': 10.633846
-                    },
-                    3:{
-                        'dx': 0.1529670329670329625,
-                        'radius': 5.316923
-                    },
-                    4:{
-                        'dx': 0.07648351648351648125,
-                        'radius': 2.658462
-                    },
-                    5:{
-                        'dx': 0.038241758241758240625,
-                        'radius': 1.329231
-                    },
-                    6:{
-                        'dx': 0.0191208791208791203125,
-                        'radius': 0.664615
-                    }
-                }
-            },
-            2:{
-                'center': [-5.538461538461538, 0, 0],
-                'levels':{
-                    0:{
-                        'dx': 1.2237362637362637,
-                        'radius': 51.39692307692307
-                    },
-                    1:{
-                        'dx': 0.61186813186813185,
-                        'radius': 17.132308
-                    },
-                    2:{
-                        'dx': 0.305934065934065925,
-                        'radius': 8.566154
-                    },
-                    3:{
-                        'dx': 0.1529670329670329625,
-                        'radius': 4.283077
-                    },
-                    4:{
-                        'dx': 0.07648351648351648125,
-                        'radius': 2.141538
-                    },
-                    5:{
-                        'dx': 0.038241758241758240625,
-                        'radius': 1.070769
-                    },
-                    6:{
-                        'dx': 0.0191208791208791203125,
-                        'radius': 0.535385
-                    }
-                }
-            }
-        }
         coalescence.close()
-        self.assertEqual(expected_grid_structure, generated_grid_structure)
-                                  
-
-    def test_reset_radius_for_extrapolation_to_default(self):
-        self.fail()
+        self.assertIsNone(generated_grid_structure)
+             
 
     def test_recoil_velocity(self):
         # equal mass should be close to zero

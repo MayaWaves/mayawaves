@@ -3687,6 +3687,7 @@ IO::out_fileinfo                     = "all"
         h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR,
                                    "resources/temp/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
         coalescence = Coalescence(h5_filename)
+        coalescence.radius_for_extrapolation = 75
         coalescence.radiationbundle._RadiationBundle__frame = Frame.RAW
         pputils.export_to_lvcnr_catalog(coalescence, output_directory, NR_group='UT Austin', NR_code='MAYA',
                                         bibtex_keys='Jani:2016wkt',
@@ -3756,6 +3757,7 @@ IO::out_fileinfo                     = "all"
             h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR,
                                        "resources/temp/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
             coalescence = Coalescence(h5_filename)
+            coalescence.radius_for_extrapolation = 75
             pputils.export_to_lvcnr_catalog(coalescence, output_directory, center_of_mass_correction=True,
                                             NR_group='UT Austin', NR_code='MAYA', bibtex_keys='Jani:2016wkt',
                                             contact_email='deirdre.shoemaker@austin.utexas.edu')
@@ -3777,6 +3779,7 @@ IO::out_fileinfo                     = "all"
             h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR,
                                        "resources/temp/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
             coalescence = Coalescence(h5_filename)
+            coalescence.radius_for_extrapolation = 75
             with patch.object(Coalescence, 'center_of_mass', new_callable=PropertyMock,
                               return_value=(None, None)) as mock_center_of_mass:
                 try:
@@ -3811,11 +3814,15 @@ IO::out_fileinfo                     = "all"
 
         # if precessing without enough spin data, this should fail
         coalescence = Coalescence(h5_filename)
+        coalescence.radius_for_extrapolation = 75
         mock_coalescence_spin_configuration.return_value = "precessing"
         pputils.export_to_lvcnr_catalog(coalescence, output_directory, NR_group='UT Austin', NR_code='MAYA',
                                         bibtex_keys='Jani:2016wkt',
                                         contact_email='deirdre.shoemaker@austin.utexas.edu')
         self.assertFalse(os.path.exists(lal_h5_filepath))
+
+        # test not setting the radius for extrapolation
+        self.fail()
 
     @mock.patch("mayawaves.coalescence.Coalescence.spin_configuration", new_callable=PropertyMock)
     def test_export_to_lal_compatible_format(self, mock_coalescence_spin_configuration):

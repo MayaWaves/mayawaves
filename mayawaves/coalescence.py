@@ -443,12 +443,21 @@ class Coalescence:
 
         self.radius_for_extrapolation = optimal_radius
 
+    def reset_radius_for_extrapolation_to_default(self):
+        self.radiationbundle.radius_for_extrapolation = None
+        self._set_default_radius_for_extrapolation()
         
     @property
     def grid_structure(self):
         parameter_files = self.parameter_files
         if 'par' in parameter_files:
             parameter_file = parameter_files['par']
+
+            result = re.search(f'CartGrid3D::type\s*=\s*((?P<quote>"?)\s*([a-zA-Z0-9]+)\s*(?P=quote)?)\s*\n', parameter_file)
+            if result is not None and (result.group(1) == "multipatch" or result.group(1) == '"multipatch"'):
+                warnings.warn("Unable to read the grid structure for multipatch systems. Please refer to the parameter file for information on grid structure.")
+                return None
+            
             grid_structure = {}
             result = re.search('(?:CarpetRegrid2::num_centres|RegridBoxes::number_of_centres)\s*=\s*(\d+)\s*\n', parameter_file)
             if result is None:
@@ -507,11 +516,7 @@ class Coalescence:
             return grid_structure
         else:
             return None
-        
-        
-    def reset_radius_for_extrapolation_to_default(self):
-        self._set_default_radius_for_extrapolation()
-        
+                
     def recoil_velocity(self, km_per_sec: bool = False) -> np.ndarray:
         """Kick vector of the final object
 

@@ -115,8 +115,8 @@ class RadiationBundle:
         #         "Using data extrapolated from {radius}M for radius extrapolation. You can set this manually by "
         #         "setting radius_for_extrapolation".format(
         #             radius=self.__radius_for_extrapolation))
-        if self.__radius_for_extrapolation is None:
-            raise ValueError("Unable to find suitable default radius for extrapolation. Please set manually with Coalescence.radius_for_extrapolation.")
+        # if self.__radius_for_extrapolation is None:
+        #     raise ValueError("Radius for extrapolation is not set. Please set with Coalescence.radius_for_extrapolation.")
         return self.__radius_for_extrapolation
 
     @radius_for_extrapolation.setter
@@ -608,6 +608,8 @@ class RadiationBundle:
             order (:obj:`int`, optional): the extrapolation order. Defaults to 2.
 
         """
+        if self.radius_for_extrapolation is None:
+            raise ValueError("Unable to create an extrapolated sphere because no radius for extrapolation is set. Please set with Coalescence.radius_for_extrapolation.")
         radiation_sphere = self.radiation_spheres[self.radius_for_extrapolation]
         extrap_sphere = radiation_sphere.get_extrapolated_sphere(order=order)
         if extrap_sphere is None:
