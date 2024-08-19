@@ -1001,6 +1001,324 @@ class TestCoalescence(TestCase):
         self.coalescence.radius_for_extrapolation = 40
         self.assertEqual(40, self.coalescence.radiationbundle.radius_for_extrapolation)
 
+        self.fail()
+
+    def test__set_default_radius_for_extrapolation(self):
+        self.fail()
+
+    def test_grid_structure(self):
+        # equal mass simulation
+        generated_grid_structure = TestCoalescence.coalescence.grid_structure
+        expected_grid_structure = {
+            1:{
+                'center': [1.168642873, 0, 0],
+                'levels':{
+                    0:{
+                        'dx': 6,
+                        'radius': 384
+                    },
+                    1:{
+                        'dx': 3,
+                        'radius': 192
+                    },
+                    2:{
+                        'dx':  1.5,
+                        'radius': 96
+                    },
+                    3:{
+                        'dx': 0.75,
+                        'radius': 48
+                    },
+                    4:{
+                        'dx': 0.375,
+                        'radius': 12
+                    },
+                    5:{
+                        'dx': 0.1875,
+                        'radius': 6
+                    },
+                    6:{
+                        'dx': 0.09375,
+                        'radius': 3
+                    },
+                    7:{
+                        'dx': 0.046875,
+                        'radius': 1.5
+                    },
+                    8:{
+                        'dx': 0.0234375,
+                        'radius': 0.75
+                    },
+                }
+            },
+            2:{
+                'center': [-1.168642873, 0, 0],
+                'levels':{
+                    0:{
+                        'dx': 6,
+                        'radius': 384
+                    },
+                    1:{
+                        'dx': 3,
+                        'radius': 192
+                    },
+                    2:{
+                        'dx':  1.5,
+                        'radius': 96
+                    },
+                    3:{
+                        'dx': 0.75,
+                        'radius': 48
+                    },
+                    4:{
+                        'dx': 0.375,
+                        'radius': 12
+                    },
+                    5:{
+                        'dx': 0.1875,
+                        'radius': 6
+                    },
+                    6:{
+                        'dx': 0.09375,
+                        'radius': 3
+                    },
+                    7:{
+                        'dx': 0.046875,
+                        'radius': 1.5
+                    },
+                    8:{
+                        'dx': 0.0234375,
+                        'radius': 0.75
+                    },                
+                }
+            },
+            3:{
+                'center': [0, 0, 0],
+                'levels':{
+                    0:{
+                        'dx': 6,
+                        'radius': 384
+                    },
+                    1:{
+                        'dx': 3,
+                        'radius': 192
+                    },
+                    2:{
+                        'dx':  1.5,
+                        'radius': 96
+                    },
+                    3:{
+                        'dx': 0.75,
+                        'radius': 48
+                    }
+                }
+            }
+        }
+        self.assertEqual(expected_grid_structure, generated_grid_structure)
+
+        # unequal mass
+        coalescence = Coalescence(os.path.join(TestCoalescence.CURR_DIR,
+                                               "resources/radiative_quantities_resources/D11_q2_a1_0.0_0.0_0.4_a2_0.0_0.0_0.4_m282.35.h5"))
+        generated_grid_structure = coalescence.grid_structure
+        expected_grid_structure = {
+            1:{
+                'center': [3.666667, 0, 0],
+                'levels':{
+                    0:{
+                        'dx': 3.6266666666666669272,
+                        'radius': 696.32
+                    },
+                    1:{
+                        'dx': 1.8133333333333334636,
+                        'radius': 348.16
+                    },
+                    2:{
+                        'dx': 0.9066666666666667318,
+                        'radius': 174.08
+                    },
+                    3:{
+                        'dx': 0.4533333333333333659,
+                        'radius': 43.52
+                    },
+                    4:{
+                        'dx': 0.22666666666666668295,
+                        'radius': 21.76
+                    },
+                    5:{
+                        'dx': 0.113333333333333341475,
+                        'radius': 5.44
+                    },
+                    6:{
+                        'dx': 0.0566666666666666707375,
+                        'radius': 2.72
+                    },
+                    7:{
+                        'dx': 0.02833333333333333536875,
+                        'radius': 1.36
+                    },
+                    8:{
+                        'dx': 0.014166666666666667684375,
+                        'radius': 0.68
+                    },
+                    9:{
+                        'dx': 0.0070833333333333338421875,
+                        'radius': 0.34
+                    },
+                }
+            },
+            2:{
+                'center': [-7.333333, 0, 0],
+                'levels':{
+                    0:{
+                        'dx': 3.6266666666666669272,
+                        'radius': 696.32
+                    },
+                    1:{
+                        'dx': 1.8133333333333334636,
+                        'radius': 348.16
+                    },
+                    2:{
+                        'dx': 0.9066666666666667318,
+                        'radius': 174.08
+                    },
+                    3:{
+                        'dx': 0.4533333333333333659,
+                        'radius': 43.52
+                    },
+                    4:{
+                        'dx': 0.22666666666666668295,
+                        'radius': 21.76
+                    },
+                    5:{
+                        'dx': 0.113333333333333341475,
+                        'radius': 5.44
+                    },
+                    6:{
+                        'dx': 0.0566666666666666707375,
+                        'radius': 2.72
+                    },
+                    7:{
+                        'dx': 0.02833333333333333536875,
+                        'radius': 1.36
+                    },
+                    8:{
+                        'dx': 0.014166666666666667684375,
+                        'radius': 0.68
+                    },
+                    9:{
+                        'dx': 0.0070833333333333338421875,
+                        'radius': 0.34
+                    },
+                    10:{
+                        'dx': 0.00354166666666666692109375,
+                        'radius': 0.17
+                    },
+                }
+            },
+            3:{
+                'center': [0, 0, 0],
+                'levels':{
+                    0:{
+                        'dx': 3.6266666666666669272,
+                        'radius': 696.32
+                    },
+                    1:{
+                        'dx': 1.8133333333333334636,
+                        'radius': 348.16
+                    },
+                    2:{
+                        'dx': 0.9066666666666667318,
+                        'radius': 174.08
+                    },
+                    3:{
+                        'dx': 0.4533333333333333659,
+                        'radius': 43.52
+                    },
+                }
+            }
+        }
+        coalescence.close()
+        self.assertEqual(expected_grid_structure, generated_grid_structure)
+        
+        # GW150914 from etk
+        coalescence = Coalescence(os.path.join(TestCoalescence.CURR_DIR,
+                                               "resources/sample_etk_simulations/GW150914.h5"))
+        generated_grid_structure = coalescence.grid_structure
+        expected_grid_structure = {
+            1:{
+                'center': [4.461538461538462, 0, 0],
+                'levels':{
+                    0:{
+                        'dx': 1.2237362637362637,
+                        'radius': 51.39692307692307
+                    },
+                    1:{
+                        'dx': 0.61186813186813185,
+                        'radius': 21.267692
+                    },
+                    2:{
+                        'dx': 0.305934065934065925,
+                        'radius': 10.633846
+                    },
+                    3:{
+                        'dx': 0.1529670329670329625,
+                        'radius': 5.316923
+                    },
+                    4:{
+                        'dx': 0.07648351648351648125,
+                        'radius': 2.658462
+                    },
+                    5:{
+                        'dx': 0.038241758241758240625,
+                        'radius': 1.329231
+                    },
+                    6:{
+                        'dx': 0.0191208791208791203125,
+                        'radius': 0.664615
+                    }
+                }
+            },
+            2:{
+                'center': [-5.538461538461538, 0, 0],
+                'levels':{
+                    0:{
+                        'dx': 1.2237362637362637,
+                        'radius': 51.39692307692307
+                    },
+                    1:{
+                        'dx': 0.61186813186813185,
+                        'radius': 17.132308
+                    },
+                    2:{
+                        'dx': 0.305934065934065925,
+                        'radius': 8.566154
+                    },
+                    3:{
+                        'dx': 0.1529670329670329625,
+                        'radius': 4.283077
+                    },
+                    4:{
+                        'dx': 0.07648351648351648125,
+                        'radius': 2.141538
+                    },
+                    5:{
+                        'dx': 0.038241758241758240625,
+                        'radius': 1.070769
+                    },
+                    6:{
+                        'dx': 0.0191208791208791203125,
+                        'radius': 0.535385
+                    }
+                }
+            }
+        }
+        coalescence.close()
+        self.assertEqual(expected_grid_structure, generated_grid_structure)
+                                  
+
+    def test_reset_radius_for_extrapolation_to_default(self):
+        self.fail()
+
     def test_recoil_velocity(self):
         # equal mass should be close to zero
         kick_velocity = TestCoalescence.coalescence.recoil_velocity()

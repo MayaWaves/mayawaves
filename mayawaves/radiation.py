@@ -115,7 +115,8 @@ class RadiationBundle:
         #         "Using data extrapolated from {radius}M for radius extrapolation. You can set this manually by "
         #         "setting radius_for_extrapolation".format(
         #             radius=self.__radius_for_extrapolation))
-            
+        if self.__radius_for_extrapolation is None:
+            raise ValueError("Unable to find suitable default radius for extrapolation. Please set manually with Coalescence.radius_for_extrapolation.")
         return self.__radius_for_extrapolation
 
     @radius_for_extrapolation.setter

@@ -54,7 +54,10 @@ class Coalescence:
 
         if 'radiative' in self.__h5_file:
             self.__radiation_mode_bundle = RadiationBundle.create_radiation_bundle(self.__h5_file["radiative"])
-            self._set_default_radius_for_extrapolation()
+            try:
+                self._set_default_radius_for_extrapolation()
+            except ValueError:
+                pass
 
     @property
     def name(self) -> str:
@@ -377,7 +380,7 @@ class Coalescence:
         return self.radiationbundle.radius_for_extrapolation
 
     @radius_for_extrapolation.setter
-    def set_radius_for_extrapolation(self, extraction_radius: float):
+    def radius_for_extrapolation(self, extraction_radius: float):
         """Set the extraction radius to use when extrapolating to infinite radius
 
         Args:
@@ -388,49 +391,59 @@ class Coalescence:
         self.radiationbundle.radius_for_extrapolation = extraction_radius
 
     def _set_default_radius_for_extrapolation(self):
-        included_radii = np.array(sorted(self.included_extraction_radii))
+        optimal_radius = None
+        
+        extraction_radii = np.array(self.included_extraction_radii)
+        grid_structure = self.grid_structure
 
-        # for initial separation of 6.2, a radius of 75 was good. Scale accordingly for first guess.
-        initial_separation = self.initial_separation
-        radius_guess = 75*(initial_separation/6.2)
-        # first radius larger than or within 2M of radius_guess
-        radius_index = np.argmax(included_radii >= radius_guess)
-        if abs(radius_guess - included_radii[radius_index - 1]) < 2:
-            radius = included_radii[radius_index-1]
-        else:
-            radius = included_radii[radius_index]
-
-        # check the resolution of the grid at that radius
-        # if dx>???? at that radius, throw an error
-        dx_cutoff = 2
-
-        grid_structure_dict = self.grid_structure
-        if grid_structure_dict is None:
-            warnings.warn("Unable to find a good default extraction radius for extrapolation. Please set one manually with set_radius_for_extrapolation.")
-            return
-
-        dx = None
-        # find grid centered at 0
-        for grid_num in grid_structure_dict["grids"].keys():
-            grid = grid_structure_dict["grids"][grid_num]
-            if grid["center"] != [0, 0, 0]:
-                continue
-            # find dx for radius
-            levels = sorted(list(grid["levels"].keys()), reverse=True)
-            for level in levels:
-                if grid["levels"][level]["radius"] > radius:
-                    dx = grid["levels"][level]["dx"]
+        if grid_structure is None:
+            raise ValueError("Unable to find a good default extraction radius. Please set one manually with Coalescence.radius_for_extrapolation")
+        
+        # find grid structure for center grid
+        center_grid = None
+        for grid_id, grid in grid_structure.items():
+            if grid["center"] == [0.0, 0.0, 0.0]:
+                center_grid = grid
+        grid_levels = sorted(center_grid["levels"].keys())
+                
+        # start by finding largest radius where dx < 1 / (2 * orbital frequency at merger)
+        dx_cutoff = 1.1 * 1/(2*self.orbital_frequency_at_time(self.merge_time))
+        for level in grid_levels: # coarsest to finest
+            if center_grid["levels"][level]["dx"] < dx_cutoff:
+                if extraction_radii[0] > center_grid["levels"][level]["radius"]:
                     break
-        if dx is None:
-            warnings.warn("Unable to find a good default extraction radius for extrapolation. Please set one manually with set_radius_for_extrapolation.")
-            return
+                optimal_radius = max(extraction_radii[extraction_radii < center_grid["levels"][level]["radius"]])
+                break
 
-        if dx>dx_cutoff:
-            warnings.warn(f"The grid spacing at r={radius}, the recommended extraction radius for extrapolation based on the separation, is dx={dx} which is too large (>2). Unable to find a good default extraction radius for extrapolation. Please set one manually with set_radius_for_extrapolation.")
-            return
+        # if not possible, grab the largest radius on the first extraction level that has extraction spheres
+        if optimal_radius is None:
+            grid_levels = sorted(grid_levels, reverse=True)
+            for level in grid_levels: # finest to coarsest
+                if extraction_radii[0] > center_grid["levels"][level]["radius"]:
+                    continue
+                else:
+                    optimal_radius = max(extraction_radii[extraction_radii < center_grid["levels"][level]["radius"]])
+                    break
 
-        self.radiationbundle.radius_for_extrapolation = radius
+        # for finetuning, reduce the radius until the merge_time < 150 before the end of the data to ensure full ringdown is captured
+        merge_time = self.merge_time
+        extraction_radii_within_optimal = sorted(extraction_radii[extraction_radii <= optimal_radius], reverse=True)
+        for radius in extraction_radii_within_optimal:
+            time = self.radiationbundle.get_time(extraction_radius = radius)
+            if time[-1] - radius > merge_time + 150:
+                optimal_radius = radius
+                break
+        else:
+            optimal_radius = None
 
+        # minimum optimal radius of 70 M
+        minimum_radius = 70
+        if optimal_radius is None or optimal_radius < minimum_radius:
+            raise ValueError("Unable to find a good default extraction radius. Please set one manually with Coalescence.radius_for_extrapolation")
+
+        self.radius_for_extrapolation = optimal_radius
+
+        
     @property
     def grid_structure(self):
         parameter_files = self.parameter_files
@@ -447,19 +460,17 @@ class Coalescence:
                 return None
             largest_dx = float(result.group(1))
 
-            # zeroth level is separate
-            grid_structure['largest_grid'] = {}
+            # zeroth level is separate but store with the other levels
+            largest_grid = {}
             result = re.search(f'CoordBase::xmax\s*=\s*([-+]?\d+(\.\d+)?)\s*\n', parameter_file)
             if result is None:
                 return None
             radius = float(result.group(1))
-            grid_structure['largest_grid']['radius'] = radius
-            grid_structure['largest_grid']['dx'] = largest_dx
-
-            grid_structure["grids"] = {}
+            largest_grid['radius'] = radius
+            largest_grid['dx'] = largest_dx
             
             for i in range(1,num_centers+1):
-                grid_structure["grids"][i] = {}
+                grid_structure[i] = {}
                 result = re.search(f'(?:CarpetRegrid2::position_x_{i}|RegridBoxes::centre_x\s*\[{i-1}\])\s*=\s*([-+]?\d+(\.\d+)?)\s*\n', parameter_file)
                 if result is None:
                     center_x = 0
@@ -475,29 +486,30 @@ class Coalescence:
                     center_z = 0
                 else:
                     center_z = float(result.group(1))
-                grid_structure["grids"][i]['center'] = [center_x, center_y, center_z]
+                grid_structure[i]['center'] = [center_x, center_y, center_z]
                 
                 result = re.search(f'(?:CarpetRegrid2::num_levels_{i}|RegridBoxes::refinement_levels\s*\[{i-1}\])\s*=\s*(\d+)\s*\n', parameter_file)
                 if result is None:
                     return None
                 num_levels = int(result.group(1))
 
-                grid_structure["grids"][i]["levels"] = {}
+                grid_structure[i]["levels"] = {}
+                grid_structure[i]["levels"][0] = largest_grid
                 # the rest of the levels
                 for level in range(1, num_levels):
                     result = re.search(f'(?:CarpetRegrid2::radius_{i}|RegridBoxes::centre_{i-1}_radius)\s*\[{level}\]\s*=\s*([-+]?\d+(\.\d+)?)\s*\n', parameter_file)
                     if result is None:
                         continue
-                    grid_structure["grids"][i]["levels"][level] = {}
+                    grid_structure[i]["levels"][level] = {}
                     radius = float(result.group(1))
-                    grid_structure["grids"][i]["levels"][level]['radius'] = radius
-                    grid_structure["grids"][i]["levels"][level]['dx'] = largest_dx/(2**level)
+                    grid_structure[i]["levels"][level]['radius'] = radius
+                    grid_structure[i]["levels"][level]['dx'] = largest_dx/(2**level)
             return grid_structure
         else:
             return None
         
         
-    def reset_radius_for_extrapolation(self):
+    def reset_radius_for_extrapolation_to_default(self):
         self._set_default_radius_for_extrapolation()
         
     def recoil_velocity(self, km_per_sec: bool = False) -> np.ndarray:
@@ -779,7 +791,10 @@ class Coalescence:
         _, orbital_frequency = self.orbital_frequency
         _, separation_vector = self.separation_vector
         separation_magnitude = np.linalg.norm(separation_vector, axis=1)
-        tmax = self.psi4_max_time_for_mode(l=2, m=2)
+        try:
+            tmax = self.psi4_max_time_for_mode(l=2, m=2) - self.radius_for_extrapolation
+        except ValueError:
+            tmax = self.merge_time
         eta = self.symmetric_mass_ratio
         mass_ratio = self.mass_ratio
 
