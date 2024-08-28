@@ -152,7 +152,7 @@ class RadiationBundle:
         """List of all extraction radii included."""
         return sorted(list(self.radiation_spheres.keys()))
 
-    def get_time(self, extraction_radius: float = 0) -> np.ndarray:
+    def get_time(self, extraction_radius: float = None) -> np.ndarray:
         """Time array associated with all radiation timeseries at the given radius.
 
         Args:
@@ -162,7 +162,7 @@ class RadiationBundle:
             numpy.ndarray: array containing the time data for all radiation information at the given radius
 
         """
-        if extraction_radius == 0:
+        if extraction_radius is None:
             if self.extrapolated_sphere is None:
                 warnings.warn("There is no data extrapolated to infinity for that mode")
                 return None
@@ -173,23 +173,23 @@ class RadiationBundle:
         time = self.radiation_spheres[extraction_radius].time
         return time
 
-    def get_psi4_real_for_mode(self, l: int, m: int, extraction_radius: float = 0) -> np.ndarray:
+    def get_psi4_real_for_mode(self, l: int, m: int, extraction_radius: float = None) -> np.ndarray:
         """Real component of :math:`\Psi_4` for a given mode and extraction radius.
 
-        Returns the real part of :math:`\Psi_4` for a given mode and extraction radius. If the extraction radius is 0,
+        Returns the real part of :math:`\Psi_4` for a given mode and extraction radius. If the extraction radius is None,
         the data is extrapolated to infinite radius.
 
         Args:
             l (int): l value of mode
             m (int): m value of mode
-            extraction_radius (:obj:`float`, optional): extraction radius for :math:`\Psi_4` data. If 0, the data at
+            extraction_radius (:obj:`float`, optional): extraction radius for :math:`\Psi_4` data. If None or not provided, the data at
                 infinity is provided.
 
         Returns:
             numpy.ndarray: :math:`\Psi_4` real component for a given mode and extraction radius.
 
         """
-        if extraction_radius == 0:
+        if extraction_radius is None:
             if self.extrapolated_sphere is None:
                 warnings.warn("There is no data extrapolated to infinity for that mode")
                 return None
@@ -199,23 +199,23 @@ class RadiationBundle:
             return None
         return self.radiation_spheres[extraction_radius].get_psi4_real_for_mode(l=l, m=m)
 
-    def get_psi4_imaginary_for_mode(self, l: int, m: int, extraction_radius: float = 0) -> np.ndarray:
+    def get_psi4_imaginary_for_mode(self, l: int, m: int, extraction_radius: float = None) -> np.ndarray:
         """Imaginary component of :math:`\Psi_4` for a given mode and extraction radius.
 
         Returns the imaginary part of :math:`\Psi_4` for a given mode and extraction radius. If the extraction radius is
-        0, the data is extrapolated to infinite radius.
+        None, the data is extrapolated to infinite radius.
 
         Args:
             l (int): l value of mode
             m (int): m value of mode
-            extraction_radius (:obj:`float`, optional): extraction radius for :math:`\Psi_4` data. If 0, the data at
+            extraction_radius (:obj:`float`, optional): extraction radius for :math:`\Psi_4` data. If None or not provided, the data at
                 infinity is provided.
 
         Returns:
             numpy.ndarray: :math:`\Psi_4` imaginary component for a given mode and extraction radius.
 
         """
-        if extraction_radius == 0:
+        if extraction_radius is None:
             if self.extrapolated_sphere is None:
                 warnings.warn("There is no data extrapolated to infinity for that mode")
                 return None
@@ -225,23 +225,23 @@ class RadiationBundle:
             return None
         return self.radiation_spheres[extraction_radius].get_psi4_imaginary_for_mode(l=l, m=m)
 
-    def get_psi4_amplitude_for_mode(self, l: int, m: int, extraction_radius: float = 0) -> np.ndarray:
+    def get_psi4_amplitude_for_mode(self, l: int, m: int, extraction_radius: float = None) -> np.ndarray:
         """Amplitude of :math:`\Psi_4` for a given mode and extraction radius.
 
-        Returns the amplitude of :math:`\Psi_4` for a given mode and extraction radius. If the extraction radius is 0,
+        Returns the amplitude of :math:`\Psi_4` for a given mode and extraction radius. If the extraction radius is None,
         the data is extrapolated to infinite radius.
 
         Args:
             l (int): l value of mode
             m (int): m value of mode
-            extraction_radius (:obj:`float`, optional): extraction radius for :math:`\Psi_4` data. If 0, the data at
+            extraction_radius (:obj:`float`, optional): extraction radius for :math:`\Psi_4` data. If None or not provided, the data at
                 infinity is provided.
 
         Returns:
             numpy.ndarray: :math:`\Psi_4` amplitude for a given mode and extraction radius.
 
         """
-        if extraction_radius == 0:
+        if extraction_radius is None:
             if self.extrapolated_sphere is None:
                 warnings.warn("There is no data extrapolated to infinity for that mode")
                 return None
@@ -251,23 +251,23 @@ class RadiationBundle:
             return None
         return self.radiation_spheres[extraction_radius].get_psi4_amplitude_for_mode(l=l, m=m)
 
-    def get_psi4_phase_for_mode(self, l: int, m: int, extraction_radius: float = 0) -> np.ndarray:
+    def get_psi4_phase_for_mode(self, l: int, m: int, extraction_radius: float = None) -> np.ndarray:
         """Phase of :math:`\Psi_4` for a given mode and extraction radius.
 
-        Returns the phase of :math:`\Psi_4` for a given mode and extraction radius. If the extraction radius is 0,
+        Returns the phase of :math:`\Psi_4` for a given mode and extraction radius. If the extraction radius is None,
         the data is extrapolated to infinite radius.
 
         Args:
             l (int): l value of mode
             m (int): m value of mode
-            extraction_radius (:obj:`float`, optional): extraction radius for :math:`\Psi_4` data. If 0, the data at
+            extraction_radius (:obj:`float`, optional): extraction radius for :math:`\Psi_4` data. If None or not provided, the data at
                 infinity is provided.
 
         Returns:
             numpy.ndarray: :math:`\Psi_4` phase for a given mode and extraction radius.
 
         """
-        if extraction_radius == 0:
+        if extraction_radius is None:
             if self.extrapolated_sphere is None:
                 warnings.warn("There is no data extrapolated to infinity for that mode")
                 return None
@@ -277,11 +277,11 @@ class RadiationBundle:
             return None
         return self.radiation_spheres[extraction_radius].get_psi4_phase_for_mode(l=l, m=m)
 
-    def get_strain_plus_for_mode(self, l: int, m: int, extraction_radius: float = 0) -> np.ndarray:
+    def get_strain_plus_for_mode(self, l: int, m: int, extraction_radius: float = None) -> np.ndarray:
         """Plus component of :math:`rh` for a given mode and extraction radius.
 
         Returns the plus component of strain for a given mode and extraction radius. The strain is the second time
-        integral of :math:`\Psi_4` computed using fixed-frequency integration. If the extraction radius is 0, the data
+        integral of :math:`\Psi_4` computed using fixed-frequency integration. If the extraction radius is None or not provided, the data
         is extrapolated to infinite radius.
 
         Args:
@@ -294,7 +294,7 @@ class RadiationBundle:
             numpy.ndarray: :math:`rh_+` for a given mode and extraction radius.
 
         """
-        if extraction_radius == 0:
+        if extraction_radius is None:
             if self.extrapolated_sphere is None:
                 warnings.warn("There is no data extrapolated to infinity for that mode")
                 return None
@@ -304,24 +304,24 @@ class RadiationBundle:
             return None
         return self.radiation_spheres[extraction_radius].get_strain_plus_for_mode(l=l, m=m)
 
-    def get_strain_cross_for_mode(self, l: int, m: int, extraction_radius: float = 0) -> np.ndarray:
+    def get_strain_cross_for_mode(self, l: int, m: int, extraction_radius: float = None) -> np.ndarray:
         """Cross component of :math:`rh` for a given mode and extraction radius.
 
         Returns the cross component of strain for a given mode and extraction radius. The strain is the second time
-        integral of :math:`\Psi_4` computed using fixed-frequency integration. If the extraction radius is 0, the data
+        integral of :math:`\Psi_4` computed using fixed-frequency integration. If the extraction radius is None, the data
         is extrapolated to infinite radius.
 
         Args:
             l (int): l value of mode
             m (int): m value of mode
-            extraction_radius (:obj:`float`, optional): extraction radius for strain data. If 0, the data at infinity is
+            extraction_radius (:obj:`float`, optional): extraction radius for strain data. If None or not provided, the data at infinity is
                 provided.
 
         Returns:
             numpy.ndarray: :math:`rh_{\\times}` for a given mode and extraction radius.
 
         """
-        if extraction_radius == 0:
+        if extraction_radius is None:
             if self.extrapolated_sphere is None:
                 warnings.warn("There is no data extrapolated to infinity for that mode")
                 return None
@@ -331,24 +331,24 @@ class RadiationBundle:
             return None
         return self.radiation_spheres[extraction_radius].get_strain_cross_for_mode(l=l, m=m)
 
-    def get_strain_recomposed_at_sky_location(self, theta: float, phi: float, extraction_radius: float = 0) -> tuple:
+    def get_strain_recomposed_at_sky_location(self, theta: float, phi: float, extraction_radius: float = None) -> tuple:
         """Plus and cross components of strain recomposed at a given sky location
 
         The strain is recomposed by summing up the modes using spin weighted spherical harmonics as
         :math:`h(t,\\theta,\phi) = \sum_{\ell,m} {}_{-2}Y_{\ell,m}(\\theta, \phi) h_{ \ell,m}(t)`. If the extraction
-        radius is 0, the data is extrapolated to infinite radius.
+        radius is None, the data is extrapolated to infinite radius.
 
         Args:
             theta (float): :math:`0 \leq \\theta \lt \pi`
             phi (float): :math:`0 \leq \phi \lt 2\pi`
-            extraction_radius (:obj:`float`, optional): extraction radius for strain data. If 0, the data at infinity is
+            extraction_radius (:obj:`float`, optional): extraction radius for strain data. If None or not provided, the data at infinity is
                 provided.
 
         Returns:
             tuple: :math:`rh_{+}` and :math:`rh_{\\times}` recomposed at a given sky location
 
         """
-        if extraction_radius == 0:
+        if extraction_radius is None:
             if self.extrapolated_sphere is None:
                 warnings.warn("There is no data extrapolated to infinity for that mode")
                 return None
@@ -358,24 +358,24 @@ class RadiationBundle:
             return None
         return self.radiation_spheres[extraction_radius].get_strain_recomposed_at_sky_location(theta=theta, phi=phi)
 
-    def get_strain_amplitude_for_mode(self, l: int, m: int, extraction_radius: float = 0) -> np.ndarray:
+    def get_strain_amplitude_for_mode(self, l: int, m: int, extraction_radius: float = None) -> np.ndarray:
         """Amplitude of :math:`rh` for a given mode and extraction radius.
 
         Returns the amplitude of strain for a given mode and extraction radius. The strain is the second time
-        integral of :math:`\Psi_4` computed using fixed-frequency integration. If the extraction radius is 0, the data
+        integral of :math:`\Psi_4` computed using fixed-frequency integration. If the extraction radius is None, the data
         is extrapolated to infinite radius.
 
         Args:
             l (int): l value of mode
             m (int): m value of mode
-            extraction_radius (:obj:`float`, optional): extraction radius for strain data. If 0, the data at infinity is
+            extraction_radius (:obj:`float`, optional): extraction radius for strain data. If None or not provided, the data at infinity is
                 provided.
 
         Returns:
             numpy.ndarray: amplitude of :math:`rh` for a given mode and extraction radius.
 
         """
-        if extraction_radius == 0:
+        if extraction_radius is None:
             if self.extrapolated_sphere is None:
                 warnings.warn("There is no data extrapolated to infinity for that mode")
                 return None
@@ -385,25 +385,25 @@ class RadiationBundle:
             return None
         return self.radiation_spheres[extraction_radius].get_strain_amplitude_for_mode(l=l, m=m)
 
-    def get_strain_phase_for_mode(self, l: int, m: int, extraction_radius: float = 0) -> np.ndarray:
+    def get_strain_phase_for_mode(self, l: int, m: int, extraction_radius: float = None) -> np.ndarray:
         """Phase of :math:`rh` for a given mode and extraction radius.
 
         Returns the phase of strain for a given mode and extraction radius. The strain is the second time
-        integral of :math:`\Psi_4` computed using fixed-frequency integration. If the extraction radius is 0, the data
+        integral of :math:`\Psi_4` computed using fixed-frequency integration. If the extraction radius is None, the data
         is extrapolated to infinite radius.
 
 
         Args:
             l (int): l value of mode
             m (int): m value of mode
-            extraction_radius (:obj:`float`, optional): extraction radius for strain data. If 0, the data at infinity is
+            extraction_radius (:obj:`float`, optional): extraction radius for strain data. If None or not provided, the data at infinity is
                 provided.
 
         Returns:
             numpy.ndarray: phase of :math:`rh` for a given mode and extraction radius.
 
         """
-        if extraction_radius == 0:
+        if extraction_radius is None:
             if self.extrapolated_sphere is None:
                 warnings.warn("There is no data extrapolated to infinity for that mode")
                 return None
@@ -413,22 +413,22 @@ class RadiationBundle:
             return None
         return self.radiation_spheres[extraction_radius].get_strain_phase_for_mode(l=l, m=m)
 
-    def get_psi4_max_time_for_mode(self, l: int, m: int, extraction_radius: float = 0) -> int:
+    def get_psi4_max_time_for_mode(self, l: int, m: int, extraction_radius: float = None) -> int:
         """Time of maximum :math:`\Psi_4` amplitude for a given mode and extraction radius.
 
-        The time at which the amplitude of :math:`\Psi_4` reaches its peak. If the extraction radius is 0, the data is
+        The time at which the amplitude of :math:`\Psi_4` reaches its peak. If the extraction radius is None, the data is
         extrapolated to infinite radius.
 
         Args:
             l (int): l value of mode
             m (int): m value of mode
-            extraction_radius (:obj:`float`, optional): radius at which :math:`\Psi_4` was extracted
+            extraction_radius (:obj:`float`, optional): radius at which :math:`\Psi_4` was extracted. If None or not provided, data at infinity is returned
 
         Returns:
             float: time of :math:`\Psi_4` max for given mode and extraction radius
 
         """
-        if extraction_radius == 0:
+        if extraction_radius is None:
             if self.extrapolated_sphere is None:
                 warnings.warn("There is no data extrapolated to infinity for that mode")
                 return None

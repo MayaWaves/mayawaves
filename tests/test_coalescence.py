@@ -1034,9 +1034,9 @@ class TestCoalescence(TestCase):
 
 
     def test_reset_radius_for_extrapolation_to_default(self):
-        TestCoalescence.coalescence.radiationbundle._RadiationBundle__radius_for_extrapolation = 120
+        TestCoalescence.coalescence.radiationbundle._RadiationBundle__radius_for_extrapolation_to_default = 120
         with patch.object(Coalescence, '_set_default_radius_for_extrapolation') as mock_set_default_radius_for_extrapolation:
-            TesteCoalescence.coalescence.reset_radius_for_extrapolation()
+            TestCoalescence.coalescence.reset_radius_for_extrapolation_to_default()
             self.assertIsNone(TestCoalescence.coalescence.radiationbundle._RadiationBundle__radius_for_extrapolation)
             mock_set_default_radius_for_extrapolation.assert_called_once()
         
@@ -1284,6 +1284,7 @@ class TestCoalescence(TestCase):
 
     def test_recoil_velocity(self):
         # equal mass should be close to zero
+        TestCoalescence.coalescence.radius_for_extrapolation = 70
         kick_velocity = TestCoalescence.coalescence.recoil_velocity()
         self.assertTrue(np.allclose([0, 0, 0], kick_velocity, atol=1e-7))
 
@@ -1304,6 +1305,7 @@ class TestCoalescence(TestCase):
 
     def test_recoil_speed(self):
         # equal mass so magnitude should be 0
+        TestCoalescence.coalescence.radius_for_extrapolation = 70
         kick_vector = TestCoalescence.coalescence.recoil_velocity()
         expected_magnitude = np.linalg.norm(kick_vector)
         generated_magnitude = TestCoalescence.coalescence.recoil_speed()
@@ -1406,9 +1408,9 @@ class TestCoalescence(TestCase):
             with patch.object(RadiationBundle, 'get_psi4_imaginary_for_mode') as mock_psi4_imaginary:
                 with patch.object(RadiationBundle, 'get_time') as mock_time:
                     time, real_psi4, imaginary_psi4 = TestCoalescence.coalescence.psi4_real_imag_for_mode(2, 1)
-                    mock_psi4_real.assert_called_once_with(2, 1, extraction_radius=0)
-                    mock_psi4_imaginary.assert_called_once_with(2, 1, extraction_radius=0)
-                    mock_time.assert_called_once_with(0)
+                    mock_psi4_real.assert_called_once_with(2, 1, extraction_radius=None)
+                    mock_psi4_imaginary.assert_called_once_with(2, 1, extraction_radius=None)
+                    mock_time.assert_called_once_with(None)
 
     def test_psi4_amp_phase_for_mode(self):
         stitched_data_directory = os.path.join(TestCoalescence.CURR_DIR,
@@ -1447,14 +1449,15 @@ class TestCoalescence(TestCase):
             with patch.object(RadiationBundle, 'get_psi4_phase_for_mode') as mock_psi4_phase:
                 with patch.object(RadiationBundle, 'get_time') as mock_time:
                     time, amp_psi4, phase_psi4 = TestCoalescence.coalescence.psi4_amp_phase_for_mode(2, 1)
-                    mock_psi4_amplitude.assert_called_once_with(2, 1, extraction_radius=0)
-                    mock_psi4_phase.assert_called_once_with(2, 1, extraction_radius=0)
-                    mock_time.assert_called_once_with(0)
+                    mock_psi4_amplitude.assert_called_once_with(2, 1, extraction_radius=None)
+                    mock_psi4_phase.assert_called_once_with(2, 1, extraction_radius=None)
+                    mock_time.assert_called_once_with(None)
 
     def test_psi4_max_time_for_mode(self):
         max_time_r70 = TestCoalescence.coalescence.psi4_max_time_for_mode(2, 2, 70)
         self.assertEqual(max_time_r70, 100.5)
 
+        TestCoalescence.coalescence.radius_for_extrapolation = 70
         max_time_extrap = TestCoalescence.coalescence.psi4_max_time_for_mode(2, 2)
         self.assertEqual(max_time_extrap, 100.5)
 
@@ -1522,9 +1525,9 @@ class TestCoalescence(TestCase):
             with patch.object(RadiationBundle, 'get_strain_cross_for_mode') as mock_strain_cross:
                 with patch.object(RadiationBundle, 'get_time') as mock_time:
                     time, strain_plus, strain_cross = TestCoalescence.coalescence.strain_for_mode(2, 1)
-                    mock_strain_plus.assert_called_once_with(2, 1, extraction_radius=0)
-                    mock_strain_cross.assert_called_once_with(2, 1, extraction_radius=0)
-                    mock_time.assert_called_once_with(0)
+                    mock_strain_plus.assert_called_once_with(2, 1, extraction_radius=None)
+                    mock_strain_cross.assert_called_once_with(2, 1, extraction_radius=None)
+                    mock_time.assert_called_once_with(None)
 
     def test_strain_recomposed_at_sky_location(self):
         # if extraction radius is provided
@@ -1553,7 +1556,7 @@ class TestCoalescence(TestCase):
                 self.assertTrue(np.all(extrapolated_strain[1] == cross_recovered))
                 self.assertTrue(np.all(time == time_recovered))
                 self.assertEqual(1, mock_time.call_count)
-                mock_strain_recomposed.assert_called_once_with(theta=0.1 * np.pi, phi=0.4 * np.pi, extraction_radius=0)
+                mock_strain_recomposed.assert_called_once_with(theta=0.1 * np.pi, phi=0.4 * np.pi, extraction_radius=None)
 
     def test_strain_amp_phase_for_mode(self):
         time, psi4_real, psi4_imag = np.loadtxt(
@@ -1598,9 +1601,9 @@ class TestCoalescence(TestCase):
             with patch.object(RadiationBundle, 'get_strain_phase_for_mode') as mock_strain_phase:
                 with patch.object(RadiationBundle, 'get_time') as mock_time:
                     time, strain_amp, strain_phase = TestCoalescence.coalescence.strain_amp_phase_for_mode(2, 1)
-                    mock_strain_amp.assert_called_once_with(2, 1, extraction_radius=0)
-                    mock_strain_phase.assert_called_once_with(2, 1, extraction_radius=0)
-                    mock_time.assert_called_once_with(0)
+                    mock_strain_amp.assert_called_once_with(2, 1, extraction_radius=None)
+                    mock_strain_phase.assert_called_once_with(2, 1, extraction_radius=None)
+                    mock_time.assert_called_once_with(None)
 
     def test_dEnergy_dt_radiated(self):
         coalescence = Coalescence(os.path.join(TestCoalescence.CURR_DIR,

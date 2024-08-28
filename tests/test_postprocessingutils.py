@@ -3072,7 +3072,7 @@ IO::out_fileinfo                     = "all"
 
         _store_lal_metadata(coalescence, temp_lal_h5, name, alternative_names,
                             initial_time_horizon, omega_22_nr, lvc_format, NR_group='UT Austin', NR_code='MAYA',
-                            bibtex_keys='Jani:2016wkt', contact_email='deirdre.shoemaker@austin.utexas.edu')
+                            bibtex_keys='Jani:2016wkt', contact_email='deirdre.shoemaker@austin.utexas.edu', lmax=8)
 
         expected_attributes = {"Format", "type", "name", "alternative-names", "NR-group", "NR-code",
                                "modification-date", "point-of-contact-email", "simulation-type", "INSPIRE-bibtex-keys",
@@ -3139,7 +3139,7 @@ IO::out_fileinfo                     = "all"
 
             _store_lal_metadata(coalescence, temp_lal_h5, name, alternative_names,
                                 initial_time_horizon, omega_22_nr, lvc_format, NR_group='UT Austin', NR_code='MAYA',
-                                bibtex_keys='Jani:2016wkt', contact_email='deirdre.shoemaker@austin.utexas.edu')
+                                bibtex_keys='Jani:2016wkt', contact_email='deirdre.shoemaker@austin.utexas.edu', lmax=8)
 
             self.assertTrue('frame' in temp_lal_h5['auxiliary-info'].attrs)
             self.assertEqual('Center of mass drift corrected', temp_lal_h5['auxiliary-info'].attrs['frame'])
@@ -3167,7 +3167,7 @@ IO::out_fileinfo                     = "all"
                 coalescence.set_radiation_frame(center_of_mass_corrected=True)
                 _store_lal_metadata(coalescence, temp_lal_h5, name, alternative_names,
                                     initial_time_horizon, omega_22_nr, lvc_format, NR_group='UT Austin', NR_code='MAYA',
-                                    bibtex_keys='Jani:2016wkt', contact_email='deirdre.shoemaker@austin.utexas.edu', )
+                                    bibtex_keys='Jani:2016wkt', contact_email='deirdre.shoemaker@austin.utexas.edu', lmax=8)
 
             self.assertTrue('frame' not in temp_lal_h5['auxiliary-info'].attrs)
 
@@ -3192,7 +3192,7 @@ IO::out_fileinfo                     = "all"
 
         _store_lal_metadata(coalescence, temp_lal_h5, name, alternative_names,
                             initial_time_horizon, omega_22_nr, lvc_format, NR_group='UT Austin', NR_code='MAYA',
-                            bibtex_keys='Jani:2016wkt', contact_email='deirdre.shoemaker@austin.utexas.edu',
+                            bibtex_keys='Jani:2016wkt', contact_email='deirdre.shoemaker@austin.utexas.edu', lmax=4,
                             license_type='public', nr_techniques='some techniques', comparable_simulation='sim',
                             files_in_error_series='sim1, sim2')
 
@@ -3229,7 +3229,7 @@ IO::out_fileinfo                     = "all"
             self.assertEqual("precessing", temp_lal_h5.attrs["simulation-type"])
 
         self.assertTrue(temp_lal_h5.attrs["license"] in ["LVC-internal", "public"])
-        self.assertTrue(temp_lal_h5.attrs["Lmax"] >= 2)
+        self.assertEqual(4, temp_lal_h5.attrs["Lmax"])
 
         self.assertTrue(temp_lal_h5.attrs["production-run"] in [0, 1])
 
@@ -3518,6 +3518,104 @@ IO::out_fileinfo                     = "all"
             temp_lal_h5.close()
             os.remove(temp_lal_h5_file_name)
 
+        # test extrapolated
+        h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                   "resources/temp/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
+        coalescence = Coalescence(h5_filename)
+
+        temp_lal_h5_file_name = os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5")
+        name = "D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"
+        alternative_names = []
+        coalescence.radius_for_extrapolation = 70
+        _put_data_in_lal_compatible_format(coalescence, temp_lal_h5_file_name, name, alternative_names,
+                                           extraction_radius=None, NR_group='UT Austin', NR_code='MAYA', bibtex_keys='Jani:2016wkt',
+                                           contact_email='deirdre.shoemaker@austin.utexas.edu')
+        temp_lal_h5 = h5py.File(temp_lal_h5_file_name, 'r')
+
+        format = temp_lal_h5.attrs["Format"]
+        self.assertTrue(format in [1, 2, 3])
+
+        if format == 2 or format == 3:
+            self.assertTrue("mass1-vs-time" in temp_lal_h5)
+            self.assertTrue("mass2-vs-time" in temp_lal_h5)
+            self.assertTrue("spin1x-vs-time" in temp_lal_h5)
+            self.assertTrue("spin1y-vs-time" in temp_lal_h5)
+            self.assertTrue("spin1z-vs-time" in temp_lal_h5)
+            self.assertTrue("spin2x-vs-time" in temp_lal_h5)
+            self.assertTrue("spin2y-vs-time" in temp_lal_h5)
+            self.assertTrue("spin2z-vs-time" in temp_lal_h5)
+            self.assertTrue("position1x-vs-time" in temp_lal_h5)
+            self.assertTrue("position1y-vs-time" in temp_lal_h5)
+            self.assertTrue("position1z-vs-time" in temp_lal_h5)
+            self.assertTrue("position2x-vs-time" in temp_lal_h5)
+            self.assertTrue("position2y-vs-time" in temp_lal_h5)
+            self.assertTrue("position2z-vs-time" in temp_lal_h5)
+            self.assertTrue("LNhatx-vs-time" in temp_lal_h5)
+            self.assertTrue("LNhaty-vs-time" in temp_lal_h5)
+            self.assertTrue("LNhatz-vs-time" in temp_lal_h5)
+            self.assertTrue("Omega-vs-time" in temp_lal_h5)
+
+        elif format == 3:
+            self.assertTrue("remnant-mass-vs-time" in temp_lal_h5)
+            self.assertTrue("remnant-spinx-vs-time" in temp_lal_h5)
+            self.assertTrue("remnant-spiny-vs-time" in temp_lal_h5)
+            self.assertTrue("remnant-spinz-vs-time" in temp_lal_h5)
+            self.assertTrue("remnant-positionx-vs-time" in temp_lal_h5)
+            self.assertTrue("remnant-positiony-vs-time" in temp_lal_h5)
+            self.assertTrue("remnant-positionz-vs-time" in temp_lal_h5)
+
+        time = temp_lal_h5["NRtimes"][()]
+        self.assertTrue(len(time) > 0)
+
+        lmax = temp_lal_h5.attrs["Lmax"]
+        for l in range(2, lmax + 1):
+            for m in range(-l, l + 1):
+                amp_group_name = "amp_l%d_m%d" % (l, m)
+                phase_group_name = "phase_l%d_m%d" % (l, m)
+                self.assertTrue(amp_group_name in temp_lal_h5)
+                self.assertTrue(phase_group_name in temp_lal_h5)
+                raw_time, raw_amp, raw_phase = coalescence.strain_amp_phase_for_mode(l, m)
+
+                cut_index = np.argmax(raw_time > (75 + 70))
+                expected_time = raw_time[cut_index:]
+                expected_amp = raw_amp[cut_index:]
+                expected_phase = raw_phase[cut_index:]
+
+                self.assertEqual(len(time), len(expected_time))
+                spline_amp = romspline.readSpline(temp_lal_h5_file_name, amp_group_name)
+                spline_phase = romspline.readSpline(temp_lal_h5_file_name, phase_group_name)
+                generated_amp = spline_amp(time)
+                generated_phase = spline_phase(time)
+                if m != 0:
+                    self.assertTrue(np.all(np.isclose(expected_amp, generated_amp, atol=2e-3)))
+                    self.assertTrue(np.all(np.isclose(expected_phase, generated_phase, atol=2e-2)))
+                else:
+                    self.assertTrue(np.all(generated_amp == 0))
+                    self.assertTrue(np.all(generated_phase == 0))
+
+        temp_lal_h5 = h5py.File(temp_lal_h5_file_name, 'r')
+        self.assertTrue('frame' not in temp_lal_h5['auxiliary-info'].attrs)
+
+        coalescence.close()
+        os.remove(temp_lal_h5_file_name)
+        
+            
+        # test not setting the radius for extrapolation                                                                                                                                   
+        h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                   "resources/temp/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
+        coalescence = Coalescence(h5_filename)
+        temp_lal_h5_file_name = os.path.join(TestPostprocessingUtils.CURR_DIR, "resources/temp.h5")
+        name = "D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67"
+        alternative_names = []
+        try:
+            _put_data_in_lal_compatible_format(coalescence, temp_lal_h5_file_name, name, alternative_names,
+                                               extraction_radius=None, NR_group='UT Austin', NR_code='MAYA', bibtex_keys='Jani:2016wkt',
+                                               contact_email='deirdre.shoemaker@austin.utexas.edu')
+            self.fail()
+        except ValueError:
+            pass
+
+
     def test_export_to_ascii(self):
         h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR,
                                    "resources/temp/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
@@ -3687,7 +3785,7 @@ IO::out_fileinfo                     = "all"
         h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR,
                                    "resources/temp/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
         coalescence = Coalescence(h5_filename)
-        coalescence.radius_for_extrapolation = 75
+        coalescence.radius_for_extrapolation = 70
         coalescence.radiationbundle._RadiationBundle__frame = Frame.RAW
         pputils.export_to_lvcnr_catalog(coalescence, output_directory, NR_group='UT Austin', NR_code='MAYA',
                                         bibtex_keys='Jani:2016wkt',
@@ -3757,7 +3855,7 @@ IO::out_fileinfo                     = "all"
             h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR,
                                        "resources/temp/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
             coalescence = Coalescence(h5_filename)
-            coalescence.radius_for_extrapolation = 75
+            coalescence.radius_for_extrapolation = 70
             pputils.export_to_lvcnr_catalog(coalescence, output_directory, center_of_mass_correction=True,
                                             NR_group='UT Austin', NR_code='MAYA', bibtex_keys='Jani:2016wkt',
                                             contact_email='deirdre.shoemaker@austin.utexas.edu')
@@ -3779,7 +3877,7 @@ IO::out_fileinfo                     = "all"
             h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR,
                                        "resources/temp/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
             coalescence = Coalescence(h5_filename)
-            coalescence.radius_for_extrapolation = 75
+            coalescence.radius_for_extrapolation = 70
             with patch.object(Coalescence, 'center_of_mass', new_callable=PropertyMock,
                               return_value=(None, None)) as mock_center_of_mass:
                 try:
@@ -3795,6 +3893,7 @@ IO::out_fileinfo                     = "all"
             h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR,
                                        "resources/temp/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67.h5")
             coalescence = Coalescence(h5_filename)
+            coalescence.radius_for_extrapolation = 70
             with patch.object(Coalescence, 'center_of_mass', new_callable=PropertyMock,
                               return_value=(None, None)) as mock_center_of_mass:
                 pputils.export_to_lvcnr_catalog(coalescence, output_directory, center_of_mass_correction=True,
@@ -3814,7 +3913,7 @@ IO::out_fileinfo                     = "all"
 
         # if precessing without enough spin data, this should fail
         coalescence = Coalescence(h5_filename)
-        coalescence.radius_for_extrapolation = 75
+        coalescence.radius_for_extrapolation = 70
         mock_coalescence_spin_configuration.return_value = "precessing"
         pputils.export_to_lvcnr_catalog(coalescence, output_directory, NR_group='UT Austin', NR_code='MAYA',
                                         bibtex_keys='Jani:2016wkt',
@@ -3963,12 +4062,16 @@ IO::out_fileinfo                     = "all"
 
         # if precessing without enough spin data, this should just warn
         coalescence = Coalescence(h5_filename)
+        coalescence.radius_for_extrapolation = 70
         mock_coalescence_spin_configuration.return_value = "precessing"
         pputils.export_to_lal_compatible_format(coalescence, output_directory, NR_group='UT Austin',
                                                 NR_code='MAYA', bibtex_keys='Jani:2016wkt',
                                                 contact_email='deirdre.shoemaker@austin.utexas.edu',)
         self.assertTrue(os.path.exists(lal_h5_filepath))
         os.remove(lal_h5_filepath)
+
+        # test not setting the radius for extrapolation                                                                                                                                   
+        self.fail()
 
     @mock.patch("matplotlib.pyplot.show")
     def test_summarize_coalescence(self, mock_show):

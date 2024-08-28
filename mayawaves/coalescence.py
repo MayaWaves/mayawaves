@@ -1016,7 +1016,7 @@ class Coalescence:
 
         self.__radiation_mode_bundle.create_extrapolated_sphere(order=order)
 
-    def psi4_real_imag_for_mode(self, l: int, m: int, extraction_radius: float = 0) -> tuple:
+    def psi4_real_imag_for_mode(self, l: int, m: int, extraction_radius: float = None) -> tuple:
         """Real and imaginary components of :math:`\Psi_4` for a given mode.
 
         Returns the time and real and imaginary parts of :math:`\Psi_4` for a given mode and extraction radius.
@@ -1036,7 +1036,7 @@ class Coalescence:
         time = self.__radiation_mode_bundle.get_time(extraction_radius)
         return time, real, imag
 
-    def psi4_amp_phase_for_mode(self, l: int, m: int, extraction_radius: float = 0) -> tuple:
+    def psi4_amp_phase_for_mode(self, l: int, m: int, extraction_radius: float = None) -> tuple:
         """Amplitude and phase of :math:`\Psi_4` for a given mode.
 
         Returns the time and the amplitude and phase of :math:`\Psi_4` for a given mode and extraction radius.
@@ -1056,7 +1056,7 @@ class Coalescence:
         time = self.__radiation_mode_bundle.get_time(extraction_radius)
         return time, amplitude, phase
 
-    def strain_for_mode(self, l: int, m: int, extraction_radius: float = 0) -> tuple:
+    def strain_for_mode(self, l: int, m: int, extraction_radius: float = None) -> tuple:
         """Real and imaginary components of strain for a given mode.
 
         Returns the time and the plus and cross components of :math:`rh` for a given mode and extraction radius,
@@ -1078,7 +1078,7 @@ class Coalescence:
         time = self.radiationbundle.get_time(extraction_radius)
         return time, plus, cross
 
-    def strain_recomposed_at_sky_location(self, theta: float, phi: float, extraction_radius: float = 0) -> tuple:
+    def strain_recomposed_at_sky_location(self, theta: float, phi: float, extraction_radius: float = None) -> tuple:
         """Time, plus, and cross components of strain recomposed at a given sky location
 
         The strain is recomposed by summing up the modes using spin weighted spherical harmonics as
@@ -1098,7 +1098,7 @@ class Coalescence:
         time = self.__radiation_mode_bundle.get_time(extraction_radius)
         return time, plus, cross
 
-    def strain_amp_phase_for_mode(self, l: int, m: int, extraction_radius: float = 0) -> tuple:
+    def strain_amp_phase_for_mode(self, l: int, m: int, extraction_radius: float = None) -> tuple:
         """Amplitude and phase of strain for a given mode.
 
         Returns the time and amplitude and phase of the strain for a given mode and extraction radius. The
@@ -1114,12 +1114,14 @@ class Coalescence:
             tuple: time, :math:`rh_+`, and :math:`rh_{\\times}` for a given mode and extraction radius
 
         """
+        print("In strain_amp_phase_for_mode")
+        print(l, m, extraction_radius)
         amp = self.__radiation_mode_bundle.get_strain_amplitude_for_mode(l, m, extraction_radius=extraction_radius)
         phase = self.__radiation_mode_bundle.get_strain_phase_for_mode(l, m, extraction_radius=extraction_radius)
         time = self.radiationbundle.get_time(extraction_radius)
         return time, amp, phase
 
-    def psi4_max_time_for_mode(self, l: int, m: int, extraction_radius: float = 0) -> float:
+    def psi4_max_time_for_mode(self, l: int, m: int, extraction_radius: float = None) -> float:
         """Time of maximum :math:`\Psi_4` amplitude for a given mode.
 
         The time at which the amplitude of :math:`\Psi_4` reaches its peak.

@@ -2418,6 +2418,7 @@ def _store_lal_metadata(coalescence: Coalescence, lal_h5_file, name: str, altern
         NR_code (str): NR code that performed this simulation
         bibtex_keys (str): bibtex keys to use when citing this simulation
         contact_email (str): email to use if questions arise regarding this simulation
+        lmax (int): maximum l value to store
         license_type (:obj:`str`, optional): whether it is public or LVC-internal
         nr_techniques (:obj:`str`, optional): what techniques were used in this simulation
         comparable_simulation (:obj:`str`, optional): other similar simulations
@@ -2654,7 +2655,7 @@ def _put_data_in_lal_compatible_format(coalescence: Coalescence, lal_h5_file_nam
         lal_h5_file_name (str): the path to the h5 file being exported to
         name (str): the name of the simulation
         alternative_names (list): alternative names for the simulation
-        extraction_radius (float): the extraction radius being exported. If 0, will be extrapolated to infinite radius.
+        extraction_radius (float): the extraction radius being exported. If None, will be extrapolated to infinite radius.
         NR_group (str): NR group that performed this simulation
         NR_code (str): NR code that performed this simulation
         bibtex_keys (str): bibtex keys to use when citing this simulation
@@ -2676,11 +2677,16 @@ def _put_data_in_lal_compatible_format(coalescence: Coalescence, lal_h5_file_nam
             coalescence.set_radiation_frame()
 
     initial_time_horizon = 75
-    if extraction_radius != 0:
+    if extraction_radius is not None:
         initial_time_strain = initial_time_horizon + extraction_radius
     else:
-        initial_time_strain = initial_time_horizon + coalescence.radiationbundle.radius_for_extrapolation
+        if coalescence.radius_for_extrapolation is None:
+            raise ValueError("Unable to put into lal compatible format without either an extraction_radius or a radius for extrapolation. Please set Coalescence.radius_for_extrapolation.")
+        initial_time_strain = initial_time_horizon + coalescence.radius_for_extrapolation
 
+    if lmax is None:
+        lmax = coalescence.l_max
+        
     lal_h5_file = h5py.File(lal_h5_file_name, 'w')
     # strain
     included_modes = coalescence.included_modes
@@ -2695,7 +2701,7 @@ def _put_data_in_lal_compatible_format(coalescence: Coalescence, lal_h5_file_nam
             continue
         if l < 2:
             continue
-        time_raw, amp_raw, phase_raw = coalescence.strain_amp_phase_for_mode(l, m, extraction_radius)
+        time_raw, amp_raw, phase_raw = coalescence.strain_amp_phase_for_mode(l, m, extraction_radius=extraction_radius)
         if time_raw is None or amp_raw is None or phase_raw is None:
             raise_mode_error = True
             continue
@@ -2738,7 +2744,7 @@ def _put_data_in_lal_compatible_format(coalescence: Coalescence, lal_h5_file_nam
                             comparable_simulation, files_in_error_series, production_run)
 
         time_shift = max_time - (
-            coalescence.radiationbundle.radius_for_extrapolation if extraction_radius == 0 else extraction_radius)
+            coalescence.radiationbundle.radius_for_extrapolation if extraction_radius is None else extraction_radius)
         _store_compact_object_timeseries_data(coalescence, lal_h5_file, lvc_format, time_shift, initial_time_horizon)
 
         lal_h5_file.close()
@@ -2873,6 +2879,7 @@ def export_to_lvcnr_catalog(coalescence: Coalescence, output_directory: str,
         files_in_error_series (:obj:`str`, optional): other simulations in the same error series
         production_run (:obj:`bool`, optional): whether this is a production run. Default True.
         center_of_mass_correction (:obj:`bool`, optional): whether to correct for center of mass drift. Default False.
+        lmax (:obj:'int', optional): the maximum l value to include modes for 
 
     """
     catalog_id = coalescence.catalog_id
@@ -2891,7 +2898,7 @@ def export_to_lvcnr_catalog(coalescence: Coalescence, output_directory: str,
     h5_file_path = os.path.join(output_directory, name + ".h5")
     try:
         _put_data_in_lal_compatible_format(coalescence=coalescence, lal_h5_file_name=h5_file_path, name=name,
-                                           alternative_names=alternative_names, extraction_radius=0,
+                                           alternative_names=alternative_names, extraction_radius=None,
                                            NR_group=NR_group, NR_code=NR_code, bibtex_keys=bibtex_keys,
                                            contact_email=contact_email, license_type=license_type,
                                            nr_techniques=nr_techniques, comparable_simulation=comparable_simulation,
@@ -2907,7 +2914,7 @@ def export_to_lvcnr_catalog(coalescence: Coalescence, output_directory: str,
 
 def export_to_lal_compatible_format(coalescence: Coalescence, output_directory,
                                     NR_group: str, NR_code: str, bibtex_keys: str, contact_email: str,
-                                    extraction_radius: float = 0, name=None, license_type='LVC-internal',
+                                    extraction_radius: float = None, name=None, license_type='LVC-internal',
                                     nr_techniques: str = None,
                                     comparable_simulation: str = None, files_in_error_series: str = '',
                                     production_run: bool = True, center_of_mass_correction: bool = False, lmax: int = None):
@@ -2931,6 +2938,7 @@ def export_to_lal_compatible_format(coalescence: Coalescence, output_directory,
         files_in_error_series (:obj:`str`, optional): other simulations in the same error series
         production_run (:obj:`bool`, optional): whether this is a production run. Default True.
         center_of_mass_correction (:obj:`bool`, optional): whether to correct for center of mass drift. Default False.
+        lmax (:obj:'int', optional): the maximum l value to include modes for 
 
     """
     simulation_name = coalescence.name
