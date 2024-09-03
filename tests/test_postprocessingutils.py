@@ -3920,8 +3920,17 @@ IO::out_fileinfo                     = "all"
                                         contact_email='deirdre.shoemaker@austin.utexas.edu')
         self.assertFalse(os.path.exists(lal_h5_filepath))
 
-        # test not setting the radius for extrapolation
-        self.fail()
+        # test not setting the radius for extrapolation for a simulation that doesn't have a good extraction radius
+        coalescence = Coalescence(h5_filename)
+        try:
+            mock_coalescence_spin_configuration.return_value = "non-spinning"
+            pputils.export_to_lvcnr_catalog(coalescence, output_directory, NR_group='UT Austin', NR_code='MAYA',
+                                            bibtex_keys='Jani:2016wkt',
+                                            contact_email='deirdre.shoemaker@austin.utexas.edu')
+            self.fail()
+        except ValueError:
+            pass
+
 
     @mock.patch("mayawaves.coalescence.Coalescence.spin_configuration", new_callable=PropertyMock)
     def test_export_to_lal_compatible_format(self, mock_coalescence_spin_configuration):
@@ -4066,13 +4075,37 @@ IO::out_fileinfo                     = "all"
         mock_coalescence_spin_configuration.return_value = "precessing"
         pputils.export_to_lal_compatible_format(coalescence, output_directory, NR_group='UT Austin',
                                                 NR_code='MAYA', bibtex_keys='Jani:2016wkt',
-                                                contact_email='deirdre.shoemaker@austin.utexas.edu',)
+                                                contact_email='deirdre.shoemaker@austin.utexas.edu')
+        coalescence.close()
         self.assertTrue(os.path.exists(lal_h5_filepath))
         os.remove(lal_h5_filepath)
+        
+        # test not setting the radius for extrapolation for a simulation that doesn't have a good extraction radius
+        coalescence = Coalescence(h5_filename)
+        try:
+            mock_coalescence_spin_configuration.return_value = "non-spinning"
+            pputils.export_to_lal_compatible_format(coalescence, output_directory, NR_group='UT Austin',
+                                                    NR_code='MAYA', bibtex_keys='Jani:2016wkt',
+                                                    contact_email='deirdre.shoemaker@austin.utexas.edu')
+            self.fail()
+        except ValueError:
+            pass
 
-        # test not setting the radius for extrapolation                                                                                                                                   
-        self.fail()
+        # # test not setting the radius for extrapolation for a simulation that does have a good extraction radius
+        # mock_coalescence_spin_configuration.return_value = "non-spinning"
+        # h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR,
+        #                            "resources/radiative_quantities_resources/D11_q2_a1_0.0_0.0_0.4_a2_0.0_0.0_0.4_m282.35.h5")
+        # coalescence = Coalescence(h5_filename)
+        # pputils.export_to_lal_compatible_format(coalescence=coalescence, output_directory=output_directory,
+        #                                         NR_group='UT Austin', NR_code='MAYA', bibtex_keys='Jani:2016wkt',
+        #                                         contact_email='deirdre.shoemaker@austin.utexas.edu')
+        # coalescence.close()
+        # lal_h5_filepath = os.path.join(TestPostprocessingUtils.CURR_DIR,
+        #                                "resources/test_output/D11_q2_a1_0.0_0.0_0.4_a2_0.0_0.0_0.4_m282.35.h5")
+        # self.assertTrue(os.path.exists(lal_h5_filepath))
+        # os.remove(lal_h5_filepath)
 
+            
     @mock.patch("matplotlib.pyplot.show")
     def test_summarize_coalescence(self, mock_show):
         self.maxDiff = None

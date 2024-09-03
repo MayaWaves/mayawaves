@@ -396,6 +396,8 @@ class Coalescence:
         extraction_radii = np.array(self.included_extraction_radii)
         grid_structure = self.grid_structure
 
+        print(grid_structure)
+        
         if grid_structure is None:
             raise ValueError("Unable to find a good default extraction radius. Please set one manually with Coalescence.radius_for_extrapolation")
         
@@ -404,6 +406,7 @@ class Coalescence:
         for grid_id, grid in grid_structure.items():
             if grid["center"] == [0.0, 0.0, 0.0]:
                 center_grid = grid
+        print(center_grid)
         grid_levels = sorted(center_grid["levels"].keys())
                 
         # start by finding largest radius where dx < 1 / (2 * orbital frequency at merger)
