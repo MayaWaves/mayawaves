@@ -1030,7 +1030,12 @@ class TestCoalescence(TestCase):
 
     @mock.patch("mayawaves.coalescence.Coalescence.grid_structure", new_callable=PropertyMock)
     @mock.patch("mayawaves.coalescence.Coalescence.orbital_frequency_at_time")
-    def test__set_default_radius_for_extrapolation(self, mock_orbital_frequency_at_time, mock_grid_structure):
+    @mock.patch("mayawaves.coalescence.Coalescence.merge_time", new_callable=PropertyMock)
+    @mock.patch("mayawaves.radiation.RadiationBundle.get_time")
+    def test__set_default_radius_for_extrapolation(self, mock_get_time, mock_merge_time, mock_orbital_frequency_at_time, mock_grid_structure):
+        # extraction radii included in sample simulation
+        # [30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0, 100.0, 110.0, 120.0, 130.0, 140.0, 150.0]
+
         # case where there is a radius with dx < 1 / (2 * orbital frequency at merger)
         grid_structure = {
             1:{
@@ -1063,30 +1068,144 @@ class TestCoalescence(TestCase):
                 }
             }
         }
-        print("*************************************************************************")
-        print(grid_structure[1])
-        print(grid_structure[1]["levels"].keys())
+
         orbital_frequency_at_merger = 0.5
         expected_default_radius = 90
-        print(TestCoalescence.coalescence.included_extraction_radii)
-        # [30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0, 100.0, 110.0, 120.0, 130.0, 140.0, 150.0]
         
         mock_grid_structure.return_value = grid_structure
         mock_orbital_frequency_at_time.return_value = orbital_frequency_at_merger
+        mock_merge_time.return_value = 1500
+        mock_get_time.return_value = np.linspace(0, 2000, 10)
 
-        TestCoalescence.radius_for_extrapolation = None
+        TestCoalescence.coalescence.radius_for_extrapolation = None
         TestCoalescence.coalescence._set_default_radius_for_extrapolation()
-        self.assertEqual(expected_default_radius, TestCoalescence.radius_for_extrapolation)
+        self.assertEqual(expected_default_radius, TestCoalescence.coalescence.radius_for_extrapolation)
 
         # case where there is not a radius with dx < 1 / (2 * orbital frequency at merger)
         # should choose the largest radius on the first refinement level with extraction spheres
-        self.fail()
+        grid_structure = {
+            1:{
+                'center': [0, 0, 0],
+                'levels':{
+                    0:{
+                        'dx': 48,
+                        'radius': 420
+                    },
+                    1:{
+                        'dx': 24,
+                        'radius': 210
+                    },
+                    2:{
+                        'dx': 12,
+                        'radius': 105
+                    }
+                }
+            }
+        }
+        
+        orbital_frequency_at_merger = 0.5
+        expected_default_radius = 100
+        
+        mock_grid_structure.return_value = grid_structure
+        mock_orbital_frequency_at_time.return_value = orbital_frequency_at_merger
+        mock_merge_time.return_value = 1500
+        mock_get_time.return_value = np.linspace(0, 2000, 10)
+
+        TestCoalescence.coalescence.radius_for_extrapolation = None
+        TestCoalescence.coalescence._set_default_radius_for_extrapolation()
+        self.assertEqual(expected_default_radius, TestCoalescence.coalescence.radius_for_extrapolation)
 
         # consider case where radius has to be reduced due to merge_time
-        self.fail()
+        grid_structure = {
+            1:{
+                'center': [0, 0, 0],
+                'levels':{
+                    0:{
+                        'dx': 3,
+                        'radius': 400
+                    },
+                    1:{
+                        'dx': 1.5,
+                        'radius': 200
+                    },
+                    2:{
+                        'dx': 0.75,
+                        'radius': 100
+                    },
+                    3:{
+                        'dx': 0.375,
+                        'radius': 50
+                    },
+                    4:{
+                        'dx': 0.1875,
+                        'radius': 25
+                    },
+                    5:{
+                        'dx': 0.09375,
+                        'radius': 12.5
+                    }
+                }
+            }
+        }
+
+        orbital_frequency_at_merger = 0.5
+        expected_default_radius = 80
+        
+        mock_grid_structure.return_value = grid_structure
+        mock_orbital_frequency_at_time.return_value = orbital_frequency_at_merger
+        mock_merge_time.return_value = 1500 
+        mock_get_time.return_value = np.linspace(0, 1735, 10)
+
+        TestCoalescence.coalescence.radius_for_extrapolation = None
+        TestCoalescence.coalescence._set_default_radius_for_extrapolation()
+        self.assertEqual(expected_default_radius, TestCoalescence.coalescence.radius_for_extrapolation)
         
         # can't find a good radius should throw a value error
-        self.fail()
+        grid_structure = {
+            1:{
+                'center': [0, 0, 0],
+                'levels':{
+                    0:{
+                        'dx': 3,
+                        'radius': 400
+                    },
+                    1:{
+                        'dx': 1.5,
+                        'radius': 200
+                    },
+                    2:{
+                        'dx': 0.75,
+                        'radius': 100
+                    },
+                    3:{
+                        'dx': 0.375,
+                        'radius': 50
+                    },
+                    4:{
+                        'dx': 0.1875,
+                        'radius': 25
+                    },
+                    5:{
+                        'dx': 0.09375,
+                        'radius': 12.5
+                    }
+                }
+            }
+        }
+
+        orbital_frequency_at_merger = 0.5
+        
+        mock_grid_structure.return_value = grid_structure
+        mock_orbital_frequency_at_time.return_value = orbital_frequency_at_merger
+        mock_merge_time.return_value = 1500 # 1650 + 60
+        mock_get_time.return_value = np.linspace(0, 1710, 10)
+
+        TestCoalescence.coalescence.radius_for_extrapolation = None
+        try:
+            TestCoalescence.coalescence._set_default_radius_for_extrapolation()
+            self.fail()
+        except ValueError:
+            pass
 
     def test_reset_radius_for_extrapolation_to_default(self):
         TestCoalescence.coalescence.radiationbundle._RadiationBundle__radius_for_extrapolation_to_default = 120

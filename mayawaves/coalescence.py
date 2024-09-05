@@ -395,8 +395,6 @@ class Coalescence:
         
         extraction_radii = np.array(self.included_extraction_radii)
         grid_structure = self.grid_structure
-
-        print(grid_structure)
         
         if grid_structure is None:
             raise ValueError("Unable to find a good default extraction radius. Please set one manually with Coalescence.radius_for_extrapolation")
@@ -406,7 +404,6 @@ class Coalescence:
         for grid_id, grid in grid_structure.items():
             if grid["center"] == [0.0, 0.0, 0.0]:
                 center_grid = grid
-        print(center_grid)
         grid_levels = sorted(center_grid["levels"].keys())
                 
         # start by finding largest radius where dx < 1 / (2 * orbital frequency at merger)
@@ -427,9 +424,10 @@ class Coalescence:
                 else:
                     optimal_radius = max(extraction_radii[extraction_radii < center_grid["levels"][level]["radius"]])
                     break
-
+                
         # for finetuning, reduce the radius until the merge_time < 150 before the end of the data to ensure full ringdown is captured
         merge_time = self.merge_time
+
         extraction_radii_within_optimal = sorted(extraction_radii[extraction_radii <= optimal_radius], reverse=True)
         for radius in extraction_radii_within_optimal:
             time = self.radiationbundle.get_time(extraction_radius = radius)
@@ -1117,8 +1115,6 @@ class Coalescence:
             tuple: time, :math:`rh_+`, and :math:`rh_{\\times}` for a given mode and extraction radius
 
         """
-        print("In strain_amp_phase_for_mode")
-        print(l, m, extraction_radius)
         amp = self.__radiation_mode_bundle.get_strain_amplitude_for_mode(l, m, extraction_radius=extraction_radius)
         phase = self.__radiation_mode_bundle.get_strain_phase_for_mode(l, m, extraction_radius=extraction_radius)
         time = self.radiationbundle.get_time(extraction_radius)
