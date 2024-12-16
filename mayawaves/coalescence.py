@@ -292,11 +292,6 @@ class Coalescence:
         Args:
             center_of_mass_corrected (:obj:`bool`, optional): Whether to correct for center of mass drift. Default False. If false, the frame is set back to the original, raw frame.
         """
-        import sys
-        if sys.version_info.major == 3 and sys.version_info.minor > 10:
-            warnings.warn('Python version too recent to be compatible with Scri package. Unable to change the radiation frame.')
-            raise ImportError('Unable to change the radiation frame. Python version too recent to be compatible with Scri package. If you would like the ability to move to center-of-mass corrected frame, use python <= 3.10.')
-
         from mayawaves.radiation import Frame
 
         if center_of_mass_corrected:
