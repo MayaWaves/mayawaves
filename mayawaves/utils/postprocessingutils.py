@@ -2856,7 +2856,7 @@ def determine_lvc_format(coalescence: Coalescence, initial_horizon_time: float) 
 
 def export_to_lvcnr_catalog(coalescence: Coalescence, output_directory: str,
                             NR_group: str, NR_code: str, bibtex_keys: str, contact_email: str,
-                            name: str = None, license_type='LVC-internal', nr_techniques: str = None,
+                            extraction_radius: float = None, name: str = None, license_type='LVC-internal', nr_techniques: str = None,
                             comparable_simulation: str = None, files_in_error_series: str = '',
                             production_run: bool = True, center_of_mass_correction: bool = False, lmax: int = None):
     """Exports the Coalescence object to the format required by LIGO to be included in the LVC-NR catalog.
@@ -2872,6 +2872,7 @@ def export_to_lvcnr_catalog(coalescence: Coalescence, output_directory: str,
         NR_code (str): NR code that performed this simulation
         bibtex_keys (str): bibtex keys to use when citing this simulation
         contact_email (str): email to use if questions arise regarding this simulation
+        extraction_radius (:obj:`float`, optional): radius at which to extract gravitational wave data
         name (:obj:`str`, optional): the tag to save the simulation as (e.g. MAYA0908)
         license_type (:obj:`str`, optional): whether it is public or LVC-internal
         nr_techniques (:obj:`str`, optional): what techniques were used in this simulation
@@ -2898,7 +2899,7 @@ def export_to_lvcnr_catalog(coalescence: Coalescence, output_directory: str,
     h5_file_path = os.path.join(output_directory, name + ".h5")
     try:
         _put_data_in_lal_compatible_format(coalescence=coalescence, lal_h5_file_name=h5_file_path, name=name,
-                                           alternative_names=alternative_names, extraction_radius=None,
+                                           alternative_names=alternative_names, extraction_radius=extraction_radius,
                                            NR_group=NR_group, NR_code=NR_code, bibtex_keys=bibtex_keys,
                                            contact_email=contact_email, license_type=license_type,
                                            nr_techniques=nr_techniques, comparable_simulation=comparable_simulation,
