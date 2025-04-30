@@ -595,6 +595,7 @@ class RadiationBundle:
         """
         if self.radius_for_extrapolation is None:
             raise ValueError("Unable to create an extrapolated sphere because no radius for extrapolation is set. Please set with Coalescence.radius_for_extrapolation.")
+        warnings.warn("This extrapolation uses the formula given in https://arxiv.org/abs/1008.4360 which may not be accurate for all modes. Use with caution.")
         radiation_sphere = self.radiation_spheres[self.radius_for_extrapolation]
         extrap_sphere = radiation_sphere.get_extrapolated_sphere(order=order)
         if extrap_sphere is None:
