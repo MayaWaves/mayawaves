@@ -6,6 +6,8 @@ from unittest import mock
 from mayawaves.utils.catalogutils import Catalog
 from mayawaves.utils.catalogutils import Parameter
 import os
+import datetime as dt
+from freezegun import freeze_time
 
 
 class TestCatalogUtils(TestCase):
@@ -14,8 +16,10 @@ class TestCatalogUtils(TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         metadata_path = os.path.join(TestCatalogUtils.CURR_DIR, 'resources')
+        metadata_file_path = os.path.join(metadata_path, "MAYAmetadata.pkl")
         with mock.patch('os.path.dirname', return_value=metadata_path):
-            TestCatalogUtils.catalog = Catalog()
+            with freeze_time(dt.datetime.fromtimestamp(os.path.getmtime(metadata_file_path)).strftime('%Y-%m-%d')):
+                TestCatalogUtils.catalog = Catalog()
         TestCatalogUtils.output_directory = os.path.join(TestCatalogUtils.CURR_DIR, "resources/test_output")
         if os.path.exists(TestCatalogUtils.output_directory):
             shutil.rmtree(TestCatalogUtils.output_directory)
@@ -25,7 +29,7 @@ class TestCatalogUtils(TestCase):
     def tearDownClass(cls) -> None:
         if os.path.exists(TestCatalogUtils.output_directory):
             shutil.rmtree(TestCatalogUtils.output_directory)
-
+            
     def test_nonspinning_simulations(self):
         expected_total = 103
         total = len(TestCatalogUtils.catalog.nonspinning_simulations)
