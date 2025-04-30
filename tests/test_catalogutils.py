@@ -29,7 +29,7 @@ class TestCatalogUtils(TestCase):
     def tearDownClass(cls) -> None:
         if os.path.exists(TestCatalogUtils.output_directory):
             shutil.rmtree(TestCatalogUtils.output_directory)
-            
+
     def test_nonspinning_simulations(self):
         expected_total = 103
         total = len(TestCatalogUtils.catalog.nonspinning_simulations)
@@ -233,7 +233,6 @@ class TestCatalogUtils(TestCase):
         self.assertAlmostEqual(test_simulation[Parameter.MERGE_TIME], 202.1975, places=3)
         self.assertAlmostEqual(test_simulation[Parameter.MAYA_SIZE_GB], 0.0338, places=3)
         self.assertAlmostEqual(test_simulation[Parameter.LVCNR_SIZE_GB], 0.00139, places=3)
-
 
         test_simulation = TestCatalogUtils.catalog.get_parameters_for_simulation("GT0533")
         self.assertEqual(test_simulation[Parameter.NAME], 'SS_D6.2_a0.6_th210_M103')
