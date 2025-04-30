@@ -4091,19 +4091,19 @@ IO::out_fileinfo                     = "all"
         except ValueError:
             pass
 
-        # # test not setting the radius for extrapolation for a simulation that does have a good extraction radius
-        # mock_coalescence_spin_configuration.return_value = "non-spinning"
-        # h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR,
-        #                            "resources/radiative_quantities_resources/D11_q2_a1_0.0_0.0_0.4_a2_0.0_0.0_0.4_m282.35.h5")
-        # coalescence = Coalescence(h5_filename)
-        # pputils.export_to_lal_compatible_format(coalescence=coalescence, output_directory=output_directory,
-        #                                         NR_group='UT Austin', NR_code='MAYA', bibtex_keys='Jani:2016wkt',
-        #                                         contact_email='deirdre.shoemaker@austin.utexas.edu')
-        # coalescence.close()
-        # lal_h5_filepath = os.path.join(TestPostprocessingUtils.CURR_DIR,
-        #                                "resources/test_output/D11_q2_a1_0.0_0.0_0.4_a2_0.0_0.0_0.4_m282.35.h5")
-        # self.assertTrue(os.path.exists(lal_h5_filepath))
-        # os.remove(lal_h5_filepath)
+        # test not setting the radius for extrapolation for a simulation that does have a good extraction radius
+        mock_coalescence_spin_configuration.return_value = "non-spinning"
+        h5_filename = os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                   "resources/radiative_quantities_resources/D11_q2_a1_0.0_0.0_0.4_a2_0.0_0.0_0.4_m282.35.h5")
+        coalescence = Coalescence(h5_filename)
+        pputils.export_to_lal_compatible_format(coalescence=coalescence, output_directory=output_directory,
+                                                NR_group='UT Austin', NR_code='MAYA', bibtex_keys='Jani:2016wkt',
+                                                contact_email='deirdre.shoemaker@austin.utexas.edu', lmax=2)
+        coalescence.close()
+        lal_h5_filepath = os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                       "resources/test_output/D11_q2_a1_0.0_0.0_0.4_a2_0.0_0.0_0.4_m282.35.h5")
+        self.assertTrue(os.path.exists(lal_h5_filepath))
+        os.remove(lal_h5_filepath)
 
             
     @mock.patch("matplotlib.pyplot.show")

@@ -1015,12 +1015,6 @@ class TestCoalescence(TestCase):
         TestCoalescence.coalescence.radius_for_extrapolation = 5
         mock_Coalescence_set_default_radius_for_extrapolation.assert_not_called()
         mock_RadiationBundle_radius_for_extrapolation.assert_called_once_with(5)
-        # # invalid radius, raise value error
-        # try:
-        #     self.coalescence.radius_for_extrapolation = 5
-        #     self.fail()
-        # except ValueError:
-        #     pass
         
         # valid radius
         mock_RadiationBundle_radius_for_extrapolation.reset_mock()
