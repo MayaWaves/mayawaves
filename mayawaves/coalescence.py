@@ -440,11 +440,13 @@ class Coalescence:
         self.radius_for_extrapolation = optimal_radius
 
     def reset_radius_for_extrapolation_to_default(self):
+        """Reset the radius to use for extrapolation to infinity back to its default value."""
         self.radiationbundle.radius_for_extrapolation = None
         self._set_default_radius_for_extrapolation()
         
     @property
     def grid_structure(self):
+        """Dictionary containing the structure of the adaptive mesh refinement grids used in the simulation."""
         parameter_files = self.parameter_files
         if 'par' in parameter_files:
             parameter_file = parameter_files['par']
@@ -714,7 +716,7 @@ class Coalescence:
         """Mean anomaly based on periapsis and apoapsis times
 
         Compute and return the mean anomaly at the desired time using
-        :math:`2 \pi * \frac{t - T_{prev}}{T_{next} - T_{prev}}` where :math:`T_{next}' and :math:`T_{prev}' are
+        :math:`2 \pi * \frac{t - T_{prev}}{T_{next} - T_{prev}}` where :math:`T_{next}` and :math:`T_{prev}` are
         periapsis times.
 
         Args:
@@ -771,22 +773,25 @@ class Coalescence:
         return mean_anomaly
 
     def eccentricity_and_mean_anomaly_at_time(self, start_time, desired_time) -> tuple:
-        """Eccentricity and mean anomaly at desired time.
+        r"""Eccentricity and mean anomaly at desired time.
 
-        Compute the eccentricity and the mean anomaly using the orbital frequency as described in https://arxiv.org/abs/1810.00036.
-        Computes the eccentricity averaged over four orbits. If it is unable to fit four orbits of data successfully, it returns
-        an estimate of the eccentricity based on the initial momentum. Mean anomaly is defined as
-        :math:`2 \pi * \frac{t - T_{prev}}{T_{next} - T_{prev}}` where :math:`T_{next}' and :math:`T_{prev}' are
-        periapsis times.
+            Compute the eccentricity and the mean anomaly using the orbital frequency as described in https://arxiv.org/abs/1810.00036.
+            Computes the eccentricity averaged over four orbits. If it is unable to fit four orbits of data successfully, it returns
+            an estimate of the eccentricity based on the initial momentum. Mean anomaly is defined as
 
-        Args:
-            start_time (float): time from which to begin fitting eccentricity
-            desired_time (float): time at which to return the eccentricity
+            .. math::
+                2 \pi \frac{t - T_{prev}}{T_{next} - T_{prev}}
 
-        Returns:
-            tuple: averaged eccentricity over first four orbits and the mean anomaly at the desired time
+            where :math:`T_{next}` and :math:`T_{prev}` are periapsis times.
 
-        """
+            Args:
+                start_time (float): time from which to begin fitting eccentricity
+                desired_time (float): time at which to return the eccentricity
+
+            Returns:
+                tuple: averaged eccentricity over first four orbits and the mean anomaly at the desired time
+
+            """
 
         time, orbital_phase = self.orbital_phase_in_xy_plane
         _, orbital_frequency = self.orbital_frequency
