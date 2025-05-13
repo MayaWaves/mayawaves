@@ -31,7 +31,7 @@ at the top of your file. You can also import specific parts of mayawaves instead
 
 Requirements
 -------------------------------------
-This package requires python :math:`\geq` 3.9.
+This package requires python :math:`\geq` 3.8.
 
 It also relies upon the following python packages which are automatically installed from pip when you install mayawaves::
 
