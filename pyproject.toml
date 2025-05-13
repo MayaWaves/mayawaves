@@ -35,8 +35,8 @@ dependencies = ["numpy",
     "wget",
     "matplotlib",
     "mock",
-    "numba; python_version < '3.11'",
-    "scri; python_version < '3.11'"
+    "numba",
+    "scri"
 ]
 
 [project.urls]
