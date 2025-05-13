@@ -939,7 +939,7 @@ class RadiationSphere:
             return None
 
         h_t_shape = list(self.modes.values())[0].strain_plus.shape
-        h_t = np.zeros(h_t_shape, dtype=np.complex_)
+        h_t = np.zeros(h_t_shape, dtype=np.complex128)
 
         for mode in self.modes:
             l, m = mode
@@ -1329,8 +1329,8 @@ class RadiationSphere:
         x0 = np.zeros(3)
         xt0 = np.zeros(3)
         for i in range(3):
-            x0[i] = scipy.integrate.trapz(com_maya_int[:, i], t_com_maya_int) / (tf - ti)
-            xt0[i] = scipy.integrate.trapz(com_maya_int[:, i] * t_com_maya_int, t_com_maya_int) / (tf - ti)
+            x0[i] = scipy.integrate.trapezoid(com_maya_int[:, i], t_com_maya_int) / (tf - ti)
+            xt0[i] = scipy.integrate.trapezoid(com_maya_int[:, i] * t_com_maya_int, t_com_maya_int) / (tf - ti)
 
         # calculate alpha and beta with the Newtonian approach
         self.__alpha = (4 * (tf ** 2 + tf * ti + ti * 2) * x0 - 6 * (tf + ti) * xt0) / (tf - ti) ** 2
