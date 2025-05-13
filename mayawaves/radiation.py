@@ -98,6 +98,7 @@ class RadiationBundle:
 
     @property
     def radius_for_extrapolation(self) -> float:
+        """The radius to be used for extrapolation to infinity."""
         return self.__radius_for_extrapolation
 
     @radius_for_extrapolation.setter

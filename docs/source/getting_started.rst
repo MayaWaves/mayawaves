@@ -31,17 +31,11 @@ at the top of your file. You can also import specific parts of mayawaves instead
 
 Requirements
 -------------------------------------
-For most usecases, this package requires 3.9 :math:`\leq` python.
+This package requires python :math:`\geq` 3.9.
 
 It also relies upon the following python packages which are automatically installed from pip when you install mayawaves::
 
-    numpy, scipy, pandas, romspline, wget, matplotlib, mock
-
-
-However, if you want to use the ability to switch to a center-of-mass frame for the gravitational radiation, that has
-additional dependencies that require python :math:`\leq` 3.10 as well as the following dependencies::
-
-    numba, scri
+    freezegun, matplotlib, mock, numba, numpy, pandas, romspline, scipy, scri, wget
 
 This package has been tested with Einstein Toolkit Release Meitner (released on December 6th, 2023).
 It supports output from the following thorns::
