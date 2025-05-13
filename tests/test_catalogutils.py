@@ -6,6 +6,8 @@ from unittest import mock
 from mayawaves.utils.catalogutils import Catalog
 from mayawaves.utils.catalogutils import Parameter
 import os
+import datetime as dt
+from freezegun import freeze_time
 
 
 class TestCatalogUtils(TestCase):
@@ -14,8 +16,10 @@ class TestCatalogUtils(TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         metadata_path = os.path.join(TestCatalogUtils.CURR_DIR, 'resources')
+        metadata_file_path = os.path.join(metadata_path, "MAYAmetadata.pkl")
         with mock.patch('os.path.dirname', return_value=metadata_path):
-            TestCatalogUtils.catalog = Catalog()
+            with freeze_time(dt.datetime.fromtimestamp(os.path.getmtime(metadata_file_path)).strftime('%Y-%m-%d')):
+                TestCatalogUtils.catalog = Catalog()
         TestCatalogUtils.output_directory = os.path.join(TestCatalogUtils.CURR_DIR, "resources/test_output")
         if os.path.exists(TestCatalogUtils.output_directory):
             shutil.rmtree(TestCatalogUtils.output_directory)
@@ -229,7 +233,6 @@ class TestCatalogUtils(TestCase):
         self.assertAlmostEqual(test_simulation[Parameter.MERGE_TIME], 202.1975, places=3)
         self.assertAlmostEqual(test_simulation[Parameter.MAYA_SIZE_GB], 0.0338, places=3)
         self.assertAlmostEqual(test_simulation[Parameter.LVCNR_SIZE_GB], 0.00139, places=3)
-
 
         test_simulation = TestCatalogUtils.catalog.get_parameters_for_simulation("GT0533")
         self.assertEqual(test_simulation[Parameter.NAME], 'SS_D6.2_a0.6_th210_M103')

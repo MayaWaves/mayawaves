@@ -989,20 +989,470 @@ class TestCoalescence(TestCase):
         self.assertIsNone(generated_time)
         self.assertIsNone(generated_com)
 
-    def test_radius_for_extrapolation(self):
+    @mock.patch("mayawaves.radiation.RadiationBundle.radius_for_extrapolation", new_callable=PropertyMock)
+    @mock.patch("mayawaves.coalescence.Coalescence._set_default_radius_for_extrapolation", new_callable=PropertyMock)
+    def test_radius_for_extrapolation(self, mock_Coalescence_set_default_radius_for_extrapolation, mock_RadiationBundle_radius_for_extrapolation):
+        # getter
+        # is already set
+        mock_RadiationBundle_radius_for_extrapolation.return_value = 100
+        mock_RadiationBundle_radius_for_extrapolation.reset_mock()
         extrap_radius = TestCoalescence.coalescence.radius_for_extrapolation
-        self.assertEqual(TestCoalescence.coalescence.radiationbundle.radius_for_extrapolation, extrap_radius)
+        mock_Coalescence_set_default_radius_for_extrapolation.assert_not_called()
+        self.assertEqual(2, mock_RadiationBundle_radius_for_extrapolation.call_count)
+        self.assertEqual(100, extrap_radius)
 
-        # invalid radius
-        self.coalescence.radius_for_extrapolation = 5
-        self.assertEqual(70, self.coalescence.radiationbundle.radius_for_extrapolation)
-
+        # is not already set
+        mock_RadiationBundle_radius_for_extrapolation.return_value = None
+        mock_RadiationBundle_radius_for_extrapolation.reset_mock()
+        mock_Coalescence_set_default_radius_for_extrapolation.reset_mock()        
+        extrap_radius = TestCoalescence.coalescence.radius_for_extrapolation
+        mock_Coalescence_set_default_radius_for_extrapolation.assert_called_once()
+        self.assertEqual(2, mock_RadiationBundle_radius_for_extrapolation.call_count)
+                
+        # setter
+        mock_RadiationBundle_radius_for_extrapolation.reset_mock()
+        mock_Coalescence_set_default_radius_for_extrapolation.reset_mock()
+        TestCoalescence.coalescence.radius_for_extrapolation = 5
+        mock_Coalescence_set_default_radius_for_extrapolation.assert_not_called()
+        mock_RadiationBundle_radius_for_extrapolation.assert_called_once_with(5)
+        
         # valid radius
-        self.coalescence.radius_for_extrapolation = 40
-        self.assertEqual(40, self.coalescence.radiationbundle.radius_for_extrapolation)
+        mock_RadiationBundle_radius_for_extrapolation.reset_mock()
+        mock_Coalescence_set_default_radius_for_extrapolation.reset_mock()
+        TestCoalescence.coalescence.radius_for_extrapolation = 40
+        mock_RadiationBundle_radius_for_extrapolation.assert_called_once_with(40)
+
+    @mock.patch("mayawaves.coalescence.Coalescence.grid_structure", new_callable=PropertyMock)
+    @mock.patch("mayawaves.coalescence.Coalescence.orbital_frequency_at_time")
+    @mock.patch("mayawaves.coalescence.Coalescence.merge_time", new_callable=PropertyMock)
+    @mock.patch("mayawaves.radiation.RadiationBundle.get_time")
+    def test__set_default_radius_for_extrapolation(self, mock_get_time, mock_merge_time, mock_orbital_frequency_at_time, mock_grid_structure):
+        # extraction radii included in sample simulation
+        # [30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0, 100.0, 110.0, 120.0, 130.0, 140.0, 150.0]
+
+        # case where there is a radius with dx < 1 / (2 * orbital frequency at merger)
+        grid_structure = {
+            1:{
+                'center': [0, 0, 0],
+                'levels':{
+                    0:{
+                        'dx': 3,
+                        'radius': 400
+                    },
+                    1:{
+                        'dx': 1.5,
+                        'radius': 200
+                    },
+                    2:{
+                        'dx': 0.75,
+                        'radius': 100
+                    },
+                    3:{
+                        'dx': 0.375,
+                        'radius': 50
+                    },
+                    4:{
+                        'dx': 0.1875,
+                        'radius': 25
+                    },
+                    5:{
+                        'dx': 0.09375,
+                        'radius': 12.5
+                    }
+                }
+            }
+        }
+
+        orbital_frequency_at_merger = 0.5
+        expected_default_radius = 90
+        
+        mock_grid_structure.return_value = grid_structure
+        mock_orbital_frequency_at_time.return_value = orbital_frequency_at_merger
+        mock_merge_time.return_value = 1500
+        mock_get_time.return_value = np.linspace(0, 2000, 10)
+
+        TestCoalescence.coalescence.radius_for_extrapolation = None
+        TestCoalescence.coalescence._set_default_radius_for_extrapolation()
+        self.assertEqual(expected_default_radius, TestCoalescence.coalescence.radius_for_extrapolation)
+
+        # case where there is not a radius with dx < 1 / (2 * orbital frequency at merger)
+        # should choose the largest radius on the first refinement level with extraction spheres
+        grid_structure = {
+            1:{
+                'center': [0, 0, 0],
+                'levels':{
+                    0:{
+                        'dx': 48,
+                        'radius': 420
+                    },
+                    1:{
+                        'dx': 24,
+                        'radius': 210
+                    },
+                    2:{
+                        'dx': 12,
+                        'radius': 105
+                    }
+                }
+            }
+        }
+        
+        orbital_frequency_at_merger = 0.5
+        expected_default_radius = 100
+        
+        mock_grid_structure.return_value = grid_structure
+        mock_orbital_frequency_at_time.return_value = orbital_frequency_at_merger
+        mock_merge_time.return_value = 1500
+        mock_get_time.return_value = np.linspace(0, 2000, 10)
+
+        TestCoalescence.coalescence.radius_for_extrapolation = None
+        TestCoalescence.coalescence._set_default_radius_for_extrapolation()
+        self.assertEqual(expected_default_radius, TestCoalescence.coalescence.radius_for_extrapolation)
+
+        # consider case where radius has to be reduced due to merge_time
+        grid_structure = {
+            1:{
+                'center': [0, 0, 0],
+                'levels':{
+                    0:{
+                        'dx': 3,
+                        'radius': 400
+                    },
+                    1:{
+                        'dx': 1.5,
+                        'radius': 200
+                    },
+                    2:{
+                        'dx': 0.75,
+                        'radius': 100
+                    },
+                    3:{
+                        'dx': 0.375,
+                        'radius': 50
+                    },
+                    4:{
+                        'dx': 0.1875,
+                        'radius': 25
+                    },
+                    5:{
+                        'dx': 0.09375,
+                        'radius': 12.5
+                    }
+                }
+            }
+        }
+
+        orbital_frequency_at_merger = 0.5
+        expected_default_radius = 80
+        
+        mock_grid_structure.return_value = grid_structure
+        mock_orbital_frequency_at_time.return_value = orbital_frequency_at_merger
+        mock_merge_time.return_value = 1500 
+        mock_get_time.return_value = np.linspace(0, 1735, 10)
+
+        TestCoalescence.coalescence.radius_for_extrapolation = None
+        TestCoalescence.coalescence._set_default_radius_for_extrapolation()
+        self.assertEqual(expected_default_radius, TestCoalescence.coalescence.radius_for_extrapolation)
+        
+        # can't find a good radius should throw a value error
+        grid_structure = {
+            1:{
+                'center': [0, 0, 0],
+                'levels':{
+                    0:{
+                        'dx': 3,
+                        'radius': 400
+                    },
+                    1:{
+                        'dx': 1.5,
+                        'radius': 200
+                    },
+                    2:{
+                        'dx': 0.75,
+                        'radius': 100
+                    },
+                    3:{
+                        'dx': 0.375,
+                        'radius': 50
+                    },
+                    4:{
+                        'dx': 0.1875,
+                        'radius': 25
+                    },
+                    5:{
+                        'dx': 0.09375,
+                        'radius': 12.5
+                    }
+                }
+            }
+        }
+
+        orbital_frequency_at_merger = 0.5
+        
+        mock_grid_structure.return_value = grid_structure
+        mock_orbital_frequency_at_time.return_value = orbital_frequency_at_merger
+        mock_merge_time.return_value = 1500 # 1650 + 60
+        mock_get_time.return_value = np.linspace(0, 1710, 10)
+
+        TestCoalescence.coalescence.radius_for_extrapolation = None
+        try:
+            TestCoalescence.coalescence._set_default_radius_for_extrapolation()
+            self.fail()
+        except ValueError:
+            pass
+
+    def test_reset_radius_for_extrapolation_to_default(self):
+        TestCoalescence.coalescence.radiationbundle._RadiationBundle__radius_for_extrapolation_to_default = 120
+        with patch.object(Coalescence, '_set_default_radius_for_extrapolation') as mock_set_default_radius_for_extrapolation:
+            TestCoalescence.coalescence.reset_radius_for_extrapolation_to_default()
+            self.assertIsNone(TestCoalescence.coalescence.radiationbundle._RadiationBundle__radius_for_extrapolation)
+            mock_set_default_radius_for_extrapolation.assert_called_once()
+        
+    def test_grid_structure(self):
+        # equal mass simulation
+        generated_grid_structure = TestCoalescence.coalescence.grid_structure
+        expected_grid_structure = {
+            1:{
+                'center': [1.168642873, 0, 0],
+                'levels':{
+                    0:{
+                        'dx': 6,
+                        'radius': 384
+                    },
+                    1:{
+                        'dx': 3,
+                        'radius': 192
+                    },
+                    2:{
+                        'dx':  1.5,
+                        'radius': 96
+                    },
+                    3:{
+                        'dx': 0.75,
+                        'radius': 48
+                    },
+                    4:{
+                        'dx': 0.375,
+                        'radius': 12
+                    },
+                    5:{
+                        'dx': 0.1875,
+                        'radius': 6
+                    },
+                    6:{
+                        'dx': 0.09375,
+                        'radius': 3
+                    },
+                    7:{
+                        'dx': 0.046875,
+                        'radius': 1.5
+                    },
+                    8:{
+                        'dx': 0.0234375,
+                        'radius': 0.75
+                    },
+                }
+            },
+            2:{
+                'center': [-1.168642873, 0, 0],
+                'levels':{
+                    0:{
+                        'dx': 6,
+                        'radius': 384
+                    },
+                    1:{
+                        'dx': 3,
+                        'radius': 192
+                    },
+                    2:{
+                        'dx':  1.5,
+                        'radius': 96
+                    },
+                    3:{
+                        'dx': 0.75,
+                        'radius': 48
+                    },
+                    4:{
+                        'dx': 0.375,
+                        'radius': 12
+                    },
+                    5:{
+                        'dx': 0.1875,
+                        'radius': 6
+                    },
+                    6:{
+                        'dx': 0.09375,
+                        'radius': 3
+                    },
+                    7:{
+                        'dx': 0.046875,
+                        'radius': 1.5
+                    },
+                    8:{
+                        'dx': 0.0234375,
+                        'radius': 0.75
+                    },                
+                }
+            },
+            3:{
+                'center': [0, 0, 0],
+                'levels':{
+                    0:{
+                        'dx': 6,
+                        'radius': 384
+                    },
+                    1:{
+                        'dx': 3,
+                        'radius': 192
+                    },
+                    2:{
+                        'dx':  1.5,
+                        'radius': 96
+                    },
+                    3:{
+                        'dx': 0.75,
+                        'radius': 48
+                    }
+                }
+            }
+        }
+        self.assertEqual(expected_grid_structure, generated_grid_structure)
+
+        # unequal mass
+        coalescence = Coalescence(os.path.join(TestCoalescence.CURR_DIR,
+                                               "resources/radiative_quantities_resources/D11_q2_a1_0.0_0.0_0.4_a2_0.0_0.0_0.4_m282.35.h5"))
+        generated_grid_structure = coalescence.grid_structure
+        expected_grid_structure = {
+            1:{
+                'center': [3.666667, 0, 0],
+                'levels':{
+                    0:{
+                        'dx': 3.6266666666666669272,
+                        'radius': 696.32
+                    },
+                    1:{
+                        'dx': 1.8133333333333334636,
+                        'radius': 348.16
+                    },
+                    2:{
+                        'dx': 0.9066666666666667318,
+                        'radius': 174.08
+                    },
+                    3:{
+                        'dx': 0.4533333333333333659,
+                        'radius': 43.52
+                    },
+                    4:{
+                        'dx': 0.22666666666666668295,
+                        'radius': 21.76
+                    },
+                    5:{
+                        'dx': 0.113333333333333341475,
+                        'radius': 5.44
+                    },
+                    6:{
+                        'dx': 0.0566666666666666707375,
+                        'radius': 2.72
+                    },
+                    7:{
+                        'dx': 0.02833333333333333536875,
+                        'radius': 1.36
+                    },
+                    8:{
+                        'dx': 0.014166666666666667684375,
+                        'radius': 0.68
+                    },
+                    9:{
+                        'dx': 0.0070833333333333338421875,
+                        'radius': 0.34
+                    },
+                }
+            },
+            2:{
+                'center': [-7.333333, 0, 0],
+                'levels':{
+                    0:{
+                        'dx': 3.6266666666666669272,
+                        'radius': 696.32
+                    },
+                    1:{
+                        'dx': 1.8133333333333334636,
+                        'radius': 348.16
+                    },
+                    2:{
+                        'dx': 0.9066666666666667318,
+                        'radius': 174.08
+                    },
+                    3:{
+                        'dx': 0.4533333333333333659,
+                        'radius': 43.52
+                    },
+                    4:{
+                        'dx': 0.22666666666666668295,
+                        'radius': 21.76
+                    },
+                    5:{
+                        'dx': 0.113333333333333341475,
+                        'radius': 5.44
+                    },
+                    6:{
+                        'dx': 0.0566666666666666707375,
+                        'radius': 2.72
+                    },
+                    7:{
+                        'dx': 0.02833333333333333536875,
+                        'radius': 1.36
+                    },
+                    8:{
+                        'dx': 0.014166666666666667684375,
+                        'radius': 0.68
+                    },
+                    9:{
+                        'dx': 0.0070833333333333338421875,
+                        'radius': 0.34
+                    },
+                    10:{
+                        'dx': 0.00354166666666666692109375,
+                        'radius': 0.17
+                    },
+                }
+            },
+            3:{
+                'center': [0, 0, 0],
+                'levels':{
+                    0:{
+                        'dx': 3.6266666666666669272,
+                        'radius': 696.32
+                    },
+                    1:{
+                        'dx': 1.8133333333333334636,
+                        'radius': 348.16
+                    },
+                    2:{
+                        'dx': 0.9066666666666667318,
+                        'radius': 174.08
+                    },
+                    3:{
+                        'dx': 0.4533333333333333659,
+                        'radius': 43.52
+                    },
+                }
+            }
+        }
+        coalescence.close()
+        self.assertEqual(expected_grid_structure, generated_grid_structure)
+        
+        # GW150914 from etk
+        coalescence = Coalescence(os.path.join(TestCoalescence.CURR_DIR,
+                                               "resources/sample_etk_simulations/GW150914.h5"))
+        generated_grid_structure = coalescence.grid_structure
+        coalescence.close()
+        self.assertIsNone(generated_grid_structure)
+             
 
     def test_recoil_velocity(self):
         # equal mass should be close to zero
+        TestCoalescence.coalescence.radius_for_extrapolation = 70
         kick_velocity = TestCoalescence.coalescence.recoil_velocity()
         self.assertTrue(np.allclose([0, 0, 0], kick_velocity, atol=1e-7))
 
@@ -1023,6 +1473,7 @@ class TestCoalescence(TestCase):
 
     def test_recoil_speed(self):
         # equal mass so magnitude should be 0
+        TestCoalescence.coalescence.radius_for_extrapolation = 70
         kick_vector = TestCoalescence.coalescence.recoil_velocity()
         expected_magnitude = np.linalg.norm(kick_vector)
         generated_magnitude = TestCoalescence.coalescence.recoil_speed()
@@ -1125,9 +1576,9 @@ class TestCoalescence(TestCase):
             with patch.object(RadiationBundle, 'get_psi4_imaginary_for_mode') as mock_psi4_imaginary:
                 with patch.object(RadiationBundle, 'get_time') as mock_time:
                     time, real_psi4, imaginary_psi4 = TestCoalescence.coalescence.psi4_real_imag_for_mode(2, 1)
-                    mock_psi4_real.assert_called_once_with(2, 1, extraction_radius=0)
-                    mock_psi4_imaginary.assert_called_once_with(2, 1, extraction_radius=0)
-                    mock_time.assert_called_once_with(0)
+                    mock_psi4_real.assert_called_once_with(2, 1, extraction_radius=None)
+                    mock_psi4_imaginary.assert_called_once_with(2, 1, extraction_radius=None)
+                    mock_time.assert_called_once_with(None)
 
     def test_psi4_amp_phase_for_mode(self):
         stitched_data_directory = os.path.join(TestCoalescence.CURR_DIR,
@@ -1166,14 +1617,15 @@ class TestCoalescence(TestCase):
             with patch.object(RadiationBundle, 'get_psi4_phase_for_mode') as mock_psi4_phase:
                 with patch.object(RadiationBundle, 'get_time') as mock_time:
                     time, amp_psi4, phase_psi4 = TestCoalescence.coalescence.psi4_amp_phase_for_mode(2, 1)
-                    mock_psi4_amplitude.assert_called_once_with(2, 1, extraction_radius=0)
-                    mock_psi4_phase.assert_called_once_with(2, 1, extraction_radius=0)
-                    mock_time.assert_called_once_with(0)
+                    mock_psi4_amplitude.assert_called_once_with(2, 1, extraction_radius=None)
+                    mock_psi4_phase.assert_called_once_with(2, 1, extraction_radius=None)
+                    mock_time.assert_called_once_with(None)
 
     def test_psi4_max_time_for_mode(self):
         max_time_r70 = TestCoalescence.coalescence.psi4_max_time_for_mode(2, 2, 70)
         self.assertEqual(max_time_r70, 100.5)
 
+        TestCoalescence.coalescence.radius_for_extrapolation = 70
         max_time_extrap = TestCoalescence.coalescence.psi4_max_time_for_mode(2, 2)
         self.assertEqual(max_time_extrap, 100.5)
 
@@ -1241,9 +1693,9 @@ class TestCoalescence(TestCase):
             with patch.object(RadiationBundle, 'get_strain_cross_for_mode') as mock_strain_cross:
                 with patch.object(RadiationBundle, 'get_time') as mock_time:
                     time, strain_plus, strain_cross = TestCoalescence.coalescence.strain_for_mode(2, 1)
-                    mock_strain_plus.assert_called_once_with(2, 1, extraction_radius=0)
-                    mock_strain_cross.assert_called_once_with(2, 1, extraction_radius=0)
-                    mock_time.assert_called_once_with(0)
+                    mock_strain_plus.assert_called_once_with(2, 1, extraction_radius=None)
+                    mock_strain_cross.assert_called_once_with(2, 1, extraction_radius=None)
+                    mock_time.assert_called_once_with(None)
 
     def test_strain_recomposed_at_sky_location(self):
         # if extraction radius is provided
@@ -1272,7 +1724,7 @@ class TestCoalescence(TestCase):
                 self.assertTrue(np.all(extrapolated_strain[1] == cross_recovered))
                 self.assertTrue(np.all(time == time_recovered))
                 self.assertEqual(1, mock_time.call_count)
-                mock_strain_recomposed.assert_called_once_with(theta=0.1 * np.pi, phi=0.4 * np.pi, extraction_radius=0)
+                mock_strain_recomposed.assert_called_once_with(theta=0.1 * np.pi, phi=0.4 * np.pi, extraction_radius=None)
 
     def test_strain_amp_phase_for_mode(self):
         time, psi4_real, psi4_imag = np.loadtxt(
@@ -1317,9 +1769,9 @@ class TestCoalescence(TestCase):
             with patch.object(RadiationBundle, 'get_strain_phase_for_mode') as mock_strain_phase:
                 with patch.object(RadiationBundle, 'get_time') as mock_time:
                     time, strain_amp, strain_phase = TestCoalescence.coalescence.strain_amp_phase_for_mode(2, 1)
-                    mock_strain_amp.assert_called_once_with(2, 1, extraction_radius=0)
-                    mock_strain_phase.assert_called_once_with(2, 1, extraction_radius=0)
-                    mock_time.assert_called_once_with(0)
+                    mock_strain_amp.assert_called_once_with(2, 1, extraction_radius=None)
+                    mock_strain_phase.assert_called_once_with(2, 1, extraction_radius=None)
+                    mock_time.assert_called_once_with(None)
 
     def test_dEnergy_dt_radiated(self):
         coalescence = Coalescence(os.path.join(TestCoalescence.CURR_DIR,

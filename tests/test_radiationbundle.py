@@ -185,47 +185,24 @@ class TestRadiationBundle(TestCase):
 
     def test_radius_for_extrapolation(self):
         # Getter
-        # if there is no radius for extrapolation set
-        # if radii evenly split around 75
+        # If there is no radius set, it should be None
         radiation_spheres = {
             70: RadiationSphere(mode_dict={}, time=np.array([]), radius=70),
             80: RadiationSphere(mode_dict={}, time=np.array([]), radius=80)
         }
         self.radiation_bundle = RadiationBundle(radiation_spheres=radiation_spheres)
         extrapolation_radius = self.radiation_bundle.radius_for_extrapolation
-        self.assertTrue(70 == extrapolation_radius)
+        self.assertIsNone(extrapolation_radius)
 
-        # if no radius less than 75
+        # If it is set
         radiation_spheres = {
-            80: RadiationSphere(mode_dict={}, time=np.array([]), radius=70),
-            90: RadiationSphere(mode_dict={}, time=np.array([]), radius=80)
-        }
-        self.radiation_bundle = RadiationBundle(radiation_spheres=radiation_spheres)
-        extrapolation_radius = self.radiation_bundle.radius_for_extrapolation
-        self.assertTrue(80 == extrapolation_radius)
-
-        # if no radius greater than 75
-        radiation_spheres = {
-            60: RadiationSphere(mode_dict={}, time=np.array([]), radius=70),
-            70: RadiationSphere(mode_dict={}, time=np.array([]), radius=80)
-        }
-        self.radiation_bundle = RadiationBundle(radiation_spheres=radiation_spheres)
-        extrapolation_radius = self.radiation_bundle.radius_for_extrapolation
-        self.assertTrue(70 == extrapolation_radius)
-
-        # if 75 is a radius
-        radiation_spheres = {
-            75: RadiationSphere(mode_dict={}, time=np.array([]), radius=70),
+            70: RadiationSphere(mode_dict={}, time=np.array([]), radius=70),
             80: RadiationSphere(mode_dict={}, time=np.array([]), radius=80)
         }
         self.radiation_bundle = RadiationBundle(radiation_spheres=radiation_spheres)
+        self.radiation_bundle._RadiationBundle__radius_for_extrapolation = 70
         extrapolation_radius = self.radiation_bundle.radius_for_extrapolation
-        self.assertTrue(75 == extrapolation_radius)
-
-        # if there is an extrapolation radius set
-        self.radiation_bundle._RadiationBundle__radius_for_extrapolation = 30
-        extrapolation_radius = self.radiation_bundle.radius_for_extrapolation
-        self.assertTrue(30 == extrapolation_radius)
+        self.assertEqual(70, extrapolation_radius)
 
         # Setter
         radiation_spheres = {
@@ -1041,7 +1018,7 @@ class TestRadiationBundle(TestCase):
                     self.assertTrue(
                         expected_extrapolated_sphere == self.radiation_bundle._RadiationBundle__extrapolated_sphere)
                     mock_radiation_spheres.assert_called_once()
-                    mock_radius_for_extrapolation.assert_called_once()
+                    self.assertEqual(2, mock_radius_for_extrapolation.call_count)
                     mock_extrapolated_sphere.assert_called_once_with(order=2)
 
         # arguments provided
@@ -1055,6 +1032,6 @@ class TestRadiationBundle(TestCase):
                     self.radiation_bundle.create_extrapolated_sphere(order=1)
                     self.assertTrue(
                         expected_extrapolated_sphere == self.radiation_bundle._RadiationBundle__extrapolated_sphere)
-                    mock_radiation_spheres.asssert_called_once()
-                    mock_radius_for_extrapolation.assert_called_once()
+                    mock_radiation_spheres.assert_called_once()
+                    self.assertEqual(2, mock_radius_for_extrapolation.call_count)
                     mock_extrapolated_sphere.assert_called_once_with(order=1)
