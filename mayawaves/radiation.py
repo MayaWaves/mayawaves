@@ -1300,7 +1300,7 @@ class RadiationSphere:
             xt0[i] = scipy.integrate.trapezoid(com_maya_int[:, i] * t_com_maya_int, t_com_maya_int) / (tf - ti)
 
         # calculate alpha and beta with the Newtonian approach
-        self.__alpha = (4 * (tf ** 2 + tf * ti + ti * 2) * x0 - 6 * (tf + ti) * xt0) / (tf - ti) ** 2
+        self.__alpha = (4 * (tf ** 2 + tf * ti + ti ** 2) * x0 - 6 * (tf + ti) * xt0) / (tf - ti) ** 2
         self.__beta = (12 * xt0 - 6 * (tf + ti) * x0) / (tf - ti) ** 2
 
     def _generate_com_corrected_modes(self):
