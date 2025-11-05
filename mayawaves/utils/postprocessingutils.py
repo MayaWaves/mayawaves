@@ -1572,7 +1572,7 @@ def _get_initial_dimensional_spins(h5_file: h5py.File) -> tuple:
                                                          [CompactObject.Column.SX, CompactObject.Column.SY,
                                                           CompactObject.Column.SZ])
 
-        if len(dimensional_spin_data_0) == 0 or len(dimensional_spin_data_1) == 0:
+        if dimensional_spin_data_0 is None or dimensional_spin_data_1 is None or len(dimensional_spin_data_0) == 0 or len(dimensional_spin_data_1) == 0:
             if 'parfile' not in h5_file:
                 warnings.warn('There is no parameter file data for this simulation.')
                 return
