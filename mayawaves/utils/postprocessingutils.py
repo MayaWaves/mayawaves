@@ -15,6 +15,7 @@ from mayawaves.coalescence import Coalescence
 from scipy.signal import butter, filtfilt
 import matplotlib.pyplot as plt
 import shutil
+from pathlib import Path
 
 _POSSIBLE_OUTPUT_SUFFIXES = [".out", ".err", "stdout", "stderr"]
 _TIMESTEP = None
@@ -3248,3 +3249,191 @@ def summarize_coalescence(coalescence: Coalescence, output_directory: str = None
     if output_directory is not None:
         exit_message = f"Summary successfully saved!\n{simulation_output_directory}\n"
         print(exit_message)
+
+def create_CCE_directory_and_input_files(sim_dir: str, target_dir: str, spectre_dir: str, 
+                                        queue: str, nodes: int, cores: int,
+                                        allocation: str, walltime: str, 
+                                        email: str = None, output_dir: str = None,
+                                        worldtube_radius: int | float | list[float] | None = None):
+    """Creates a directory containing all input files needed to launch CCE.
+
+    Creates a directory that contains the input files needed to execute SpECTRE CCE, along with H5 files 
+    storing metric data on a worldtube that were exported by the CCE_Export thorn. The worldtube data have
+    been exported in a format required by SpECTRE CCE in order to be readable by the executable. If multiple 
+    radii are requested, then several directories will be created, one for each worldtube radius.
+
+    Args:
+        sim_dir (str): The path to the directory of the raw simulation (whether on a local server or a cluster).
+            This is also the location where the CCE directories will be stored if output_dir is None.
+        target_dir (str): The path on the cluster the CCE directory (or directories) will be sent to. This is also 
+            the path used when editing the parameters of the input files required by SpECTRE CCE.
+        spectre_dir (str): The path to the directory containing the SpECTRE CCE executables on the cluster.
+        queue (str): The queue name.
+        nodes (int): The number of nodes needed for the job.
+        cores (int): The number of CPU cores per task.
+        allocation (str): The ID of the allocation. 
+        walltime (str): The maximum runtime for the job.
+        email (:obj:`str`, optional): The email address for notifications.
+        output_dir (:obj:`str`, optional): The location where the CCE directories will be stored. If None, the 
+            directories will be stored in sim_dir. Default None.
+        worldtube_radius (:obj:`int`, :obj:`float`, :obj:`list[float]`, optional): The radius of the worldtube, or 
+            a list of worldtube radii, to be used as input for CCE. Note that the radius must be included in the 
+            list of radii used in the CCE_Export thorn. The default value of None sets up directories for all 
+            available worldtube radii. Default None.
+    """
+    
+    def _copy_and_rename(src_path, dest_path, new_name):
+        # Copy the file
+        shutil.copy(src_path, dest_path)
+
+        # Get old name of file
+        old_name = str(os.path.basename(src_path))
+        
+        # Rename the copied file
+        new_path = f"{dest_path}/{new_name}"
+        shutil.move(f"{dest_path}/{old_name}", new_path)
+
+    # Path to simulation containing all files, specifically the CCE_Export H5 files
+    sim_directory = Path(sim_dir)
+    
+    # Grab all available CCE_Export H5 files in a single output directory;
+    # this will store the files across all worldtube radii
+    cce_match = str(sim_directory) + '/output-0000/**/CCE_ExportR*.h5'
+    cce_match_h5_files = glob.glob(cce_match, recursive=True)
+
+    # Get filename of H5 file and remove extension
+    radii = []
+    for f in cce_match_h5_files:
+        filename = str(os.path.basename(f))
+        filename_no_extension = filename[:-3]
+        radii.append(re.match("\w+[Rr](\d+\.\d\d)",filename_no_extension).group(1))
+    
+    if worldtube_radius is not None:
+        if type(worldtube_radius) is int or type(worldtube_radius) is float:
+            worldtube_radius = [float(worldtube_radius)]
+        radii = [r for r in radii for rprime in worldtube_radius if r == f'{rprime:.2f}']
+    
+    if len(radii) == 0:
+        if len(worldtube_radius) == 1:
+             raise ValueError("The requested radius is not available!")
+        else:
+            raise ValueError("The requested radii are not available!")
+    
+    # Loop over all requested radii and create a directory containing 
+    # CCE input files for each worldtube radius
+    for r in radii:
+        radius = float(r)
+        # If output_dir is not provided, then the CCE directories will be sent to sim_dir
+        if not output_dir:
+            output_dir = sim_dir
+        output_directory = Path(os.path.join(output_dir, "CCE_R"+f"{int(radius):04d}")) # str(radius)))
+        if output_directory.exists() and output_directory.is_dir():
+            print("Removing old output directory for CCE_R"+f"{int(radius):04d}")
+            shutil.rmtree(output_directory)
+        
+        # Path to where the CCE directories will be sent to on the cluster
+        target_directory = Path(os.path.join(target_dir, "CCE_R"+f"{int(radius):04d}")) # str(radius)))
+        # Path to directory containing SpECTRE CCE executables
+        spectre_directory = Path(spectre_dir)
+
+        #########################
+        # Create CCE directory
+        #########################
+        print(f"Creating output directory for worldtube radius R={radius:.2f} M: {output_directory}")
+        os.mkdir(output_directory)
+
+        ##########################################################
+        # Grab paths to skeletons of CCE input and sbatch files
+        ##########################################################
+        CURR_DIR = Path(__file__).parent.resolve()
+        template_directory = os.path.join(CURR_DIR, "cce_bodies")
+
+        preprocess_filename = "PreprocessCceWorldtube.yaml"
+        preprocess_template = os.path.join(template_directory, preprocess_filename.replace('.', '_skeleton.'))
+        preprocess_filepath = os.path.join(output_directory, preprocess_filename)
+
+        char_extract_filename = "CharacteristicExtract.yaml"
+        char_extract_template = os.path.join(template_directory, char_extract_filename.replace('.', '_skeleton.'))
+        char_extract_filepath = os.path.join(output_directory, char_extract_filename)
+
+        sbatch_filename = "CCE.sbatch"
+        sbatch_template = os.path.join(template_directory, sbatch_filename.replace('.', '_skeleton.'))
+        sbatch_filepath = os.path.join(output_directory, sbatch_filename)
+
+        ##########################################
+        #
+        # Create new yaml files using templates
+        #
+        ##########################################
+        
+        ##################################################################
+        # Paths to files used in the PreprocessCceWorldtube executable
+        ##################################################################
+        
+        # CCE_Export H5 files are copied into the new CCE directory, relabled with their corresponding output ID, 
+        # and sorted in ascending order and defined as input H5 files in the PreprocessCceWorldtube input file
+        
+        # Find paths to all CCE_ExportR*.h5 files
+        match = str(sim_directory) + '/output-[0-9][0-9][0-9][0-9]/**/CCE_ExportR' + f'{radius:.2f}' + '.h5'
+        cce_h5_files = sorted(glob.glob(match, recursive=True))
+
+        # Copy the CCE_ExportR*.h5 files and append the corresponding output directory's ID at the end of each file (before the extension .h5)
+        for h5_file in cce_h5_files:
+            # Get path of corresponding output directory
+            w = Path(os.path.abspath(h5_file)).parents[1]
+            # Get the ID number of output directory
+            output_id = str(os.path.basename(w)).split('-')[1]
+            # Get filename of H5 file and remove extension
+            filename = str(os.path.basename(h5_file))
+            filename_no_extension = filename[:-3]
+            # Create new label of H5 file with output ID 
+            relabeled_h5_file = filename_no_extension + "-" + output_id + ".h5"
+            # Copy the h5_file to CCE_R* directory with relabeled name
+            _copy_and_rename(h5_file, output_directory, relabeled_h5_file)
+        
+        # CCE_Export H5 files are sorted in ascending order according to output directory ID
+        h5_files_in_output_dir = sorted(glob.glob(os.path.join(output_directory, "*.h5")))
+        relabeled_cce_h5_files = [os.path.join(target_directory, os.path.basename(H5_FILE)) for H5_FILE in h5_files_in_output_dir]
+        input_filenames = ""
+        for i, h5_file in enumerate(relabeled_cce_h5_files):
+            if i == len(relabeled_cce_h5_files) - 1:
+                input_filenames += f" - {h5_file}"
+            else:
+                input_filenames += f" - {h5_file}\n" 
+        reduced_worldtube_filename = os.path.join(target_directory, "ReducedWorldtubeR"+f"{radius:.2f}"+".h5")
+
+        # Substitute Python variables into preprocess .yaml file
+        with open(preprocess_template, 'r') as f:
+            text = f"{f.read()}".format(**locals())
+            with open(preprocess_filepath, 'w') as preprocess_file:
+                preprocess_file.write(text)
+        
+        ################################################################
+        # Paths to files used in CharacteristicExtraction executable
+        ################################################################
+        boundary_data_filename = reduced_worldtube_filename
+        reduction_filename = "\"" + str(target_directory) + "/CharacteristicExtractReduction\""
+
+        # Substitute Python variables into characteristic extract .yaml file
+        with open(char_extract_template, 'r') as f:
+            text = f"{f.read()}".format(**locals())
+            with open(char_extract_filepath, 'w') as char_extract_file:
+                char_extract_file.write(text)
+
+        #############################################
+        # Create new CCE.sbatch file from template
+        #############################################
+        out = os.path.join(str(target_directory), "CCE_R"+f"{radius:.2f}.out")
+        err = os.path.join(str(target_directory), "CCE_R"+f"{radius:.2f}.err")
+        if email:
+            email_slurm = f"#SBATCH --mail-user={email}\n#SBATCH --mail-type=all    # Send email at begin and end of job\n"
+        else:
+            email_slurm = ""
+
+        # Substitute Python variables into Slurm sbatch file
+        with open(sbatch_template, 'r') as f:
+            text = f"{f.read()}".format(**locals())
+            with open(sbatch_filepath, 'w') as sbatch_file:
+                sbatch_file.write(text)
+        print(f"Finished setting up directory CCE_R{radius:.2f}. . . . .\n")
+    print("DONE!")
