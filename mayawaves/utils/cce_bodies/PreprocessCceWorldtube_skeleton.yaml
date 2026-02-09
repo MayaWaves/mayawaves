@@ -1,0 +1,9 @@
+InputH5File: 
+{input_filenames}
+OutputH5File: {reduced_worldtube_filename}
+InputDataFormat: MetricModal
+ExtractionRadius: {radius}
+FixSpecNormalization: False
+DescendingM: False
+BufferDepth: Auto
+LMaxFactor: 3
