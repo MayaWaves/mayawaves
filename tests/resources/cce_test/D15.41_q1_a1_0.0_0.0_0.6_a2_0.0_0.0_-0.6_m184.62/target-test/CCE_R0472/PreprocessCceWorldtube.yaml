@@ -1,0 +1,12 @@
+InputH5File: 
+ - /path/to/target/dir/on/cluster/CCE_R0472/CCE_ExportR472.00-0000.h5
+ - /path/to/target/dir/on/cluster/CCE_R0472/CCE_ExportR472.00-0001.h5
+ - /path/to/target/dir/on/cluster/CCE_R0472/CCE_ExportR472.00-0002.h5
+ - /path/to/target/dir/on/cluster/CCE_R0472/CCE_ExportR472.00-0003.h5
+OutputH5File: /path/to/target/dir/on/cluster/CCE_R0472/ReducedWorldtubeR472.00.h5
+InputDataFormat: MetricModal
+ExtractionRadius: 472.0
+FixSpecNormalization: False
+DescendingM: False
+BufferDepth: Auto
+LMaxFactor: 3
