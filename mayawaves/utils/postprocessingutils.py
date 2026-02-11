@@ -3412,7 +3412,7 @@ def create_CCE_directory_and_input_files(sim_dir: str, target_dir: str, spectre_
         # Paths to files used in CharacteristicExtraction executable
         ################################################################
         boundary_data_filename = reduced_worldtube_filename
-        reduction_filename = "\"" + str(target_directory) + "/CharacteristicExtractReduction\""
+        reduction_filename = "\"" + str(target_directory) + f"/CharacteristicExtractReductionR{radius:.2f}\""
 
         # Substitute Python variables into characteristic extract .yaml file
         with open(char_extract_template, 'r') as f:
@@ -3435,5 +3435,5 @@ def create_CCE_directory_and_input_files(sim_dir: str, target_dir: str, spectre_
             text = f"{f.read()}".format(**locals())
             with open(sbatch_filepath, 'w') as sbatch_file:
                 sbatch_file.write(text)
-        print(f"Finished setting up directory CCE_R{radius:.2f}. . . . .\n")
+        print(f"Finished setting up directory CCE_R{int(radius):04d}. . . . .\n")
     print("DONE!")

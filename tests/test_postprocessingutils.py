@@ -4162,7 +4162,7 @@ orbital angular momentum unit vector:	[0.0000, -0.0000, 1.0000]"""
                                            "resources/cce_test/D15.41_q1_a1_0.0_0.0_0.6_a2_0.0_0.0_-0.6_m184.62")
         sim_dir = simulation_filepath
         target_dir = "/path/to/target/dir/on/cluster"
-        spectre_dir = "/path/to/spectre_cce/CceExecutables"
+        spectre_dir = "/path/to/spectre_cce"
         queue = "development"
         nodes = 1
         cores = 56
@@ -4180,47 +4180,63 @@ orbital angular momentum unit vector:	[0.0000, -0.0000, 1.0000]"""
 
 
         # Check to see if no directories are created because radius requested is not available
+        # For the case of a single radius
+        with self.assertRaises(ValueError, msg='The requested radius is not available!'):
+            create_CCE_directory_and_input_files(sim_dir=sim_dir, target_dir=target_dir, 
+                                        spectre_dir=spectre_dir, queue=queue, nodes=nodes, cores=cores, 
+                                        allocation=allocation, walltime=walltime, email=email, 
+                                        output_dir=output_dir, worldtube_radius=50)
+        actual_output_directory = os.path.join(output_dir, 'CCE_R0050')
+        self.assertFalse(os.path.isdir(actual_output_directory))
+
+        # For the case of multiple radii
+        with self.assertRaises(ValueError, msg='The requested radii are not available!'):
+            create_CCE_directory_and_input_files(sim_dir=sim_dir, target_dir=target_dir, 
+                                        spectre_dir=spectre_dir, queue=queue, nodes=nodes, cores=cores, 
+                                        allocation=allocation, walltime=walltime, email=email, 
+                                        output_dir=output_dir, worldtube_radius=[50,60])
+        for r in [50,60]:
+            actual_output_directory = os.path.join(output_dir, f'CCE_R{r:04d}')
+            self.assertFalse(os.path.isdir(actual_output_directory))
 
         # Check to see if a single directory is created
+        create_CCE_directory_and_input_files(sim_dir=sim_dir, target_dir=target_dir, 
+                                     spectre_dir=spectre_dir, queue=queue, nodes=nodes, cores=cores, 
+                                     allocation=allocation, walltime=walltime, email=email, 
+                                     output_dir=output_dir, worldtube_radius=67)
+        actual_output_directory = os.path.join(output_dir, 'CCE_R0067')
+        self.assertTrue(os.path.isdir(actual_output_directory))
+        shutil.rmtree(actual_output_directory)
 
         # Check to see if more than one directory is created
+        create_CCE_directory_and_input_files(sim_dir=sim_dir, target_dir=target_dir, 
+                                     spectre_dir=spectre_dir, queue=queue, nodes=nodes, cores=cores, 
+                                     allocation=allocation, walltime=walltime, email=email, 
+                                     output_dir=output_dir, worldtube_radius=[67,270])
+        for r in [67,270]:
+            actual_output_directory = os.path.join(output_dir, f'CCE_R{r:04d}')
+            self.assertTrue(os.path.isdir(actual_output_directory))
+            shutil.rmtree(actual_output_directory)
 
         # Check to see if directories for all available worldtube radii are created
-
-
+        create_CCE_directory_and_input_files(sim_dir=sim_dir, target_dir=target_dir, 
+                                     spectre_dir=spectre_dir, queue=queue, nodes=nodes, cores=cores, 
+                                     allocation=allocation, walltime=walltime, email=email, 
+                                     output_dir=output_dir, worldtube_radius=None)
+        for r in worldtube_radius:
+            actual_output_directory = os.path.join(output_dir, f'CCE_R{r:04d}')
+            self.assertTrue(os.path.isdir(actual_output_directory))
+            shutil.rmtree(actual_output_directory)
 
         # Test target_dir being set to None, see if CCE_R* directories are created in sim_dir
-
-
-
-
-
-        # expected_output_directory = os.path.join(TestPostprocessingUtils.CURR_DIR,
-        #                                          "resources/main_test_simulation/stitched/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67")
-        # actual_output_directory = os.path.join(TestPostprocessingUtils.CURR_DIR,
-        #                                        "resources/test_output/D2.33_q1_a1_0_0_0_a2_0_0_0_m42.67")
-
-        # self.assertTrue(os.path.isdir(actual_output_directory))
-
-        # expected_filenames = set(os.listdir(expected_output_directory))
-        # actual_filenames = set(os.listdir(actual_output_directory))
-
-        # par_expected = False
-        # for filename in expected_filenames:
-        #     if filename.endswith('.par'):
-        #         par_expected = True
-        # if not par_expected:
-        #     parfile_name = None
-        #     for filename in actual_filenames:
-        #         if filename.endswith('.par'):
-        #             parfile_name = filename
-        #     if parfile_name is not None:
-        #         actual_filenames.remove(parfile_name)
-        # self.assertEqual(expected_filenames, actual_filenames)
-
-
-
-
+        create_CCE_directory_and_input_files(sim_dir=sim_dir, target_dir=target_dir, 
+                                     spectre_dir=spectre_dir, queue=queue, nodes=nodes, cores=cores, 
+                                     allocation=allocation, walltime=walltime, email=email, 
+                                     output_dir=None, worldtube_radius=None)
+        for r in worldtube_radius:
+            actual_output_directory = os.path.join(sim_dir, f'CCE_R{r:04d}')
+            self.assertTrue(os.path.isdir(actual_output_directory))
+            shutil.rmtree(actual_output_directory)
 
         # Loop over all available worldtube radii and run cce_setup function; check existence of files 
         # and compare their output with the expected output
@@ -4228,8 +4244,6 @@ orbital angular momentum unit vector:	[0.0000, -0.0000, 1.0000]"""
                                      spectre_dir=spectre_dir, queue=queue, nodes=nodes, cores=cores, 
                                      allocation=allocation, walltime=walltime, email=email, 
                                      output_dir=output_dir, worldtube_radius=worldtube_radius)
-
-
         for radius in worldtube_radius:
             #  Check if directory was created in correct location to store data.
             cce_output_directory = os.path.join(output_dir, "CCE_R" + f"{int(radius):04d}")
@@ -4244,15 +4258,14 @@ orbital angular momentum unit vector:	[0.0000, -0.0000, 1.0000]"""
             self.assertTrue(os.path.exists(path_to_cce_sbatch_file))
 
             # Check existence of CCE_Export H5 files in directory, each with output ID appended at the end
+            for i in range(4):
+                cce_export_h5_filepath = os.path.join(cce_output_directory, f'CCE_ExportR{radius:.2f}-000{i}.h5')
+                self.assertTrue(os.path.exists(cce_export_h5_filepath))
 
-
-
-
+            # Path to CCE directory in cluster
             cce_target_directory = os.path.join(target_dir, "CCE_R" + f"{int(radius):04d}")
 
             # Check contents of PreprocessCceWorldtube.yaml
-            # - For the case of a single output directory?
-            # - For the case of multiple output directories?
             expected_output = f"""InputH5File: 
  - {cce_target_directory}/CCE_ExportR{radius:.2f}-0000.h5
  - {cce_target_directory}/CCE_ExportR{radius:.2f}-0001.h5
@@ -4264,7 +4277,8 @@ ExtractionRadius: {radius:.1f}
 FixSpecNormalization: False
 DescendingM: False
 BufferDepth: Auto
-LMaxFactor: 3"""
+LMaxFactor: 3
+"""
 
             # input file paths; output file path;
 
@@ -4437,7 +4451,8 @@ Cce:
   # How often per CCE time step to output. Given the tight default tolerances of
   # 1e-6 with an Adams-Bashforth stepper, once per time step is fine for most
   # systems.
-  ScriOutputDensity: 1"""
+  ScriOutputDensity: 1
+"""
 
             characteristic_extract_input_file = open(path_to_characteristic_extract_input_file, "r")
             actual_output = characteristic_extract_input_file.read()
@@ -4477,7 +4492,8 @@ apptainer exec $SCRATCH/spectre_dev.sif ./PreprocessCceWorldtube --input-file $I
 echo "Starting CCE executable . . ."
 echo
 cd $CCE_DIR
-apptainer exec $SCRATCH/spectre_dev.sif ./CharacteristicExtract --input-file $INPUT_DIR/CharacteristicExtract.yaml"""
+apptainer exec $SCRATCH/spectre_dev.sif ./CharacteristicExtract --input-file $INPUT_DIR/CharacteristicExtract.yaml
+"""
 
             cce_sbatch_file = open(path_to_cce_sbatch_file, "r")
             actual_output = cce_sbatch_file.read()
@@ -4492,6 +4508,72 @@ apptainer exec $SCRATCH/spectre_dev.sif ./CharacteristicExtract --input-file $IN
 
 
         # Check CCE.sbatch for the case in which email is not provided or set to None
+        create_CCE_directory_and_input_files(sim_dir=sim_dir, target_dir=target_dir, 
+                                     spectre_dir=spectre_dir, queue=queue, nodes=nodes, cores=cores, 
+                                     allocation=allocation, walltime=walltime, email=None, 
+                                     output_dir=output_dir, worldtube_radius=worldtube_radius)
 
+        for radius in worldtube_radius:
+            #  Check if directory was created in correct location to store data.
+            cce_output_directory = os.path.join(output_dir, "CCE_R" + f"{int(radius):04d}")
+            self.assertTrue(os.path.exists(cce_output_directory))
+
+            # Check if correct CCE input files were saved to CCE_R* directory
+            path_to_preprocess_worldtube_input_file = os.path.join(cce_output_directory, 'PreprocessCceWorldtube.yaml')
+            self.assertTrue(os.path.exists(path_to_preprocess_worldtube_input_file))
+            path_to_characteristic_extract_input_file = os.path.join(cce_output_directory, 'CharacteristicExtract.yaml')
+            self.assertTrue(os.path.exists(path_to_characteristic_extract_input_file))
+            path_to_cce_sbatch_file = os.path.join(cce_output_directory, 'CCE.sbatch')
+            self.assertTrue(os.path.exists(path_to_cce_sbatch_file))
+
+            # Check existence of CCE_Export H5 files in directory, each with output ID appended at the end
+            for i in range(4):
+                cce_export_h5_filepath = os.path.join(cce_output_directory, f'CCE_ExportR{radius:.2f}-000{i}.h5')
+                self.assertTrue(os.path.exists(cce_export_h5_filepath))
+
+            # Path to CCE directory in cluster
+            cce_target_directory = os.path.join(target_dir, "CCE_R" + f"{int(radius):04d}")
+
+            # Check contents of CCE.sbatch
+            expected_output = f"""#!/bin/bash
+
+#SBATCH -A PHY00000
+#SBATCH -J CCE                               # Job name
+#SBATCH -o {cce_target_directory}/CCE_R{radius:.2f}.out                           # Name of stdout output file (%j expands to jobId)
+#SBATCH -e {cce_target_directory}/CCE_R{radius:.2f}.err                           # Name of stderr err file (%j expands to jobId)
+#SBATCH -p development                       # Queue name
+#SBATCH -N 1                                 # Total number of nodes requested (56 cores/node)
+#SBATCH -n 56                                # Total number of mpi tasks requested
+#SBATCH -t 02:00:00                          # Run time (hh:mm:ss)
+
+CCE_DIR=/path/to/spectre_cce/CceExecutables
+PREPROCESS_DIR=$CCE_DIR/PreprocessCceWorldtube
+INPUT_DIR={cce_target_directory}
+
+echo 'Starting CCE sbatch script:'
+date
+
+module load tacc-apptainer
+cd $SCRATCH
+apptainer pull docker://sxscollaboration/spectre:dev
+
+echo "Converting worldtube H5 file into a corresponding Bondi-Sachs worldtube H5 file that can be read in by CCE . . ."
+echo
+cd $PREPROCESS_DIR
+apptainer exec $SCRATCH/spectre_dev.sif ./PreprocessCceWorldtube --input-file $INPUT_DIR/PreprocessCceWorldtube.yaml
+
+echo "Starting CCE executable . . ."
+echo
+cd $CCE_DIR
+apptainer exec $SCRATCH/spectre_dev.sif ./CharacteristicExtract --input-file $INPUT_DIR/CharacteristicExtract.yaml
+"""
+
+            cce_sbatch_file = open(path_to_cce_sbatch_file, "r")
+            actual_output = cce_sbatch_file.read()
+            self.assertEqual(expected_output, actual_output)
+            cce_sbatch_file.close()
+
+            # Remove test output directory after checking.
+            shutil.rmtree(cce_output_directory)
         
         
