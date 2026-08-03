@@ -3708,7 +3708,14 @@ IO::out_fileinfo                     = "all"
 
         for attr in actual_attributes:
             if attr != 'modification-date':
-                self.assertEqual(expected_file.attrs[attr], actual_file.attrs[attr])
+                expected_val = expected_file.attrs[attr]
+                actual_val = actual_file.attrs[attr]
+                # Use np.isclose for float comparisons to handle precision differences
+                if isinstance(expected_val, (float, np.floating)) and isinstance(actual_val, (float, np.floating)):
+                    self.assertTrue(np.isclose(expected_val, actual_val, rtol=1e-9), 
+                                    f"Attribute {attr} mismatch: {expected_val} != {actual_val}")
+                else:
+                    self.assertEqual(expected_val, actual_val)
 
         expected_groups = set(expected_file.keys())
         actual_groups = set(actual_file.keys())

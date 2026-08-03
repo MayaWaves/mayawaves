@@ -490,7 +490,7 @@ class _Puncturetracker(_CompactObjectFileHandler):
         time_columns = [f'{CompactObject.Column.TIME.header_text}_{object_number}' for object_number in
                         co_objects_with_data]
         puncturetracker_dataframe[CompactObject.Column.TIME.header_text] = \
-        puncturetracker_dataframe[time_columns].fillna(method='ffill', axis=1)[time_columns[0]]
+        puncturetracker_dataframe[time_columns].ffill(axis=1)[time_columns[0]]
         puncturetracker_array = np.zeros(
             (len(puncturetracker_dataframe), 2 + len(_Puncturetracker.column_list_primary_object)))
 
@@ -675,12 +675,12 @@ class _QuasiLocalMeasures(_CompactObjectFileHandler):
         time_columns = [f'{CompactObject.Column.TIME.header_text}_{object_number}' for object_number in
                         co_objects_with_data]
         quasilocalmeasures_dataframe[CompactObject.Column.TIME.header_text] = \
-        quasilocalmeasures_dataframe[time_columns].fillna(method='ffill', axis=1)[time_columns[-1]]
+        quasilocalmeasures_dataframe[time_columns].ffill(axis=1)[time_columns[-1]]
 
         qlm_array = np.zeros(
             (len(quasilocalmeasures_dataframe), 14 + num_surfaces * (len(_QuasiLocalMeasures.column_list) - 1)))
 
-        quasilocalmeasures_dataframe.fillna(method='ffill', inplace=True, axis=0)
+        quasilocalmeasures_dataframe.ffill(inplace=True, axis=0)
 
         qlm_array[:, 0] = quasilocalmeasures_dataframe[CompactObject.Column.ITT.header_text]
         qlm_array[:, 2] = quasilocalmeasures_dataframe[CompactObject.Column.ITT.header_text]

@@ -3,6 +3,7 @@ from unittest import TestCase
 from unittest.mock import patch, PropertyMock
 import h5py
 import scipy.optimize
+from scipy.integrate import trapezoid
 from mayawaves.coalescence import Coalescence
 from mayawaves.radiation import RadiationSphere
 import numpy as np
@@ -1181,7 +1182,7 @@ class TestRadiationSphere(TestCase):
             alpha_plus_beta_t = alpha.reshape(1, 3) + beta.reshape(1, 3) * time.reshape(len(time), 1)
             alpha_plus_beta_t = alpha_plus_beta_t.reshape(len(alpha_plus_beta_t), 3)
             integrand = np.linalg.norm(com - alpha_plus_beta_t, axis=1) ** 2
-            return np.trapz(integrand, time)
+            return trapezoid(integrand, time)
 
         result = scipy.optimize.minimize(func_of_alpha_beta, x0=(0, 0, 0, 0, 0, 0), method='Nelder-Mead')
         minimized_alpha = result.x[:3]

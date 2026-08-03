@@ -56,8 +56,8 @@ class Coalescence:
             self.__radiation_mode_bundle = RadiationBundle.create_radiation_bundle(self.__h5_file["radiative"])
             try:
                 self._set_default_radius_for_extrapolation()
-            except ValueError:
-                pass
+            except Exception as e:
+                warnings.warn("Error occurred while setting default radius for extrapolation. If you plan to extrapolate to infinity, please set the desired extrapolation radius manually with Coalescence.radius_for_extrapolation.")
 
     @property
     def name(self) -> str:
