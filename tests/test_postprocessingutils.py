@@ -4161,3 +4161,426 @@ orbital angular momentum unit vector:	[0.0000, -0.0000, 1.0000]"""
             mock_show.reset_mock()
 
         coalescence.close()
+
+    def test_create_CCE_directory_and_input_files(self):
+        from mayawaves.utils.postprocessingutils import create_CCE_directory_and_input_files
+
+        simulation_filepath = os.path.join(TestPostprocessingUtils.CURR_DIR,
+                                           "resources/cce_test/D15.41_q1_a1_0.0_0.0_0.6_a2_0.0_0.0_-0.6_m184.62")
+        sim_dir = simulation_filepath
+        target_dir = "/path/to/target/dir/on/cluster"
+        spectre_dir = "/path/to/spectre_cce"
+        queue = "development"
+        nodes = 1
+        cores = 56
+        allocation = "PHY00000"
+        walltime = "02:00:00"
+        email = "user@email.com"
+        output_dir = os.path.join(simulation_filepath, "target-test")
+        worldtube_radius = [67, 270, 472]
+
+        # create_CCE_directory_and_input_files(sim_dir=sim_dir, target_dir=target_dir, 
+        #                              spectre_dir=spectre_dir, queue=queue, nodes=nodes, cores=cores, 
+        #                              allocation=allocation, walltime=walltime, email=email, 
+        #                              output_dir=output_directory, worldtube_radius=radius)
+
+
+
+        # Check to see if no directories are created because radius requested is not available
+        # For the case of a single radius
+        with self.assertRaises(ValueError, msg='The requested radius is not available!'):
+            create_CCE_directory_and_input_files(sim_dir=sim_dir, target_dir=target_dir, 
+                                        spectre_dir=spectre_dir, queue=queue, nodes=nodes, cores=cores, 
+                                        allocation=allocation, walltime=walltime, email=email, 
+                                        output_dir=output_dir, worldtube_radius=50)
+        actual_output_directory = os.path.join(output_dir, 'CCE_R0050')
+        self.assertFalse(os.path.isdir(actual_output_directory))
+
+        # For the case of multiple radii
+        with self.assertRaises(ValueError, msg='The requested radii are not available!'):
+            create_CCE_directory_and_input_files(sim_dir=sim_dir, target_dir=target_dir, 
+                                        spectre_dir=spectre_dir, queue=queue, nodes=nodes, cores=cores, 
+                                        allocation=allocation, walltime=walltime, email=email, 
+                                        output_dir=output_dir, worldtube_radius=[50,60])
+        for r in [50,60]:
+            actual_output_directory = os.path.join(output_dir, f'CCE_R{r:04d}')
+            self.assertFalse(os.path.isdir(actual_output_directory))
+
+        # Check to see if a single directory is created
+        create_CCE_directory_and_input_files(sim_dir=sim_dir, target_dir=target_dir, 
+                                     spectre_dir=spectre_dir, queue=queue, nodes=nodes, cores=cores, 
+                                     allocation=allocation, walltime=walltime, email=email, 
+                                     output_dir=output_dir, worldtube_radius=67)
+        actual_output_directory = os.path.join(output_dir, 'CCE_R0067')
+        self.assertTrue(os.path.isdir(actual_output_directory))
+        shutil.rmtree(actual_output_directory)
+
+        # Check to see if more than one directory is created
+        create_CCE_directory_and_input_files(sim_dir=sim_dir, target_dir=target_dir, 
+                                     spectre_dir=spectre_dir, queue=queue, nodes=nodes, cores=cores, 
+                                     allocation=allocation, walltime=walltime, email=email, 
+                                     output_dir=output_dir, worldtube_radius=[67,270])
+        for r in [67,270]:
+            actual_output_directory = os.path.join(output_dir, f'CCE_R{r:04d}')
+            self.assertTrue(os.path.isdir(actual_output_directory))
+            shutil.rmtree(actual_output_directory)
+
+        # Check to see if directories for all available worldtube radii are created
+        create_CCE_directory_and_input_files(sim_dir=sim_dir, target_dir=target_dir, 
+                                     spectre_dir=spectre_dir, queue=queue, nodes=nodes, cores=cores, 
+                                     allocation=allocation, walltime=walltime, email=email, 
+                                     output_dir=output_dir, worldtube_radius=None)
+        for r in worldtube_radius:
+            actual_output_directory = os.path.join(output_dir, f'CCE_R{r:04d}')
+            self.assertTrue(os.path.isdir(actual_output_directory))
+            shutil.rmtree(actual_output_directory)
+
+        # Test target_dir being set to None, see if CCE_R* directories are created in sim_dir
+        create_CCE_directory_and_input_files(sim_dir=sim_dir, target_dir=target_dir, 
+                                     spectre_dir=spectre_dir, queue=queue, nodes=nodes, cores=cores, 
+                                     allocation=allocation, walltime=walltime, email=email, 
+                                     output_dir=None, worldtube_radius=None)
+        for r in worldtube_radius:
+            actual_output_directory = os.path.join(sim_dir, f'CCE_R{r:04d}')
+            self.assertTrue(os.path.isdir(actual_output_directory))
+            shutil.rmtree(actual_output_directory)
+
+        # Loop over all available worldtube radii and run cce_setup function; check existence of files 
+        # and compare their output with the expected output
+        create_CCE_directory_and_input_files(sim_dir=sim_dir, target_dir=target_dir, 
+                                     spectre_dir=spectre_dir, queue=queue, nodes=nodes, cores=cores, 
+                                     allocation=allocation, walltime=walltime, email=email, 
+                                     output_dir=output_dir, worldtube_radius=worldtube_radius)
+        for radius in worldtube_radius:
+            #  Check if directory was created in correct location to store data.
+            cce_output_directory = os.path.join(output_dir, "CCE_R" + f"{int(radius):04d}")
+            self.assertTrue(os.path.exists(cce_output_directory))
+
+            # Check if correct CCE input files were saved to CCE_R* directory
+            path_to_preprocess_worldtube_input_file = os.path.join(cce_output_directory, 'PreprocessCceWorldtube.yaml')
+            self.assertTrue(os.path.exists(path_to_preprocess_worldtube_input_file))
+            path_to_characteristic_extract_input_file = os.path.join(cce_output_directory, 'CharacteristicExtract.yaml')
+            self.assertTrue(os.path.exists(path_to_characteristic_extract_input_file))
+            path_to_cce_sbatch_file = os.path.join(cce_output_directory, 'CCE.sbatch')
+            self.assertTrue(os.path.exists(path_to_cce_sbatch_file))
+
+            # Check existence of CCE_Export H5 files in directory, each with output ID appended at the end
+            for i in range(4):
+                cce_export_h5_filepath = os.path.join(cce_output_directory, f'CCE_ExportR{radius:.2f}-000{i}.h5')
+                self.assertTrue(os.path.exists(cce_export_h5_filepath))
+
+            # Path to CCE directory in cluster
+            cce_target_directory = os.path.join(target_dir, "CCE_R" + f"{int(radius):04d}")
+
+            # Check contents of PreprocessCceWorldtube.yaml
+            expected_output = f"""InputH5File: 
+ - {cce_target_directory}/CCE_ExportR{radius:.2f}-0000.h5
+ - {cce_target_directory}/CCE_ExportR{radius:.2f}-0001.h5
+ - {cce_target_directory}/CCE_ExportR{radius:.2f}-0002.h5
+ - {cce_target_directory}/CCE_ExportR{radius:.2f}-0003.h5
+OutputH5File: {cce_target_directory}/ReducedWorldtubeR{radius:.2f}.h5
+InputDataFormat: MetricModal
+ExtractionRadius: {radius:.1f}
+FixSpecNormalization: False
+DescendingM: False
+BufferDepth: Auto
+LMaxFactor: 3
+"""
+
+            # input file paths; output file path;
+
+            preprocess_worldtube_input_file = open(path_to_preprocess_worldtube_input_file, "r")
+            actual_output = preprocess_worldtube_input_file.read()
+            self.assertEqual(expected_output, actual_output)
+            preprocess_worldtube_input_file.close()
+
+            # Check contents of CharacteristicExtract.yaml
+            expected_output = f"""# Distributed under the MIT License.
+# See LICENSE.txt for details.
+
+# This block is used by testing and the SpECTRE command line interface.
+Executable: CharacteristicExtract
+Testing:
+  Check: parse
+  Priority: High
+
+---
+# Start of the input file that controls the CCE evolution.
+
+Evolution:
+  # The initial step sizes isn't super important because we use error-based
+  # adaptive time stepping to adjust the step size.
+  InitialTimeStep: 0.25
+  MinimumTimeStep: 1e-7
+  # The initial Slab size controls how often the EventsAndTriggers are run. They
+  # are run once per Slab.
+  InitialSlabSize: 10.0
+
+ResourceInfo:
+  # Can ignore this section since CCE performs best on a single core.
+  AvoidGlobalProc0: false
+  Singletons: Auto
+
+Observers:
+  # The reduction file is where to write the CCE output of quantities at future
+  # null infinity.
+  # Specifically, it will be in a `/SpectreRXXXX.cce` where the number is the
+  # ExtractionRadius specified below.
+  ReductionFileName: "{cce_target_directory}/CharacteristicExtractReductionR{radius:.2f}"
+  # The volume file is where to write the quantities from the bulk of the
+  # spacetime. The fields to extract can be specified in the section
+  # EventsAndTriggersAtSlabs.Events.ObserveFields below.
+  VolumeFileName: "CharacteristicExtractVolume"
+
+EventsAndTriggersAtSlabs:
+  # Write the CCE time step every Slab. A Slab is a fixed length of simulation
+  # time and is not influenced by the dynamically adjusted step size.
+  - Trigger:
+      Slabs:
+        EvenlySpaced:
+          Offset: 0
+          Interval: 1
+    Events:
+      - ObserveTimeStep:
+          # The output is written into the "ReductionFileName" HDF5 file under
+          # "/SubfileName.dat"
+          SubfileName: CceTimeStep
+          PrintTimeToTerminal: true
+      # # If you want to dump volume data into VolumeFileName (specified above),
+      # # you can uncomment the ObserveFields option here:
+      # - ObserveFields:
+      #     # Data will be written in the group named by SubgroupName inside the
+      #     # h5 file specified by VolumeFileName. If dumping any volume data,
+      #     # it is recommended to also output OneMinusY and
+      #     # InertialRetardedTime so as to conveniently provide the
+      #     # coordinates. See the documentation of
+      #     # src/Evolution/Systems/Cce/Events/ObserveFields.hpp for details of
+      #     # the Cce volume format.
+      #     SubgroupName: "CceVolumeData"
+      #     VariablesToObserve:
+      #       - OneMinusY
+      #       - InertialRetardedTime
+      #       - J
+      #       - Psi0
+      #       - Psi1
+
+EventsAndTriggersAtSteps:
+
+Cce:
+  Evolution:
+    TimeStepper:
+      AdamsBashforth:
+        Order: 3 # Going to higher order doesn't seem necessary for CCE
+    StepChoosers:
+      - Constant: 0.1 # Don't take steps bigger than 0.1M
+      - LimitIncrease:
+          Factor: 2
+      - ErrorControl(SwshVars):
+          AbsoluteTolerance: 1e-9
+          RelativeTolerance: 1e-7
+          # These factors control how much the time step is changed at once.
+          MaxFactor: 2
+          MinFactor: 0.25
+          # How close to the "perfect" time step we take. Since the "perfect"
+          # value assumes a linear system, we need some safety factor since our
+          # system is nonlinear, and also so that we reduce how often we retake
+          # time steps.
+          SafetyFactor: 0.9
+      - ErrorControl(CoordVars):
+          AbsoluteTolerance: 1e-9
+          RelativeTolerance: 1e-8
+          # These factors control how much the time step is changed at once.
+          MaxFactor: 2
+          MinFactor: 0.25
+          # How close to the "perfect" time step we take. Since the "perfect"
+          # value assumes a linear system, we need some safety factor since our
+          # system is nonlinear, and also so that we reduce how often we retake
+          # time steps.
+          SafetyFactor: 0.9
+
+  # The number of angular modes used by the CCE evolution. This must be larger
+  # than ObservationLMax. We always use all of the m modes for the LMax since
+  # using fewer m modes causes aliasing-driven instabilities.
+  LMax: 20
+  # Probably don't need more than 15 radial grid points, but could increase
+  # up to ~20
+  NumberOfRadialPoints: 15
+  # The maximum ell we use for writing waveform output. While CCE can dump
+  # more, you should be cautious with higher modes since mode mixing, truncation
+  # error, and systematic numerical effects can have significant contamination
+  # in these modes.
+  ObservationLMax: 8
+
+  InitializeJ:
+    # To see what other J-initialization procedures are available, comment
+    # out this group of options and do, e.g. "Blah:" The code will print
+    # an error message with the available options and a help string.
+    # More details can be found at spectre-code.org.
+    ConformalFactor:
+      AngularCoordTolerance: 1e-13
+      MaxIterations: 1000 # Do extra iterations in case we improve.
+      RequireConvergence: False # Often don't converge to 1e-13, but that's fine
+      OptimizeL0Mode: True
+      UseBetaIntegralEstimate: False
+      ConformalFactorIterationHeuristic: SpinWeight1CoordPerturbation
+      UseInputModes: False
+      InputModes: []
+
+  StartTime: Auto # Start at the first time in file
+  EndTime: Auto   # End at the last time in file
+  # If the CCE file name is of the form NameOfFileRXXXX.h5 then
+  # ExtractionRadius can be Auto. If the filename does not contain the radius,
+  # then you can specify it explicitly. For example:
+  #   BoundaryDataFilename: CceInputData.h5
+  #   ExtractionRadius: 257
+  BoundaryDataFilename: {cce_target_directory}/ReducedWorldtubeR{radius:.2f}.h5
+  ExtractionRadius: Auto
+  # How we interpolate the worldtube data in time for CCE.
+  H5Interpolator:
+    BarycentricRationalSpanInterpolator:
+      MinOrder: 10
+      MaxOrder: 10
+
+  # Loads this many time steps in from the HDF5 files at once. Fewer file system
+  # accesses improve performance, but requires more RAM.
+  H5LookaheadTimes: 10000
+
+  Filtering:
+    # Using half-power 64 means we effectively have a Heavidside filter, zeroing
+    # out the highest mode only.
+    RadialFilterHalfPower: 64
+    RadialFilterAlpha: 35.0
+    # The number of angular modes not touched by the angular filter. This should
+    # be about 2 smaller than LMax used for the CCE evolution.
+    FilterLMax: 18
+
+  ScriInterpOrder: 5
+  # How often per CCE time step to output. Given the tight default tolerances of
+  # 1e-6 with an Adams-Bashforth stepper, once per time step is fine for most
+  # systems.
+  ScriOutputDensity: 1
+"""
+
+            characteristic_extract_input_file = open(path_to_characteristic_extract_input_file, "r")
+            actual_output = characteristic_extract_input_file.read()
+            self.assertEqual(expected_output, actual_output)
+            characteristic_extract_input_file.close()
+
+            # Check contents of CCE.sbatch
+            expected_output = f"""#!/bin/bash
+
+#SBATCH -A PHY00000
+#SBATCH -J CCE                               # Job name
+#SBATCH -o {cce_target_directory}/CCE_R{radius:.2f}.out                           # Name of stdout output file (%j expands to jobId)
+#SBATCH -e {cce_target_directory}/CCE_R{radius:.2f}.err                           # Name of stderr err file (%j expands to jobId)
+#SBATCH -p development                       # Queue name
+#SBATCH -N 1                                 # Total number of nodes requested (56 cores/node)
+#SBATCH -n 56                                # Total number of mpi tasks requested
+#SBATCH -t 02:00:00                          # Run time (hh:mm:ss)
+#SBATCH --mail-user=user@email.com
+#SBATCH --mail-type=all    # Send email at begin and end of job
+
+CCE_DIR=/path/to/spectre_cce/CceExecutables
+PREPROCESS_DIR=$CCE_DIR/PreprocessCceWorldtube
+INPUT_DIR={cce_target_directory}
+
+echo 'Starting CCE sbatch script:'
+date
+
+module load tacc-apptainer
+cd $SCRATCH
+apptainer pull docker://sxscollaboration/spectre:dev
+
+echo "Converting worldtube H5 file into a corresponding Bondi-Sachs worldtube H5 file that can be read in by CCE . . ."
+echo
+cd $PREPROCESS_DIR
+apptainer exec $SCRATCH/spectre_dev.sif ./PreprocessCceWorldtube --input-file $INPUT_DIR/PreprocessCceWorldtube.yaml
+
+echo "Starting CCE executable . . ."
+echo
+cd $CCE_DIR
+apptainer exec $SCRATCH/spectre_dev.sif ./CharacteristicExtract --input-file $INPUT_DIR/CharacteristicExtract.yaml
+"""
+
+            cce_sbatch_file = open(path_to_cce_sbatch_file, "r")
+            actual_output = cce_sbatch_file.read()
+            self.assertEqual(expected_output, actual_output)
+            cce_sbatch_file.close()
+
+
+            # Remove test output directory after checking.
+            shutil.rmtree(cce_output_directory)
+
+
+
+
+        # Check CCE.sbatch for the case in which email is not provided or set to None
+        create_CCE_directory_and_input_files(sim_dir=sim_dir, target_dir=target_dir, 
+                                     spectre_dir=spectre_dir, queue=queue, nodes=nodes, cores=cores, 
+                                     allocation=allocation, walltime=walltime, email=None, 
+                                     output_dir=output_dir, worldtube_radius=worldtube_radius)
+
+        for radius in worldtube_radius:
+            #  Check if directory was created in correct location to store data.
+            cce_output_directory = os.path.join(output_dir, "CCE_R" + f"{int(radius):04d}")
+            self.assertTrue(os.path.exists(cce_output_directory))
+
+            # Check if correct CCE input files were saved to CCE_R* directory
+            path_to_preprocess_worldtube_input_file = os.path.join(cce_output_directory, 'PreprocessCceWorldtube.yaml')
+            self.assertTrue(os.path.exists(path_to_preprocess_worldtube_input_file))
+            path_to_characteristic_extract_input_file = os.path.join(cce_output_directory, 'CharacteristicExtract.yaml')
+            self.assertTrue(os.path.exists(path_to_characteristic_extract_input_file))
+            path_to_cce_sbatch_file = os.path.join(cce_output_directory, 'CCE.sbatch')
+            self.assertTrue(os.path.exists(path_to_cce_sbatch_file))
+
+            # Check existence of CCE_Export H5 files in directory, each with output ID appended at the end
+            for i in range(4):
+                cce_export_h5_filepath = os.path.join(cce_output_directory, f'CCE_ExportR{radius:.2f}-000{i}.h5')
+                self.assertTrue(os.path.exists(cce_export_h5_filepath))
+
+            # Path to CCE directory in cluster
+            cce_target_directory = os.path.join(target_dir, "CCE_R" + f"{int(radius):04d}")
+
+            # Check contents of CCE.sbatch
+            expected_output = f"""#!/bin/bash
+
+#SBATCH -A PHY00000
+#SBATCH -J CCE                               # Job name
+#SBATCH -o {cce_target_directory}/CCE_R{radius:.2f}.out                           # Name of stdout output file (%j expands to jobId)
+#SBATCH -e {cce_target_directory}/CCE_R{radius:.2f}.err                           # Name of stderr err file (%j expands to jobId)
+#SBATCH -p development                       # Queue name
+#SBATCH -N 1                                 # Total number of nodes requested (56 cores/node)
+#SBATCH -n 56                                # Total number of mpi tasks requested
+#SBATCH -t 02:00:00                          # Run time (hh:mm:ss)
+
+CCE_DIR=/path/to/spectre_cce/CceExecutables
+PREPROCESS_DIR=$CCE_DIR/PreprocessCceWorldtube
+INPUT_DIR={cce_target_directory}
+
+echo 'Starting CCE sbatch script:'
+date
+
+module load tacc-apptainer
+cd $SCRATCH
+apptainer pull docker://sxscollaboration/spectre:dev
+
+echo "Converting worldtube H5 file into a corresponding Bondi-Sachs worldtube H5 file that can be read in by CCE . . ."
+echo
+cd $PREPROCESS_DIR
+apptainer exec $SCRATCH/spectre_dev.sif ./PreprocessCceWorldtube --input-file $INPUT_DIR/PreprocessCceWorldtube.yaml
+
+echo "Starting CCE executable . . ."
+echo
+cd $CCE_DIR
+apptainer exec $SCRATCH/spectre_dev.sif ./CharacteristicExtract --input-file $INPUT_DIR/CharacteristicExtract.yaml
+"""
+
+            cce_sbatch_file = open(path_to_cce_sbatch_file, "r")
+            actual_output = cce_sbatch_file.read()
+            self.assertEqual(expected_output, actual_output)
+            cce_sbatch_file.close()
+
+            # Remove test output directory after checking.
+            shutil.rmtree(cce_output_directory)
+        
+        
